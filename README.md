@@ -56,7 +56,7 @@ Fork 本项目之后，还需要做一些事情才能让你的页面「正确」
 
 ## 使用文档
 
-- [本博客模板常见问题 Q & A](https://mazhuang.org/2020/05/03/blog-template-qna/)。
+- [本博客模板常见问题 Q & A](https://hsfeng.site/2020/05/03/blog-template-qna/)。
 
 - 在本地预览博客效果可以参考 [Setting up your Pages site locally with Jekyll][2]。
 
