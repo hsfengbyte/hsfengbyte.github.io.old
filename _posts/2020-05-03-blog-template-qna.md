@@ -69,7 +69,7 @@ mathjax: true
 
 ## 如何修改代码高亮风格
 
-可以通过 _config.yml 文件里的配置项 `highlight_theme` 来指定代码高亮风格，支持的风格名称列表参考我维护的另一个项目：
+可以通过 _config.yml 文件里的配置项 `highlight_theme` 来指定代码高亮风格，支持的风格名称列表参考 [码志](http://github.com/mzlogin) 维护的另一个项目：
 
 - <https://github.com/mzlogin/rouge-themes>
 

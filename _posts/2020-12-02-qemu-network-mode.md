@@ -1,8 +1,8 @@
 ---
 layout: post
 title: QEMU 网络模式
-categories: Linux
-description: QEMU网络模式
+categories: Qemu
+description: QEMU 网络模式
 keywords: qemu
 ---
 

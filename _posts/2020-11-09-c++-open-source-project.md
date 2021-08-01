@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  经典 C++ 开源项目
+title:  C++ - 经典开源项目
 categories: C++
 description: c/c++ 开源项目
 keywords: c++

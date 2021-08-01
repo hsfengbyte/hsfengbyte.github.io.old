@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Ubuntu 根文件系统
+title: Ubuntu 根文件系统制作
 categories: Ubuntu
 description: ubuntu 根文件系统制作
 keywords: rootfs

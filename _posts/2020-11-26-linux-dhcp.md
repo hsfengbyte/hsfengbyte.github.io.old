@@ -2,7 +2,7 @@
 layout: post
 title: Linux DHCP
 categories: Linux
-description: linux搭建dhcp服务
+description: 使用 isc-dhcp-server 实现 dhcp 动态域名解析服务 
 keywords: dhcp
 ---
 
