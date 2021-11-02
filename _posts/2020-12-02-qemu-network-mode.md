@@ -169,9 +169,12 @@ sudo dhcpcd -k #清空ip
 
 ### 七、桥接网络
 
-QEMU桥接网络
+配置qemu虚拟机与主机在同一网络（主机所在网段）下，且可对外访问（一般为互联网），可以使用脚本1或脚本2。
+
+> 脚本1
 
 ```shell
+# net-bridge.sh
 # network card 1: enp0s3
 # network card 2: enp0s8
 # network bridge: br0
@@ -194,3 +197,85 @@ brctl addif br0 tap0
 ifconfig tap0 0.0.0.0 promisc up
 ```
 
+> 脚本2
+
+```shell
+# net-iproutes-bridge.sh
+# network card 1: enp0s3
+# network card 2: enp0s8
+# network bridge: br0
+# tap device: tap0
+
+#!/bin/bash
+
+sysctl -w net.ipv4.ip_forward=1
+
+ip link add name br0 type bridge
+ip link set dev enp0s8 master br0
+ip link set dev br0 up promisc on
+ip link set dev enp0s8 up promisc on
+
+ip tuntap add dev tap0 mode tap user hsfeng
+ip link set dev tap0 master br0
+ip link set dev tap0 up promisc on
+
+dhclient
+# dhcpcd
+```
+
+运行脚本1或脚本2后，主机网络：
+
+```shell
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    inet 127.0.0.1/8 scope host lo
+       valid_lft forever preferred_lft forever
+    inet6 ::1/128 scope host
+       valid_lft forever preferred_lft forever
+2: enp0s3: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP group default qlen 1000
+    link/ether 08:00:27:06:c3:ec brd ff:ff:ff:ff:ff:ff
+    inet 192.168.8.209/24 brd 192.168.8.255 scope global dynamic enp0s3
+       valid_lft 42100sec preferred_lft 42100sec
+    inet 192.168.8.208/24 brd 192.168.8.255 scope global secondary noprefixroute enp0s3
+       valid_lft forever preferred_lft forever
+    inet6 fe80::aa8:7bf2:99b:fcf2/64 scope link noprefixroute
+       valid_lft forever preferred_lft forever
+3: enp0s8: <BROADCAST,MULTICAST,PROMISC,UP,LOWER_UP> mtu 1500 qdisc fq_codel master br0 state UP group default qlen 1000
+    link/ether 08:00:27:08:4b:8c brd ff:ff:ff:ff:ff:ff
+    inet 192.168.8.143/24 brd 192.168.8.255 scope global dynamic enp0s8
+       valid_lft 41193sec preferred_lft 41193sec
+    inet 192.168.8.142/24 brd 192.168.8.255 scope global secondary noprefixroute enp0s8
+       valid_lft forever preferred_lft forever
+    inet6 fe80::cfe0:a989:e6f0:a482/64 scope link noprefixroute
+       valid_lft forever preferred_lft forever
+5: br0: <BROADCAST,MULTICAST,PROMISC,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP group default qlen 1000
+    link/ether 08:00:27:08:4b:8c brd ff:ff:ff:ff:ff:ff
+    inet 192.168.8.143/24 brd 192.168.8.255 scope global dynamic br0
+       valid_lft 42100sec preferred_lft 42100sec
+    inet 192.168.8.142/24 brd 192.168.8.255 scope global secondary noprefixroute br0
+       valid_lft forever preferred_lft forever
+    inet6 fe80::5c79:b0f1:69eb:54d8/64 scope link
+       valid_lft forever preferred_lft forever
+6: tap0: <NO-CARRIER,BROADCAST,MULTICAST,PROMISC,UP> mtu 1500 qdisc fq_codel state DOWN group default qlen 1000
+    link/ether aa:dd:8b:c9:3c:55 brd ff:ff:ff:ff:ff:ff
+    inet 169.254.7.232/16 brd 169.254.255.255 scope link tap0:avahi
+       valid_lft forever preferred_lft forever
+```
+
+虚拟机网络：
+
+```shell
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    inet 127.0.0.1/8 scope host lo
+       valid_lft forever preferred_lft forever
+    inet6 ::1/128 scope host
+       valid_lft forever preferred_lft forever
+2: enp0s3: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP group default qlen 1000
+    link/ether 08:00:27:06:c3:ec brd ff:ff:ff:ff:ff:ff
+    inet 192.168.8.208/24 brd 192.168.8.255 scope global noprefixroute enp0s3
+       valid_lft forever preferred_lft forever
+    inet6 fe80::aa8:7bf2:99b:fcf2/64 scope link
+       valid_lft forever preferred_lft forever
+
+```
