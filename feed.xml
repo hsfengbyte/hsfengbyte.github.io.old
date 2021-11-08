@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.0">Jekyll</generator><link href="https://hsfeng.site/feed.xml" rel="self" type="application/atom+xml" /><link href="https://hsfeng.site/" rel="alternate" type="text/html" /><updated>2021-11-03T17:25:48+08:00</updated><id>https://hsfeng.site/feed.xml</id><title type="html">零度</title><subtitle>零度的个人博客，一个程序猿</subtitle><author><name>hsfeng</name></author><entry><title type="html">SQL基础 - group by、where、having用法及顺序</title><link href="https://hsfeng.site/2021/09/15/sql-groupby-where-having/" rel="alternate" type="text/html" title="SQL基础 - group by、where、having用法及顺序" /><published>2021-09-15T00:00:00+08:00</published><updated>2021-09-15T00:00:00+08:00</updated><id>https://hsfeng.site/2021/09/15/sql-groupby-where-having</id><content type="html" xml:base="https://hsfeng.site/2021/09/15/sql-groupby-where-having/">&lt;p&gt;昨天学习SQL，碰到了个小问题：既然where和having都可以表示“有条件地筛选出想要的内容”，那么，它们的区别是什么呢？&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.0">Jekyll</generator><link href="https://hsfeng.site/feed.xml" rel="self" type="application/atom+xml" /><link href="https://hsfeng.site/" rel="alternate" type="text/html" /><updated>2021-11-08T21:38:16+08:00</updated><id>https://hsfeng.site/feed.xml</id><title type="html">零度</title><subtitle>零度的个人博客，一个程序猿</subtitle><author><name>hsfeng</name></author><entry><title type="html">SQL基础 - group by、where、having用法及顺序</title><link href="https://hsfeng.site/2021/09/15/sql-groupby-where-having/" rel="alternate" type="text/html" title="SQL基础 - group by、where、having用法及顺序" /><published>2021-09-15T00:00:00+08:00</published><updated>2021-09-15T00:00:00+08:00</updated><id>https://hsfeng.site/2021/09/15/sql-groupby-where-having</id><content type="html" xml:base="https://hsfeng.site/2021/09/15/sql-groupby-where-having/">&lt;p&gt;昨天学习SQL，碰到了个小问题：既然where和having都可以表示“有条件地筛选出想要的内容”，那么，它们的区别是什么呢？&lt;/p&gt;
 
 &lt;p&gt;肯定是有区别的，否则的话SQL语言体系当中没必要出现两个作用和适用场合一样的关键子句，那样太啰嗦了，绝不是一种有逻辑、自成体系的计算机语言会出现的情况~~&lt;/p&gt;
 
@@ -141,7 +141,7 @@ sysctl &lt;span class=&quot;nt&quot;&gt;-w&lt;/span&gt; net.ipv4.ip_forward&lt;s
 
 &lt;p&gt;1)基于网桥(bridge)的虚拟网卡；&lt;/p&gt;
 
-&lt;p&gt;2)基于NAT的虚拟网络；&lt;/p&gt;
+&lt;p&gt;2)基于NAT的虚拟网络（网络地址转换NAT）；&lt;/p&gt;
 
 &lt;p&gt;3)QEMU内置的用户模式网络(user mode networking)；&lt;/p&gt;
 
@@ -210,7 +210,7 @@ brctl addif br0 tap0
 &lt;span class=&quot;k&quot;&gt;fi&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;h3 id=&quot;三基于nat的虚拟网络&quot;&gt;三、基于NAT的虚拟网络&lt;/h3&gt;
+&lt;h3 id=&quot;三基于nat的虚拟网络网络地址转换nat&quot;&gt;三、基于NAT的虚拟网络（网络地址转换NAT）&lt;/h3&gt;
 
 &lt;p&gt;网络设备，虚拟机连接主机&lt;/p&gt;
 
@@ -268,18 +268,7 @@ brctl addif br0 tap0
 &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;qemu &lt;span class=&quot;nt&quot;&gt;-net&lt;/span&gt; nic &lt;span class=&quot;nt&quot;&gt;-net&lt;/span&gt; tap,ifname&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;tap0
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;h3 id=&quot;六动态域名&quot;&gt;六、动态域名&lt;/h3&gt;
-
-&lt;p&gt;自动获取dhcp&lt;/p&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;apt intall dhcpcd
-&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;systemctl &lt;span class=&quot;nb&quot;&gt;enable &lt;/span&gt;dhcpcd
-&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;systemctl start dhcpcd
-&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;dhcpcd &lt;span class=&quot;c&quot;&gt;#获取ip&lt;/span&gt;
-&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;dhcpcd &lt;span class=&quot;nt&quot;&gt;-k&lt;/span&gt; &lt;span class=&quot;c&quot;&gt;#清空ip&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;七桥接网络&quot;&gt;七、桥接网络&lt;/h3&gt;
+&lt;h3 id=&quot;六桥接网络&quot;&gt;六、桥接网络&lt;/h3&gt;
 
 &lt;p&gt;配置qemu虚拟机与主机在同一网络（主机所在网段）下，且可对外访问（一般为互联网），可以使用脚本1或脚本2。&lt;/p&gt;
 
@@ -390,6 +379,17 @@ dhclient
     inet6 fe80::aa8:7bf2:99b:fcf2/64 scope &lt;span class=&quot;nb&quot;&gt;link
        &lt;/span&gt;valid_lft forever preferred_lft forever
 
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;七其他问题&quot;&gt;七、其他问题&lt;/h3&gt;
+
+&lt;h4 id=&quot;自动获取dhcp&quot;&gt;自动获取dhcp&lt;/h4&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;apt intall dhcpcd
+&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;systemctl &lt;span class=&quot;nb&quot;&gt;enable &lt;/span&gt;dhcpcd
+&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;systemctl start dhcpcd
+&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;dhcpcd &lt;span class=&quot;c&quot;&gt;#获取ip&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;dhcpcd &lt;span class=&quot;nt&quot;&gt;-k&lt;/span&gt; &lt;span class=&quot;c&quot;&gt;#清空ip&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name>hsfeng</name></author><category term="Qemu" /><summary type="html">QEMU 支持多种网络模式，简单介绍如何使用这几种网络模式。</summary></entry><entry><title type="html">Linux DHCP</title><link href="https://hsfeng.site/2020/11/26/linux-dhcp/" rel="alternate" type="text/html" title="Linux DHCP" /><published>2020-11-26T00:00:00+08:00</published><updated>2020-11-26T00:00:00+08:00</updated><id>https://hsfeng.site/2020/11/26/linux-dhcp</id><content type="html" xml:base="https://hsfeng.site/2020/11/26/linux-dhcp/">&lt;p&gt;简单介绍在linux系统上搭建dhcp服务实现域名解析服务。&lt;/p&gt;
 
 &lt;p&gt;安装DHCP服务软件&lt;/p&gt;
