@@ -14,7 +14,7 @@ qemu-kvm主要向客户机提供了4种不同模式的网络。
 
 1)基于网桥(bridge)的虚拟网卡；
 
-2)基于NAT的虚拟网络；
+2)基于NAT的虚拟网络（网络地址转换NAT）；
 
 3)QEMU内置的用户模式网络(user mode networking)；
 
@@ -88,7 +88,7 @@ else
 fi
 ```
 
-### 三、基于NAT的虚拟网络
+### 三、基于NAT的虚拟网络（网络地址转换NAT）
 
 网络设备，虚拟机连接主机
 
@@ -155,19 +155,7 @@ brctl addif br0 tap0
 qemu -net nic -net tap,ifname=tap0
 ```
 
-### 六、动态域名
-
-自动获取dhcp
-
-```shell
-sudo apt intall dhcpcd
-sudo systemctl enable dhcpcd
-sudo systemctl start dhcpcd
-sudo dhcpcd #获取ip
-sudo dhcpcd -k #清空ip
-```
-
-### 七、桥接网络
+### 六、桥接网络
 
 配置qemu虚拟机与主机在同一网络（主机所在网段）下，且可对外访问（一般为互联网），可以使用脚本1或脚本2。
 
@@ -278,4 +266,16 @@ dhclient
     inet6 fe80::aa8:7bf2:99b:fcf2/64 scope link
        valid_lft forever preferred_lft forever
 
+```
+
+### 七、其他问题
+
+#### 自动获取dhcp
+
+```shell
+sudo apt intall dhcpcd
+sudo systemctl enable dhcpcd
+sudo systemctl start dhcpcd
+sudo dhcpcd #获取ip
+sudo dhcpcd -k #清空ip
 ```
