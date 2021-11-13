@@ -171,6 +171,7 @@ x86_64
 ```shell
 ### compile.sh
 
+#make x86_64_defconfig
 make defconfig
 make menuconfig
 make
@@ -192,7 +193,8 @@ arm
 ```shell
 ### compile.sh
 
-make ARCH=arm CROSS_COMPILE=arm-none-linux-gnueabihf- vexpress_defconfig
+#make ARCH=arm CROSS_COMPILE=arm-none-linux-gnueabihf- vexpress_defconfig
+make ARCH=arm CROSS_COMPILE=arm-none-linux-gnueabihf- defconfig
 make ARCH=arm CROSS_COMPILE=arm-none-linux-gnueabihf- menuconfig
 make ARCH=arm CROSS_COMPILE=arm-none-linux-gnueabihf-
 
