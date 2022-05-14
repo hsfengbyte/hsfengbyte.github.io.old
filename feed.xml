@@ -1,4 +1,479 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.0">Jekyll</generator><link href="https://hsfeng.site/feed.xml" rel="self" type="application/atom+xml" /><link href="https://hsfeng.site/" rel="alternate" type="text/html" /><updated>2021-11-15T23:33:32+08:00</updated><id>https://hsfeng.site/feed.xml</id><title type="html">零度</title><subtitle>零度的个人博客，一个程序猿</subtitle><author><name>hsfeng</name></author><entry><title type="html">Zookeeper</title><link href="https://hsfeng.site/2021/11/15/zookeeper/" rel="alternate" type="text/html" title="Zookeeper" /><published>2021-11-15T00:00:00+08:00</published><updated>2021-11-15T00:00:00+08:00</updated><id>https://hsfeng.site/2021/11/15/zookeeper</id><content type="html" xml:base="https://hsfeng.site/2021/11/15/zookeeper/">&lt;p&gt;一个典型的分布式数据一致性的解决方案，分布式应用程序可以基于它实现诸如数据发布/订阅、负载均衡、命名服务、分布式协调/通知、集群管理、Master 选举、分布式锁和分布式队列等功能。&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.2">Jekyll</generator><link href="https://hsfeng.site/feed.xml" rel="self" type="application/atom+xml" /><link href="https://hsfeng.site/" rel="alternate" type="text/html" /><updated>2022-05-14T16:53:59+08:00</updated><id>https://hsfeng.site/feed.xml</id><title type="html">零度</title><subtitle>零度的个人博客，一个程序猿</subtitle><author><name>hsfeng</name></author><entry><title type="html">Linux Proc Pid 部分内容详解</title><link href="https://hsfeng.site/2021/11/29/linux-proc-pid/" rel="alternate" type="text/html" title="Linux Proc Pid 部分内容详解" /><published>2021-11-29T00:00:00+08:00</published><updated>2021-11-29T00:00:00+08:00</updated><id>https://hsfeng.site/2021/11/29/linux-proc-pid</id><content type="html" xml:base="https://hsfeng.site/2021/11/29/linux-proc-pid/">&lt;h3 id=&quot;auxv&quot;&gt;auxv&lt;/h3&gt;
+
+&lt;p&gt;/proc/[pid]/auxv包含传递给进程的ELF解释器信息，格式是每一项都是一个unsigned long长度的ID加上一个unsigned long长度的值。最后一项以连续的两个0x00开头。举例如下：&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# hexdump -x /proc/2948/auxv&lt;/span&gt;
+0000000    0021    0000    0000    0000    0000    1a82    7ffd    0000
+0000010    0010    0000    0000    0000    dbf5    1fc9    0000    0000
+0000020    0006    0000    0000    0000    1000    0000    0000    0000
+0000030    0011    0000    0000    0000    0064    0000    0000    0000
+0000040    0003    0000    0000    0000    2040    4326    7f4a    0000
+0000050    0004    0000    0000    0000    0038    0000    0000    0000
+0000060    0005    0000    0000    0000    0009    0000    0000    0000
+0000070    0007    0000    0000    0000    f000    4303    7f4a    0000
+0000080    0008    0000    0000    0000    0000    0000    0000    0000
+0000090    0009    0000    0000    0000    8e67    4327    7f4a    0000
+00000a0    000b    0000    0000    0000    0000    0000    0000    0000
+00000b0    000c    0000    0000    0000    0000    0000    0000    0000
+00000c0    000d    0000    0000    0000    0000    0000    0000    0000
+00000d0    000e    0000    0000    0000    0000    0000    0000    0000
+00000e0    0017    0000    0000    0000    0000    0000    0000    0000
+00000f0    0019    0000    0000    0000    3de9    1a80    7ffd    0000
+0000100    001f    0000    0000    0000    4fe5    1a80    7ffd    0000
+0000110    000f    0000    0000    0000    3df9    1a80    7ffd    0000
+0000120    0000    0000    0000    0000    0000    0000    0000    0000
+0000130
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;解析这个文件可以参考这段代码。&lt;/p&gt;
+
+&lt;h3 id=&quot;cmdline&quot;&gt;cmdline&lt;/h3&gt;
+
+&lt;p&gt;/proc/[pid]/cmdline是一个只读文件，包含进程的完整命令行信息。如果这个进程是zombie进程，则这个文件没有任何内容。举例如下：&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# ps -ef | grep 2948&lt;/span&gt;
+root       2948      1  0 Nov05 ?        00:00:04 /usr/sbin/libvirtd &lt;span class=&quot;nt&quot;&gt;--listen&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# cat /proc/2948/cmdline&lt;/span&gt;
+/usr/sbin/libvirtd--listen
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;comm&quot;&gt;comm&lt;/h3&gt;
+
+&lt;p&gt;/proc/[pid]/comm包含进程的命令名。举例如下：&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# cat /proc/2948/comm&lt;/span&gt;
+libvirtd
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;cwd&quot;&gt;cwd&lt;/h3&gt;
+
+&lt;p&gt;/proc/[pid]/cwd是进程当前工作目录的符号链接。举例如下：&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# ls -lt /proc/2948/cwd&lt;/span&gt;
+lrwxrwxrwx 1 root root 0 Nov  9 12:14 /proc/2948/cwd -&amp;gt; /
+
+&lt;span class=&quot;c&quot;&gt;### environ&lt;/span&gt;
+
+/proc/[pid]/environ显示进程的环境变量。举例如下：
+
+&lt;span class=&quot;sb&quot;&gt;```&lt;/span&gt;shell
+&lt;span class=&quot;c&quot;&gt;# strings /proc/2948/environ&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;LANG&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;POSIX
+&lt;span class=&quot;nv&quot;&gt;LC_CTYPE&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;en_US.UTF-8
+&lt;span class=&quot;nv&quot;&gt;PATH&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+&lt;span class=&quot;nv&quot;&gt;NOTIFY_SOCKET&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;@/org/freedesktop/systemd1/notify
+&lt;span class=&quot;nv&quot;&gt;LIBVIRTD_CONFIG&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;/etc/libvirt/libvirtd.conf
+&lt;span class=&quot;nv&quot;&gt;LIBVIRTD_ARGS&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;--listen&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;LIBVIRTD_NOFILES_LIMIT&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;2048
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;exe&quot;&gt;exe&lt;/h3&gt;
+
+&lt;p&gt;/proc/[pid]/exe为实际运行程序的符号链接。举例如下：&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# ls -lt /proc/2948/exe&lt;/span&gt;
+lrwxrwxrwx 1 root root 0 Nov  5 13:04 /proc/2948/exe -&amp;gt; /usr/sbin/libvirtd
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;fd&quot;&gt;fd&lt;/h3&gt;
+
+&lt;p&gt;/proc/[pid]/fd是一个目录，包含进程打开文件的情况。举例如下：&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# ls -lt /proc/3801/fd&lt;/span&gt;
+total 0
+lrwx------. 1 root root 64 Apr 18 16:51 0 -&amp;gt; socket:[37445]
+lrwx------. 1 root root 64 Apr 18 16:51 1 -&amp;gt; socket:[37446]
+lrwx------. 1 root root 64 Apr 18 16:51 10 -&amp;gt; socket:[31729]
+lrwx------. 1 root root 64 Apr 18 16:51 11 -&amp;gt; socket:[34562]
+lrwx------. 1 root root 64 Apr 18 16:51 12 -&amp;gt; socket:[39978]
+lrwx------. 1 root root 64 Apr 18 16:51 13 -&amp;gt; socket:[34574]
+lrwx------. 1 root root 64 Apr 18 16:51 14 -&amp;gt; socket:[39137]
+lrwx------. 1 root root 64 Apr 18 16:51 15 -&amp;gt; socket:[39208]
+lrwx------. 1 root root 64 Apr 18 16:51 16 -&amp;gt; socket:[39221]
+lrwx------. 1 root root 64 Apr 18 16:51 17 -&amp;gt; socket:[41080]
+lrwx------. 1 root root 64 Apr 18 16:51 18 -&amp;gt; socket:[40014]
+lrwx------. 1 root root 64 Apr 18 16:51 19 -&amp;gt; socket:[34617]
+lrwx------. 1 root root 64 Apr 18 16:51 20 -&amp;gt; socket:[34620]
+lrwx------. 1 root root 64 Apr 18 16:51 23 -&amp;gt; socket:[42357]
+lr-x------. 1 root root 64 Apr 18 16:51 3 -&amp;gt; /dev/urandom
+lrwx------. 1 root root 64 Apr 18 16:51 4 -&amp;gt; socket:[37468]
+lrwx------. 1 root root 64 Apr 18 16:51 5 -&amp;gt; socket:[37471]
+lrwx------. 1 root root 64 Apr 18 16:51 6 -&amp;gt; socket:[289532]
+lrwx------. 1 root root 64 Apr 18 16:51 7 -&amp;gt; socket:[31728]
+lrwx------. 1 root root 64 Apr 18 16:51 8 -&amp;gt; socket:[37450]
+lrwx------. 1 root root 64 Apr 18 16:51 9 -&amp;gt; socket:[37451]
+l-wx------. 1 root root 64 Apr 13 16:35 2 -&amp;gt; /root/.vnc/localhost.localdomain:1.log
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;目录中的每一项都是一个符号链接，指向打开的文件，数字则代表文件描述符。&lt;/p&gt;
+
+&lt;h3 id=&quot;latency&quot;&gt;latency&lt;/h3&gt;
+
+&lt;p&gt;/proc/[pid]/latency显示哪些代码造成的延时比较大（使用这个feature，需要执行“echo 1 &amp;gt; /proc/sys/kernel/latencytop”）。举例如下：&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# cat /proc/2948/latency&lt;/span&gt;
+Latency Top version : v0.1
+30667 10650491 4891 poll_schedule_timeout do_sys_poll SyS_poll system_call_fastpath 0x7f636573dc1d
+8 105 44 futex_wait_queue_me futex_wait do_futex SyS_futex system_call_fastpath 0x7f6365a167bc
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;每一行前三个数字分别是后面代码执行的次数，总共执行延迟时间（单位是微秒）和最长执行延迟时间（单位是微秒），后面则是代码完整的调用栈。&lt;/p&gt;
+
+&lt;h3 id=&quot;limits&quot;&gt;limits&lt;/h3&gt;
+
+&lt;p&gt;/proc/[pid]/limits显示当前进程的资源限制。举例如下：&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# cat /proc/2948/limits&lt;/span&gt;
+Limit                     Soft Limit           Hard Limit           Units
+Max cpu &lt;span class=&quot;nb&quot;&gt;time              &lt;/span&gt;unlimited            unlimited            seconds
+Max file size             unlimited            unlimited            bytes
+Max data size             unlimited            unlimited            bytes
+Max stack size            8388608              unlimited            bytes
+Max core file size        0                    unlimited            bytes
+Max resident &lt;span class=&quot;nb&quot;&gt;set          &lt;/span&gt;unlimited            unlimited            bytes
+Max processes             6409                 6409                 processes
+Max open files            1024                 4096                 files
+Max locked memory         65536                65536                bytes
+Max address space         unlimited            unlimited            bytes
+Max file locks            unlimited            unlimited            locks
+Max pending signals       6409                 6409                 signals
+Max msgqueue size         819200               819200               bytes
+Max &lt;span class=&quot;nb&quot;&gt;nice &lt;/span&gt;priority         0                    0
+Max realtime priority     0                    0
+Max realtime &lt;span class=&quot;nb&quot;&gt;timeout      &lt;/span&gt;unlimited            unlimited            us
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Soft Limit表示kernel设置给资源的值，Hard Limit表示Soft Limit的上限，而Units则为计量单元。&lt;/p&gt;
+
+&lt;h3 id=&quot;maps&quot;&gt;maps&lt;/h3&gt;
+
+&lt;p&gt;/proc/[pid]/maps显示进程的内存区域映射信息。举例如下：&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# cat /proc/2948/maps&lt;/span&gt;
+......
+address                   perms offset  dev   inode                      pathname
+7f4a2e2ad000-7f4a2e2ae000 rw-p 00006000 08:14 6505977                    /usr/lib64/sasl2/libsasldb.so.3.0.0
+7f4a2e2ae000-7f4a2e2af000 &lt;span class=&quot;nt&quot;&gt;---p&lt;/span&gt; 00000000 00:00 0
+7f4a2e2af000-7f4a2eaaf000 rw-p 00000000 00:00 0                          &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;stack:94671]
+7f4a2eaaf000-7f4a2eab0000 &lt;span class=&quot;nt&quot;&gt;---p&lt;/span&gt; 00000000 00:00 0
+7f4a2eab0000-7f4a2f2b0000 rw-p 00000000 00:00 0                          &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;stack:94670]
+......
+7f4a434d0000-7f4a434d5000 rw-p 0006e000 08:14 4292988                    /usr/sbin/libvirtd
+7f4a4520a000-7f4a452f7000 rw-p 00000000 00:00 0                          &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;heap]
+7ffd1a7e4000-7ffd1a805000 rw-p 00000000 00:00 0                          &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;stack]
+7ffd1a820000-7ffd1a821000 r-xp 00000000 00:00 0                          &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;vdso]
+ffffffffff600000-ffffffffff601000 r-xp 00000000 00:00 0                  &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;vsyscall]
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;其中注意的一点是[stack:&lt;tid&gt;]是线程的堆栈信息，对应于/proc/[pid]/task/[tid]/路径。&lt;/tid&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;root&quot;&gt;root&lt;/h3&gt;
+
+&lt;p&gt;/proc/[pid]/root是进程根目录的符号链接。举例如下：&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# ls -lt /proc/2948/root&lt;/span&gt;
+lrwxrwxrwx 1 root root 0 Nov  9 12:14 /proc/2948/root -&amp;gt; /
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;stack&quot;&gt;stack&lt;/h3&gt;
+
+&lt;p&gt;/proc/[pid]/stack显示当前进程的内核调用栈信息，只有内核编译时打开了CONFIG_STACKTRACE编译选项，才会生成这个文件。举例如下：&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# cat /proc/2948/stack&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&amp;lt;ffffffff80168375&amp;gt;] poll_schedule_timeout+0x45/0x60
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&amp;lt;ffffffff8016994d&amp;gt;] do_sys_poll+0x49d/0x550
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&amp;lt;ffffffff80169abd&amp;gt;] SyS_poll+0x5d/0xf0
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&amp;lt;ffffffff804c16e7&amp;gt;] system_call_fastpath+0x16/0x1b
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&amp;lt;00007f4a41ff2c1d&amp;gt;] 0x7f4a41ff2c1d
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&amp;lt;ffffffffffffffff&amp;gt;] 0xffffffffffffffff
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;statm&quot;&gt;statm&lt;/h3&gt;
+
+&lt;p&gt;/proc/[pid]/statm显示进程所占用内存大小的统计信息，包含七个值，度量单位是page（page大小可通过getconf PAGESIZE得到）。举例如下：&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# cat /proc/2948/statm&lt;/span&gt;
+72362 12945 4876 569 0 24665 0
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;各个值含义：&lt;/p&gt;
+
+&lt;p&gt;a）进程占用的总的内存；&lt;/p&gt;
+
+&lt;p&gt;b）进程当前时刻占用的物理内存；&lt;/p&gt;
+
+&lt;p&gt;c）同其它进程共享的内存；&lt;/p&gt;
+
+&lt;p&gt;d）进程的代码段；&lt;/p&gt;
+
+&lt;p&gt;e）共享库（从2.6版本起，这个值为0）；&lt;/p&gt;
+
+&lt;p&gt;f）进程的堆栈；&lt;/p&gt;
+
+&lt;p&gt;g）dirty pages（从2.6版本起，这个值为0）。&lt;/p&gt;
+
+&lt;h3 id=&quot;syscall&quot;&gt;syscall&lt;/h3&gt;
+
+&lt;p&gt;/proc/[pid]/syscall显示当前进程正在执行的系统调用。举例如下：&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;7 0x7f4a452cbe70 0xb 0x1388 0xffffffffffdff000 0x7f4a4274a750 0x0 0x7ffd1a8033f0 0x7f4a41ff2c1d
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h1 id=&quot;cat-proc2948syscall&quot;&gt;cat /proc/2948/syscall&lt;/h1&gt;
+
+&lt;p&gt;第一个值是系统调用号（7代表poll），后面跟着6个系统调用的参数值（位于寄存器中），最后两个值依次是堆栈指针和指令计数器的值。如果当前进程虽然阻塞，但阻塞函数并不是系统调用，则系统调用号的值为-1，后面只有堆栈指针和指令计数器的值。如果进程没有阻塞，则这个文件只有一个“running”的字符串。&lt;/p&gt;
+
+&lt;p&gt;内核编译时打开了CONFIG_HAVE_ARCH_TRACEHOOK编译选项，才会生成这个文件。&lt;/p&gt;
+
+&lt;h3 id=&quot;wchan&quot;&gt;wchan&lt;/h3&gt;
+
+&lt;p&gt;/proc/[pid]/wchan显示当进程sleep时，kernel当前运行的函数。举例如下：&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# cat /proc/2948/wchan&lt;/span&gt;
+kauditd_
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name>hsfeng</name></author><category term="Linux" /><summary type="html">auxv</summary></entry><entry><title type="html">C++ 学习笔记</title><link href="https://hsfeng.site/2021/11/20/cxx-learning-note/" rel="alternate" type="text/html" title="C++ 学习笔记" /><published>2021-11-20T00:00:00+08:00</published><updated>2021-11-20T00:00:00+08:00</updated><id>https://hsfeng.site/2021/11/20/cxx-learning-note</id><content type="html" xml:base="https://hsfeng.site/2021/11/20/cxx-learning-note/">&lt;h2 id=&quot;c-学习笔记&quot;&gt;C++ 学习笔记&lt;/h2&gt;
+
+&lt;h2 id=&quot;todo&quot;&gt;TODO&lt;/h2&gt;</content><author><name>hsfeng</name></author><category term="C++" /><summary type="html">C++ 学习笔记</summary></entry><entry><title type="html">Java 学习笔记</title><link href="https://hsfeng.site/2021/11/20/java-learning-note/" rel="alternate" type="text/html" title="Java 学习笔记" /><published>2021-11-20T00:00:00+08:00</published><updated>2021-11-20T00:00:00+08:00</updated><id>https://hsfeng.site/2021/11/20/java-learning-note</id><content type="html" xml:base="https://hsfeng.site/2021/11/20/java-learning-note/">&lt;h2 id=&quot;java-学习笔记&quot;&gt;Java 学习笔记&lt;/h2&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.jianshu.com/p/9b6a4d0b94ac&quot;&gt;CopyOnWriteArrayList&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://blog.csdn.net/Pure_Eyes/article/details/100398560&quot;&gt;CopyOnWriteArraySet&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.cnblogs.com/takumicx/p/9338983.html&quot;&gt;ReetrantLock&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.cnblogs.com/takumicx/p/9328459.html&quot;&gt;LockSupport&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;todo&quot;&gt;TODO&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;del&gt;CopyOnWriteArrayList&lt;/del&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;del&gt;CopyOnWriteArraySet&lt;/del&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;del&gt;ReetrantLock&lt;/del&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;del&gt;LockSupport&lt;/del&gt;&lt;/li&gt;
+&lt;/ul&gt;</content><author><name>hsfeng</name></author><category term="Java" /><summary type="html">Java 学习笔记</summary></entry><entry><title type="html">Java 中 Unsafe 使用讲解</title><link href="https://hsfeng.site/2021/11/18/java-unsafe/" rel="alternate" type="text/html" title="Java 中 Unsafe 使用讲解" /><published>2021-11-18T00:00:00+08:00</published><updated>2021-11-18T00:00:00+08:00</updated><id>https://hsfeng.site/2021/11/18/java-unsafe</id><content type="html" xml:base="https://hsfeng.site/2021/11/18/java-unsafe/">&lt;p&gt;unsafe 可以帮我们直接去操作硬件资源,当然了是借助java的jit来进行的,官方不推荐使用,因为不安全,例如你使用unsafe创建一个超级大的数组,但是这个数组jvm是不管理的,只能你自己操作,容易oom,也不利于资源的回收.&lt;/p&gt;
+
+&lt;h2 id=&quot;获取unsafe&quot;&gt;获取Unsafe&lt;/h2&gt;
+
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Unsafe&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;unsafe&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;null&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Field&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;getUnsafe&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;null&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+ 
+&lt;span class=&quot;kd&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;try&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;getUnsafe&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Unsafe&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getDeclaredField&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;theUnsafe&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;getUnsafe&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;setAccessible&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;unsafe&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Unsafe&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;getUnsafe&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kc&quot;&gt;null&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;catch&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;NoSuchFieldException&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;printStackTrace&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;catch&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;IllegalAccessException&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;printStackTrace&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;操作数组&quot;&gt;操作数组&lt;/h2&gt;
+
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;cm&quot;&gt;/**
+ * 操作数组:
+ * 可以获取数组的在内容中的基本偏移量（arrayBaseOffset），获取数组内元素的间隔（比例），
+ * 根据数组对象和偏移量获取元素值（getObject），设置数组元素值（putObject），示例如下。
+ */&lt;/span&gt;
+&lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[]&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;strings&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[]{&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;1&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;2&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;3&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;};&lt;/span&gt;
+&lt;span class=&quot;kt&quot;&gt;long&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;unsafe&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;arrayBaseOffset&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[].&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;nc&quot;&gt;System&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;out&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;println&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;string[] base offset is :&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;//every index scale&lt;/span&gt;
+&lt;span class=&quot;kt&quot;&gt;long&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;scale&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;unsafe&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;arrayIndexScale&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[].&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;nc&quot;&gt;System&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;out&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;println&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;string[] index scale is &quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;scale&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;//print first string in strings[]&lt;/span&gt;
+&lt;span class=&quot;nc&quot;&gt;System&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;out&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;println&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;first element is :&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;unsafe&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getObject&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;strings&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;));&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;//set 100 to first string&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;unsafe&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;putObject&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;strings&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;scale&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;100&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;//print first string in strings[] again&lt;/span&gt;
+&lt;span class=&quot;nc&quot;&gt;System&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;out&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;println&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;after set ,first element is :&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;unsafe&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getObject&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;strings&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;scale&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;));&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;对象操作&quot;&gt;对象操作&lt;/h2&gt;
+
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;cm&quot;&gt;/**
+ * 对象操作
+ * 实例化Data
+ *
+ * 可以通过类的class对象创建类对象（allocateInstance），获取对象属性的偏移量（objectFieldOffset）
+ * ，通过偏移量设置对象的值（putObject）
+ *
+ * 对象的反序列化
+ * 当使用框架反序列化或者构建对象时，会假设从已存在的对象中重建，你期望使用反射来调用类的设置函数，
+ * 或者更准确一点是能直接设置内部字段甚至是final字段的函数。问题是你想创建一个对象的实例，
+ * 但你实际上又不需要构造函数，因为它可能会使问题更加困难而且会有副作用。
+ *
+ */&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;//调用allocateInstance函数避免了在我们不需要构造函数的时候却调用它&lt;/span&gt;
+&lt;span class=&quot;nc&quot;&gt;Data&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;data&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Data&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;unsafe&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;allocateInstance&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Data&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;setId&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1L&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;setName&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;unsafe&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;nc&quot;&gt;System&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;out&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;println&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+ 
+&lt;span class=&quot;c1&quot;&gt;//返回成员属性在内存中的地址相对于对象内存地址的偏移量&lt;/span&gt;
+&lt;span class=&quot;nc&quot;&gt;Field&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;nameField&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Data&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getDeclaredField&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;name&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;kt&quot;&gt;long&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;fieldOffset&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;unsafe&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;objectFieldOffset&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;nameField&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;//putLong，putInt，putDouble，putChar，putObject等方法，直接修改内存数据（可以越过访问权限）&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;unsafe&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;putObject&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fieldOffset&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;这是新的值&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;nc&quot;&gt;System&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;out&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;println&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getName&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;());&lt;/span&gt;
+ 
+ 
+&lt;span class=&quot;cm&quot;&gt;/**
+ * 我们可以在运行时创建一个类，比如从已编译的.class文件中。将类内容读取为字节数组，
+ * 并正确地传递给defineClass方法；当你必须动态创建类，而现有代码中有一些代理， 这是很有用的
+ */&lt;/span&gt;
+&lt;span class=&quot;nc&quot;&gt;File&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;file&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;File&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;C:\\workspace\\idea2\\disruptor\\target\\classes\\com\\onyx\\distruptor\\test\\Data.class&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;nc&quot;&gt;FileInputStream&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;input&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;FileInputStream&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;file&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;kt&quot;&gt;byte&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[]&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;content&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;byte&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;file&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;length&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()];&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;input&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;read&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;content&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;nc&quot;&gt;Class&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;c&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;unsafe&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;defineClass&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kc&quot;&gt;null&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;content&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;content&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;length&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;kc&quot;&gt;null&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;kc&quot;&gt;null&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getMethod&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;getId&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;invoke&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;newInstance&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(),&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;null&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+ 
+ 
+ 
+&lt;span class=&quot;cm&quot;&gt;/**
+ * 内存操作
+ * 可以在Java内存区域中分配内存（allocateMemory），设置内存（setMemory，用于初始化），
+ * 在指定的内存位置中设置值（putInt\putBoolean\putDouble等基本类型）
+ */&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;//分配一个8byte的内存&lt;/span&gt;
+&lt;span class=&quot;kt&quot;&gt;long&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;address&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;unsafe&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;allocateMemory&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;8L&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;//初始化内存填充1&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;unsafe&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;setMemory&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;address&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;8L&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;byte&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;//测试输出&lt;/span&gt;
+&lt;span class=&quot;nc&quot;&gt;System&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;out&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;println&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;add byte to memory:&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;unsafe&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getInt&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;address&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;));&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;//设置0-3 4个byte为0x7fffffff&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;unsafe&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;putInt&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;address&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mh&quot;&gt;0x7fffffff&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;//设置4-7 4个byte为0x80000000&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;unsafe&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;putInt&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;address&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mh&quot;&gt;0x80000000&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;//int占用4byte&lt;/span&gt;
+&lt;span class=&quot;nc&quot;&gt;System&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;out&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;println&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;add byte to memory:&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;unsafe&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getInt&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;address&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;));&lt;/span&gt;
+&lt;span class=&quot;nc&quot;&gt;System&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;out&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;println&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;add byte to memory:&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;unsafe&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getInt&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;address&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;));&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;cas操作&quot;&gt;CAS操作&lt;/h2&gt;
+
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;cm&quot;&gt;/**
+ * CAS操作
+ * Compare And Swap（比较并交换），当需要改变的值为期望的值时，那么就替换它为新的值，是原子
+ * （不可在分割）的操作。很多并发框架底层都用到了CAS操作，CAS操作优势是无锁，可以减少线程切换耗费
+ * 的时间，但CAS经常失败运行容易引起性能问题，也存在ABA问题。在Unsafe中包含compareAndSwapObject、
+ * compareAndSwapInt、compareAndSwapLong三个方法，compareAndSwapInt的简单示例如下。
+ */&lt;/span&gt;
+&lt;span class=&quot;nc&quot;&gt;Data&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;data&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Data&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;setId&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1L&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;nc&quot;&gt;Field&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;id&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getClass&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getDeclaredField&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;id&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;kt&quot;&gt;long&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;l&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;unsafe&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;objectFieldOffset&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;setAccessible&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;//比较并交换，比如id的值如果是所期望的值1，那么就替换为2，否则不做处理&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;unsafe&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;compareAndSwapLong&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1L&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1L&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2L&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;nc&quot;&gt;System&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;out&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;println&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getId&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;());&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;常量获取&quot;&gt;常量获取&lt;/h2&gt;
+
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;cm&quot;&gt;/**
+ * 常量获取
+ *
+ * 可以获取地址大小（addressSize），页大小（pageSize），基本类型数组的偏移量
+ * （Unsafe.ARRAY_INT_BASE_OFFSET\Unsafe.ARRAY_BOOLEAN_BASE_OFFSET等）、
+ * 基本类型数组内元素的间隔（Unsafe.ARRAY_INT_INDEX_SCALE\Unsafe.ARRAY_BOOLEAN_INDEX_SCALE等）
+ */&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;//get os address size&lt;/span&gt;
+&lt;span class=&quot;nc&quot;&gt;System&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;out&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;println&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;address size is :&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;unsafe&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;addressSize&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;());&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;//get os page size&lt;/span&gt;
+&lt;span class=&quot;nc&quot;&gt;System&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;out&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;println&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;page size is :&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;unsafe&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;pageSize&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;());&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;//int array base offset&lt;/span&gt;
+&lt;span class=&quot;nc&quot;&gt;System&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;out&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;println&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;unsafe array int base offset:&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Unsafe&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;ARRAY_INT_BASE_OFFSET&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+ 
+ 
+ 
+&lt;span class=&quot;cm&quot;&gt;/**
+ * 线程许可
+ * 许可线程通过（park），或者让线程等待许可(unpark)，
+ */&lt;/span&gt;
+&lt;span class=&quot;nc&quot;&gt;Thread&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;packThread&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Thread&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;kt&quot;&gt;long&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;startTime&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;System&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;currentTimeMillis&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;//纳秒，相对时间park&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;unsafe&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;park&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kc&quot;&gt;false&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;3000000000L&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;//毫秒，绝对时间park&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;//unsafe.park(true,System.currentTimeMillis()+3000);&lt;/span&gt;
+ 
+    &lt;span class=&quot;nc&quot;&gt;System&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;out&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;println&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;main thread end,cost :&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;+(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;System&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;currentTimeMillis&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;startTime&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)+&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;ms&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;});&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;packThread&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;start&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+&lt;span class=&quot;nc&quot;&gt;TimeUnit&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;SECONDS&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;sleep&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;//注释掉下一行后，线程3秒数后进行输出,否则在1秒后输出&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;unsafe&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;unpark&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;packThread&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;数组创建&quot;&gt;数组创建&lt;/h2&gt;
+
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;cm&quot;&gt;/**
+ * Java数组大小的最大值为Integer.MAX_VALUE。使用直接内存分配，我们创建的数组大小受限于堆大小；
+ * 实际上，这是堆外内存（off-heap memory）技术，在java.nio包中部分可用；
+ *
+ * 这种方式的内存分配不在堆上，且不受GC管理，所以必须小心Unsafe.freeMemory()的使用。
+ * 它也不执行任何边界检查，所以任何非法访问可能会导致JVM崩溃
+ */&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;SuperArray&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+ 
+    &lt;span class=&quot;kd&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Unsafe&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;unsafe&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;null&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Field&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;getUnsafe&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;null&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+ 
+    &lt;span class=&quot;kd&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;try&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;getUnsafe&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Unsafe&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getDeclaredField&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;theUnsafe&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;getUnsafe&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;setAccessible&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;unsafe&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Unsafe&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;getUnsafe&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kc&quot;&gt;null&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;catch&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;NoSuchFieldException&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;printStackTrace&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+        &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;catch&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;IllegalAccessException&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;printStackTrace&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+        &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+ 
+    &lt;span class=&quot;kd&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;BYTE&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+ 
+    &lt;span class=&quot;kd&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;long&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;size&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;long&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;address&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+ 
+    &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;SuperArray&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;long&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;size&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;size&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;size&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;address&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;unsafe&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;allocateMemory&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;size&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;BYTE&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+ 
+    &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;set&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;long&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;byte&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;value&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;unsafe&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;putByte&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;address&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;BYTE&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;value&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+ 
+    &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;long&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;idx&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;unsafe&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getByte&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;address&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;idx&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;BYTE&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+ 
+    &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;long&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;size&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;size&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+    
+    &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[]&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;args&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;kt&quot;&gt;long&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;SUPER_SIZE&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;long&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Integer&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;MAX_VALUE&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;nc&quot;&gt;SuperArray&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;array&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;SuperArray&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;SUPER_SIZE&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;nc&quot;&gt;System&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;out&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;println&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Array size:&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;array&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;size&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;());&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// 4294967294&lt;/span&gt;
+        &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sum&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;100&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;++)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;array&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;set&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;long&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Integer&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;MAX_VALUE&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;byte&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;sum&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;array&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;long&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Integer&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;MAX_VALUE&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+        &lt;span class=&quot;nc&quot;&gt;System&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;out&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;println&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sum&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name>hsfeng</name></author><category term="Java" /><summary type="html">unsafe 可以帮我们直接去操作硬件资源,当然了是借助java的jit来进行的,官方不推荐使用,因为不安全,例如你使用unsafe创建一个超级大的数组,但是这个数组jvm是不管理的,只能你自己操作,容易oom,也不利于资源的回收.</summary></entry><entry><title type="html">Zookeeper</title><link href="https://hsfeng.site/2021/11/15/zookeeper/" rel="alternate" type="text/html" title="Zookeeper" /><published>2021-11-15T00:00:00+08:00</published><updated>2021-11-15T00:00:00+08:00</updated><id>https://hsfeng.site/2021/11/15/zookeeper</id><content type="html" xml:base="https://hsfeng.site/2021/11/15/zookeeper/">&lt;p&gt;一个典型的分布式数据一致性的解决方案，分布式应用程序可以基于它实现诸如数据发布/订阅、负载均衡、命名服务、分布式协调/通知、集群管理、Master 选举、分布式锁和分布式队列等功能。&lt;/p&gt;
 
 &lt;h1 id=&quot;zookeeper-权限控制-acl&quot;&gt;Zookeeper 权限控制 ACL&lt;/h1&gt;
 
@@ -52,7 +527,7 @@
 
 &lt;p&gt;ip: 它对应的id为客户机的IP地址，设置的时候可以设置一个ip段，比如ip:192.168.1.0/16, 表示匹配前16个bit的IP段&lt;/p&gt;
 
-&lt;p&gt;super: 在这种scheme情况下，对应的id拥有超级权限，可以做任何事情(cdrwa)&lt;/p&gt;</content><author><name>hsfeng</name></author><category term="zookeeper" /><summary type="html">一个典型的分布式数据一致性的解决方案，分布式应用程序可以基于它实现诸如数据发布/订阅、负载均衡、命名服务、分布式协调/通知、集群管理、Master 选举、分布式锁和分布式队列等功能。</summary></entry><entry><title type="html">SQL基础 - group by、where、having用法及顺序</title><link href="https://hsfeng.site/2021/09/15/sql-groupby-where-having/" rel="alternate" type="text/html" title="SQL基础 - group by、where、having用法及顺序" /><published>2021-09-15T00:00:00+08:00</published><updated>2021-09-15T00:00:00+08:00</updated><id>https://hsfeng.site/2021/09/15/sql-groupby-where-having</id><content type="html" xml:base="https://hsfeng.site/2021/09/15/sql-groupby-where-having/">&lt;p&gt;昨天学习SQL，碰到了个小问题：既然where和having都可以表示“有条件地筛选出想要的内容”，那么，它们的区别是什么呢？&lt;/p&gt;
+&lt;p&gt;super: 在这种scheme情况下，对应的id拥有超级权限，可以做任何事情(cdrwa)&lt;/p&gt;</content><author><name>hsfeng</name></author><category term="zookeeper" /><summary type="html">一个典型的分布式数据一致性的解决方案，分布式应用程序可以基于它实现诸如数据发布/订阅、负载均衡、命名服务、分布式协调/通知、集群管理、Master 选举、分布式锁和分布式队列等功能。</summary></entry><entry><title type="html">SQL 基础 - GROUP BY, WHERE, HAVING 用法及顺序</title><link href="https://hsfeng.site/2021/09/15/sql-groupby-where-having/" rel="alternate" type="text/html" title="SQL 基础 - GROUP BY, WHERE, HAVING 用法及顺序" /><published>2021-09-15T00:00:00+08:00</published><updated>2021-09-15T00:00:00+08:00</updated><id>https://hsfeng.site/2021/09/15/sql-groupby-where-having</id><content type="html" xml:base="https://hsfeng.site/2021/09/15/sql-groupby-where-having/">&lt;p&gt;昨天学习SQL，碰到了个小问题：既然where和having都可以表示“有条件地筛选出想要的内容”，那么，它们的区别是什么呢？&lt;/p&gt;
 
 &lt;p&gt;肯定是有区别的，否则的话SQL语言体系当中没必要出现两个作用和适用场合一样的关键子句，那样太啰嗦了，绝不是一种有逻辑、自成体系的计算机语言会出现的情况~~&lt;/p&gt;
 
@@ -113,7 +588,7 @@
 
 &lt;p&gt;3.having min(score&amp;gt;80)找到每门成绩都不低于80分的学生;&lt;/p&gt;
 
-&lt;p&gt;4.select name取出名字.&lt;/p&gt;</content><author><name>hsfeng</name></author><category term="Sql" /><summary type="html">昨天学习SQL，碰到了个小问题：既然where和having都可以表示“有条件地筛选出想要的内容”，那么，它们的区别是什么呢？</summary></entry><entry><title type="html">OpenWrt使用总结</title><link href="https://hsfeng.site/2021/08/18/openwrt/" rel="alternate" type="text/html" title="OpenWrt使用总结" /><published>2021-08-18T00:00:00+08:00</published><updated>2021-08-18T00:00:00+08:00</updated><id>https://hsfeng.site/2021/08/18/openwrt</id><content type="html" xml:base="https://hsfeng.site/2021/08/18/openwrt/">&lt;p&gt;OpenWrt使用总结&lt;/p&gt;
+&lt;p&gt;4.select name取出名字.&lt;/p&gt;</content><author><name>hsfeng</name></author><category term="Sql" /><summary type="html">昨天学习SQL，碰到了个小问题：既然where和having都可以表示“有条件地筛选出想要的内容”，那么，它们的区别是什么呢？</summary></entry><entry><title type="html">OpenWrt 使用总结</title><link href="https://hsfeng.site/2021/08/18/openwrt/" rel="alternate" type="text/html" title="OpenWrt 使用总结" /><published>2021-08-18T00:00:00+08:00</published><updated>2021-08-18T00:00:00+08:00</updated><id>https://hsfeng.site/2021/08/18/openwrt</id><content type="html" xml:base="https://hsfeng.site/2021/08/18/openwrt/">&lt;p&gt;OpenWrt 使用总结&lt;/p&gt;
 
 &lt;h2 id=&quot;openwrt安装软件到外置存储u盘移动硬盘&quot;&gt;OpenWrt安装软件到外置存储（U盘/移动硬盘）&lt;/h2&gt;
 
@@ -138,7 +613,7 @@ source /etc/profile
 &lt;p&gt;开始使用&lt;/p&gt;
 
 &lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;opkg install XXXX -d usb
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name>hsfeng</name></author><category term="OpenWrt" /><summary type="html">OpenWrt使用总结</summary></entry><entry><title type="html">使用 ip tunnel 打通私有网络</title><link href="https://hsfeng.site/2021/05/31/ip-tunnel/" rel="alternate" type="text/html" title="使用 ip tunnel 打通私有网络" /><published>2021-05-31T00:00:00+08:00</published><updated>2021-05-31T00:00:00+08:00</updated><id>https://hsfeng.site/2021/05/31/ip-tunnel</id><content type="html" xml:base="https://hsfeng.site/2021/05/31/ip-tunnel/">&lt;p&gt;通过一个例子说明服务器A如何通过tunnel直接访问到服务器B连接的私有网络。&lt;/p&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name>hsfeng</name></author><category term="OpenWrt" /><summary type="html">OpenWrt 使用总结</summary></entry><entry><title type="html">使用 Ip Tunnel 打通私有网络</title><link href="https://hsfeng.site/2021/05/31/ip-tunnel/" rel="alternate" type="text/html" title="使用 Ip Tunnel 打通私有网络" /><published>2021-05-31T00:00:00+08:00</published><updated>2021-05-31T00:00:00+08:00</updated><id>https://hsfeng.site/2021/05/31/ip-tunnel</id><content type="html" xml:base="https://hsfeng.site/2021/05/31/ip-tunnel/">&lt;p&gt;通过一个例子说明服务器A如何通过tunnel直接访问到服务器B连接的私有网络。&lt;/p&gt;
 
 &lt;h2 id=&quot;需求&quot;&gt;需求&lt;/h2&gt;
 
@@ -498,771 +973,4 @@ subnet 10.0.0.0 netmask 255.255.255.0 &lt;span class=&quot;o&quot;&gt;{&lt;/span
 &lt;p&gt;查看DHCP&lt;/p&gt;
 
 &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;netstat &lt;span class=&quot;nt&quot;&gt;-uap&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name>hsfeng</name></author><category term="Linux" /><summary type="html">简单介绍在linux系统上搭建dhcp服务实现域名解析服务。</summary></entry><entry><title type="html">iptables 基础详解</title><link href="https://hsfeng.site/2020/11/22/linux-iptables/" rel="alternate" type="text/html" title="iptables 基础详解" /><published>2020-11-22T00:00:00+08:00</published><updated>2020-11-22T00:00:00+08:00</updated><id>https://hsfeng.site/2020/11/22/linux-iptables</id><content type="html" xml:base="https://hsfeng.site/2020/11/22/linux-iptables/">&lt;p&gt;linux 网络防火墙， iptables 基础详解&lt;/p&gt;
-
-&lt;h3 id=&quot;一前言&quot;&gt;一、前言&lt;/h3&gt;
-
-&lt;p&gt;防火墙，其实说白了讲，就是用于实现Linux下访问控制的功能的，它分为硬件的或者软件的防火墙两种。无论是在哪个网络中，防火墙工作的地方一定是在网络的边缘。而我们的任务就是需要去定义到底防火墙如何工作，这就是防火墙的策略，规则，以达到让它对出入网络的IP、数据进行检测。&lt;/p&gt;
-
-&lt;p&gt;目前市面上比较常见的有3、4层的防火墙，叫网络层的防火墙，还有7层的防火墙，其实是代理层的网关。&lt;/p&gt;
-
-&lt;p&gt;对于TCP/IP的七层模型来讲，我们知道第三层是网络层，三层的防火墙会在这层对源地址和目标地址进行检测。但是对于七层的防火墙，不管你源端口或者目标端口，源地址或者目标地址是什么，都将对你所有的东西进行检查。所以，对于设计原理来讲，七层防火墙更加安全，但是这却带来了效率更低。所以市面上通常的防火墙方案，都是两者结合的。而又由于我们都需要从防火墙所控制的这个口来访问，所以防火墙的工作效率就成了用户能够访问数据多少的一个最重要的控制，配置的不好甚至有可能成为流量的瓶颈。&lt;/p&gt;
-
-&lt;h3 id=&quot;二iptables-的历史以及工作原理&quot;&gt;二、iptables 的历史以及工作原理&lt;/h3&gt;
-
-&lt;h4 id=&quot;1-iptables-的发展&quot;&gt;1. iptables 的发展&lt;/h4&gt;
-
-&lt;p&gt;iptables的前身叫ipfirewall （内核1.x时代）,这是一个作者从freeBSD上移植过来的，能够工作在内核当中的，对数据包进行检测的一款简易访问控制工具。但是ipfirewall工作功能极其有限(它需要将所有的规则都放进内核当中，这样规则才能够运行起来，而放进内核，这个做法一般是极其困难的)。当内核发展到2.x系列的时候，软件更名为ipchains，它可以定义多条规则，将他们串起来，共同发挥作用，而现在，它叫做iptables，可以将规则组成一个列表，实现绝对详细的访问控制功能。&lt;/p&gt;
-
-&lt;p&gt;他们都是工作在用户空间中，定义规则的工具，本身并不算是防火墙。它们定义的规则，可以让在内核空间当中的netfilter来读取，并且实现让防火墙工作。而放入内核的地方必须要是特定的位置，必须是tcp/ip的协议栈经过的地方。而这个tcp/ip协议栈必须经过的地方，可以实现读取规则的地方就叫做 netfilter.(网络过滤器)&lt;/p&gt;
-
-&lt;p&gt;作者一共在内核空间中选择了5个位置，&lt;/p&gt;
-
-&lt;p&gt;1.内核空间中：从一个网络接口进来，到另一个网络接口去的&lt;/p&gt;
-
-&lt;p&gt;2.数据包从内核流入用户空间的&lt;/p&gt;
-
-&lt;p&gt;3.数据包从用户空间流出的&lt;/p&gt;
-
-&lt;p&gt;4.进入/离开本机的外网接口&lt;/p&gt;
-
-&lt;p&gt;5.进入/离开本机的内网接口&lt;/p&gt;
-
-&lt;h4 id=&quot;2-iptables-的工作机制&quot;&gt;2. iptables 的工作机制&lt;/h4&gt;
-
-&lt;p&gt;从上面的发展我们知道了作者选择了5个位置，来作为控制的地方，但是你有没有发现，其实前三个位置已经基本上能将路径彻底封锁了，但是为什么已经在进出的口设置了关卡之后还要在内部卡呢？ 由于数据包尚未进行路由决策，还不知道数据要走向哪里，所以在进出口是没办法实现数据过滤的。所以要在内核空间里设置转发的关卡，进入用户空间的关卡，从用户空间出去的关卡。那么，既然他们没什么用，那我们为什么还要放置他们呢？因为我们在做NAT和DNAT的时候，目标地址转换必须在路由之前转换。所以我们必须在外网而后内网的接口处进行设置关卡。&lt;/p&gt;
-
-&lt;p&gt;这五个位置也被称为五个钩子函数（hook functions）,也叫五个规则链。&lt;/p&gt;
-
-&lt;p&gt;1.PREROUTING (路由前)&lt;/p&gt;
-
-&lt;p&gt;2.INPUT (数据包流入口)&lt;/p&gt;
-
-&lt;p&gt;3.FORWARD (转发管卡)&lt;/p&gt;
-
-&lt;p&gt;4.OUTPUT(数据包出口)&lt;/p&gt;
-
-&lt;p&gt;5.POSTROUTING（路由后）&lt;/p&gt;
-
-&lt;p&gt;这是NetFilter规定的五个规则链，任何一个数据包，只要经过本机，必将经过这五个链中的其中一个链。&lt;/p&gt;
-
-&lt;h4 id=&quot;3-防火墙的策略&quot;&gt;3. 防火墙的策略&lt;/h4&gt;
-
-&lt;p&gt;防火墙策略一般分为两种，一种叫“通”策略，一种叫“堵”策略，通策略，默认门是关着的，必须要定义谁能进。堵策略则是，大门是洞开的，但是你必须有身份认证，否则不能进。所以我们要定义，让进来的进来，让出去的出去，所以通，是要全通，而堵，则是要选择。当我们定义的策略的时候，要分别定义多条功能，其中：定义数据包中允许或者不允许的策略，filter过滤的功能，而定义地址转换的功能的则是nat选项。为了让这些功能交替工作，我们制定出了“表”这个定义，来定义、区分各种不同的工作功能和处理方式。&lt;/p&gt;
-
-&lt;p&gt;我们现在用的比较多个功能有3个：&lt;/p&gt;
-
-&lt;p&gt;1.filter 定义允许或者不允许的&lt;/p&gt;
-
-&lt;p&gt;2.nat 定义地址转换的&lt;/p&gt;
-
-&lt;p&gt;3.mangle功能:修改报文原数据&lt;/p&gt;
-
-&lt;p&gt;我们修改报文原数据就是来修改TTL的。能够实现将数据包的元数据拆开，在里面做标记/修改内容的。而防火墙标记，其实就是靠mangle来实现的。&lt;/p&gt;
-
-&lt;p&gt;小扩展:
-对于filter来讲一般只能做在3个链上：INPUT ，FORWARD ，OUTPUT&lt;/p&gt;
-
-&lt;p&gt;对于nat来讲一般也只能做在3个链上：PREROUTING ，OUTPUT ，POSTROUTING&lt;/p&gt;
-
-&lt;p&gt;而mangle则是5个链都可以做：PREROUTING，INPUT，FORWARD，OUTPUT，POSTROUTING&lt;/p&gt;
-
-&lt;p&gt;iptables/netfilter（这款软件）是工作在用户空间的，它可以让规则进行生效的，本身不是一种服务，而且规则是立即生效的。而我们iptables现在被做成了一个服务，可以进行启动，停止的。启动，则将规则直接生效，停止，则将规则撤销。&lt;/p&gt;
-
-&lt;p&gt;iptables还支持自己定义链。但是自己定义的链，必须是跟某种特定的链关联起来的。在一个关卡设定，指定当有数据的时候专门去找某个特定的链来处理，当那个链处理完之后，再返回。接着在特定的链中继续检查。&lt;/p&gt;
-
-&lt;p&gt;注意：规则的次序非常关键，谁的规则越严格，应该放的越靠前，而检查规则的时候，是按照从上往下的方式进行检查的。&lt;/p&gt;
-
-&lt;h3 id=&quot;三规则的写法&quot;&gt;三、规则的写法&lt;/h3&gt;
-
-&lt;p&gt;iptables定义规则的方式比较复杂:&lt;/p&gt;
-
-&lt;p&gt;格式：iptables [-t table] COMMAND chain CRETIRIA -j ACTION&lt;/p&gt;
-
-&lt;p&gt;-t table ：3个filter nat mangle&lt;/p&gt;
-
-&lt;p&gt;COMMAND：定义如何对规则进行管理&lt;/p&gt;
-
-&lt;p&gt;chain：指定你接下来的规则到底是在哪个链上操作的，当定义策略的时候，是可以省略的&lt;/p&gt;
-
-&lt;p&gt;CRETIRIA:指定匹配标准&lt;/p&gt;
-
-&lt;p&gt;-j ACTION :指定如何进行处理&lt;/p&gt;
-
-&lt;p&gt;比如：不允许172.16.0.0/24的进行访问。&lt;/p&gt;
-
-&lt;p&gt;iptables -t filter -A INPUT -s 172.16.0.0/16 -p udp –dport 53 -j DROP&lt;/p&gt;
-
-&lt;p&gt;当然你如果想拒绝的更彻底：&lt;/p&gt;
-
-&lt;p&gt;iptables -t filter -R INPUT 1 -s 172.16.0.0/16 -p udp –dport 53 -j REJECT&lt;/p&gt;
-
-&lt;p&gt;iptables -L -n -v#查看定义规则的详细信息&lt;/p&gt;
-
-&lt;h3 id=&quot;四详解-command&quot;&gt;四、详解 COMMAND&lt;/h3&gt;
-
-&lt;h4 id=&quot;1-链管理命令这都是立即生效的&quot;&gt;1. 链管理命令（这都是立即生效的）&lt;/h4&gt;
-
-&lt;p&gt;-P :设置默认策略的（设定默认门是关着的还是开着的）&lt;/p&gt;
-
-&lt;p&gt;默认策略一般只有两种&lt;/p&gt;
-
-&lt;table&gt;
-  &lt;tbody&gt;
-    &lt;tr&gt;
-      &lt;td&gt;iptables -P INPUT (DROP&lt;/td&gt;
-      &lt;td&gt;ACCEPT) 默认是关的/默认是开的&lt;/td&gt;
-    &lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;p&gt;比如：&lt;/p&gt;
-
-&lt;p&gt;iptables -P INPUT DROP 这就把默认规则给拒绝了。并且没有定义哪个动作，所以关于外界连接的所有规则包括Xshell连接之类的，远程连接都被拒绝了。&lt;/p&gt;
-
-&lt;p&gt;-F: FLASH，清空规则链的(注意每个链的管理权限)&lt;/p&gt;
-
-&lt;p&gt;iptables -t nat -F PREROUTING&lt;/p&gt;
-
-&lt;p&gt;iptables -t nat -F 清空nat表的所有链&lt;/p&gt;
-
-&lt;p&gt;-N:NEW 支持用户新建一个链&lt;/p&gt;
-
-&lt;p&gt;iptables -N inbound_tcp_web 表示附在tcp表上用于检查web的。&lt;/p&gt;
-
-&lt;p&gt;-X: 用于删除用户自定义的空链&lt;/p&gt;
-
-&lt;p&gt;使用方法跟-N相同，但是在删除之前必须要将里面的链给清空昂了&lt;/p&gt;
-
-&lt;p&gt;-E：用来Rename chain主要是用来给用户自定义的链重命名&lt;/p&gt;
-
-&lt;p&gt;-E oldname newname&lt;/p&gt;
-
-&lt;p&gt;-Z：清空链，及链中默认规则的计数器的（有两个计数器，被匹配到多少个数据包，多少个字节）&lt;/p&gt;
-
-&lt;p&gt;iptables -Z :清空&lt;/p&gt;
-
-&lt;h4 id=&quot;2-规则管理命令&quot;&gt;2. 规则管理命令&lt;/h4&gt;
-
-&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;-A：追加，在当前链的最后新增一个规则
--I num : 插入，把当前规则插入为第几条。
--I 3 :插入为第三条
--R num：Replays替换/修改第几条规则
-   格式：iptables -R 3 …………
--D num：删除，明确指定删除第几条规则
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h4 id=&quot;3-查看管理命令--l&quot;&gt;3. 查看管理命令 “-L”&lt;/h4&gt;
-
-&lt;p&gt;附加子命令&lt;/p&gt;
-
-&lt;p&gt;-n：以数字的方式显示ip，它会将ip直接显示出来，如果不加-n，则会将ip反向解析成主机名。&lt;/p&gt;
-
-&lt;p&gt;-v：显示详细信息&lt;/p&gt;
-
-&lt;p&gt;-vv&lt;/p&gt;
-
-&lt;p&gt;-vvv :越多越详细&lt;/p&gt;
-
-&lt;p&gt;-x：在计数器上显示精确值，不做单位换算&lt;/p&gt;
-
-&lt;p&gt;–line-numbers : 显示规则的行号&lt;/p&gt;
-
-&lt;p&gt;-t nat：显示所有的关卡的信息&lt;/p&gt;
-
-&lt;h3 id=&quot;五详解匹配标准&quot;&gt;五、详解匹配标准&lt;/h3&gt;
-
-&lt;h4 id=&quot;1-通用匹配源地址目标地址的匹配&quot;&gt;1. 通用匹配：源地址目标地址的匹配&lt;/h4&gt;
-
-&lt;p&gt;-s：指定作为源地址匹配，这里不能指定主机名称，必须是IP&lt;/p&gt;
-
-&lt;table&gt;
-  &lt;tbody&gt;
-    &lt;tr&gt;
-      &lt;td&gt;IP&lt;/td&gt;
-      &lt;td&gt;IP/MASK&lt;/td&gt;
-      &lt;td&gt;0.0.0.0/0.0.0.0&lt;/td&gt;
-    &lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;p&gt;而且地址可以取反，加一个“!”表示除了哪个IP之外&lt;/p&gt;
-
-&lt;p&gt;-d：表示匹配目标地址&lt;/p&gt;
-
-&lt;p&gt;-p：用于匹配协议的（这里的协议通常有3种，TCP/UDP/ICMP）&lt;/p&gt;
-
-&lt;p&gt;-i eth0：从这块网卡流入的数据&lt;/p&gt;
-
-&lt;p&gt;流入一般用在INPUT和PREROUTING上&lt;/p&gt;
-
-&lt;p&gt;-o eth0：从这块网卡流出的数据&lt;/p&gt;
-
-&lt;p&gt;流出一般在OUTPUT和POSTROUTING上&lt;/p&gt;
-
-&lt;h4 id=&quot;2-扩展匹配&quot;&gt;2. 扩展匹配&lt;/h4&gt;
-
-&lt;p&gt;2.1隐含扩展：对协议的扩展&lt;/p&gt;
-
-&lt;p&gt;-p tcp :TCP协议的扩展。一般有三种扩展&lt;/p&gt;
-
-&lt;p&gt;–dport XX-XX：指定目标端口,不能指定多个非连续端口,只能指定单个端口，比如&lt;/p&gt;
-
-&lt;p&gt;–dport 21 或者 –dport 21-23 (此时表示21,22,23)&lt;/p&gt;
-
-&lt;p&gt;–sport：指定源端口&lt;/p&gt;
-
-&lt;p&gt;–tcp-fiags：TCP的标志位（SYN,ACK，FIN,PSH，RST,URG）&lt;/p&gt;
-
-&lt;p&gt;对于它，一般要跟两个参数：&lt;/p&gt;
-
-&lt;p&gt;1.检查的标志位&lt;/p&gt;
-
-&lt;p&gt;2.必须为1的标志位&lt;/p&gt;
-
-&lt;p&gt;–tcpflags syn,ack,fin,rst syn = –syn&lt;/p&gt;
-
-&lt;p&gt;表示检查这4个位，这4个位中syn必须为1，其他的必须为0。所以这个意思就是用于检测三次握手的第一次包的。对于这种专门匹配第一包的SYN为1的包，还有一种简写方式，叫做–syn&lt;/p&gt;
-
-&lt;p&gt;-p udp：UDP协议的扩展&lt;/p&gt;
-
-&lt;p&gt;–dport&lt;/p&gt;
-
-&lt;p&gt;–sport&lt;/p&gt;
-
-&lt;p&gt;-p icmp：icmp数据报文的扩展&lt;/p&gt;
-
-&lt;p&gt;–icmp-type：&lt;/p&gt;
-
-&lt;p&gt;echo-request(请求回显)，一般用8 来表示&lt;/p&gt;
-
-&lt;p&gt;所以 –icmp-type 8 匹配请求回显数据包&lt;/p&gt;
-
-&lt;p&gt;echo-reply （响应的数据包）一般用0来表示&lt;/p&gt;
-
-&lt;p&gt;2.2显式扩展（-m）&lt;/p&gt;
-
-&lt;p&gt;扩展各种模块&lt;/p&gt;
-
-&lt;p&gt;-m multiport：表示启用多端口扩展&lt;/p&gt;
-
-&lt;p&gt;之后我们就可以启用比如 –dports 21,23,80&lt;/p&gt;
-
-&lt;h3 id=&quot;六详解--j-action&quot;&gt;六、详解 -j ACTION&lt;/h3&gt;
-
-&lt;p&gt;常用的ACTION：&lt;/p&gt;
-
-&lt;p&gt;DROP：悄悄丢弃&lt;/p&gt;
-
-&lt;p&gt;一般我们多用DROP来隐藏我们的身份，以及隐藏我们的链表&lt;/p&gt;
-
-&lt;p&gt;REJECT：明示拒绝&lt;/p&gt;
-
-&lt;p&gt;ACCEPT：接受&lt;/p&gt;
-
-&lt;p&gt;custom_chain：转向一个自定义的链&lt;/p&gt;
-
-&lt;p&gt;DNAT&lt;/p&gt;
-
-&lt;p&gt;SNAT&lt;/p&gt;
-
-&lt;p&gt;MASQUERADE：源地址伪装&lt;/p&gt;
-
-&lt;p&gt;REDIRECT：重定向：主要用于实现端口重定向&lt;/p&gt;
-
-&lt;p&gt;MARK：打防火墙标记的&lt;/p&gt;
-
-&lt;p&gt;RETURN：返回&lt;/p&gt;
-
-&lt;p&gt;在自定义链执行完毕后使用返回，来返回原规则链。&lt;/p&gt;
-
-&lt;p&gt;练习题1：&lt;/p&gt;
-
-&lt;p&gt;只要是来自于172.16.0.0/16网段的都允许访问我本机的172.16.100.1的SSHD服务&lt;/p&gt;
-
-&lt;p&gt;分析：首先肯定是在允许表中定义的。因为不需要做NAT地址转换之类的，然后查看我们SSHD服务，在22号端口上，处理机制是接受，对于这个表，需要有一来一回两个规则，如果我们允许也好，拒绝也好，对于访问本机服务，我们最好是定义在INPUT链上，而OUTPUT再予以定义就好。(会话的初始端先定义)，所以加规则就是：&lt;/p&gt;
-
-&lt;p&gt;定义进来的：&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;iptables -t filter -A INPUT -s 172.16.0.0/16 -d 172.16.100.1 -p tcp --dport 22 -j ACCEPT&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;定义出去的：&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;iptables -t filter -A OUTPUT -s 172.16.100.1 -d 172.16.0.0/16 -p tcp --dport 22 -j ACCEPT&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;将默认策略改成DROP:&lt;/p&gt;
-
-&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;iptables -P INPUT DROP&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;iptables -P OUTPUT DROP&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;iptables -P FORWARD DROP&lt;/code&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;七状态检测&quot;&gt;七、状态检测&lt;/h3&gt;
-
-&lt;p&gt;是一种显式扩展，用于检测会话之间的连接关系的，有了检测我们可以实现会话间功能的扩展&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;什么是状态检测？&lt;/p&gt;
-
-    &lt;p&gt;对于整个TCP协议来讲，它是一个有连接的协议，三次握手中，第一次握手，我们就叫NEW连接，而从第二次握手以后的，ack都为1，这是正常的数据传输，和tcp的第二次第三次握手，叫做已建立的连接（ESTABLISHED）,还有一种状态，比较诡异的，比如：SYN=1 ACK=1 RST=1,对于这种我们无法识别的，我们都称之为INVALID无法识别的。还有第四种，FTP这种古老的拥有的特征，每个端口都是独立的，21号和20号端口都是一去一回，他们之间是有关系的，这种关系我们称之为RELATED。&lt;/p&gt;
-
-    &lt;p&gt;所以我们的状态一共有四种：&lt;/p&gt;
-
-    &lt;p&gt;NEW&lt;/p&gt;
-
-    &lt;p&gt;ESTABLISHED&lt;/p&gt;
-
-    &lt;p&gt;RELATED&lt;/p&gt;
-
-    &lt;p&gt;INVALID&lt;/p&gt;
-
-    &lt;p&gt;所以我们对于刚才的练习题，可以增加状态检测。比如进来的只允许状态为NEW和ESTABLISHED的进来，出去只允许ESTABLISHED的状态出去，这就可以将比较常见的反弹式木马有很好的控制机制。&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;对于练习题的扩展：&lt;/p&gt;
-
-    &lt;p&gt;进来的拒绝出去的允许，进来的只允许ESTABLISHED进来，出去只允许ESTABLISHED出去。默认规则都使用拒绝&lt;/p&gt;
-
-    &lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;iptables -L -n --line-number&lt;/code&gt; ：查看之前的规则位于第几行&lt;/p&gt;
-
-    &lt;p&gt;改写INPUT&lt;/p&gt;
-
-    &lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;iptables -R INPUT 2 -s 172.16.0.0/16 -d 172.16.100.1 -p tcp --dport 22 -m state --state NEW,ESTABLISHED -j ACCEPT&lt;/code&gt;&lt;/p&gt;
-
-    &lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;iptables -R OUTPUT 1 -m state --state ESTABLISHED -j ACCEPT&lt;/code&gt;&lt;/p&gt;
-
-    &lt;p&gt;此时如果想再放行一个80端口如何放行呢？&lt;/p&gt;
-
-    &lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;iptables -A INPUT -d 172.16.100.1 -p tcp --dport 80 -m state --state NEW,ESTABLISHED -j ACCEPT&lt;/code&gt;&lt;/p&gt;
-
-    &lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;iptables -R INPUT 1 -d 172.16.100.1 -p udp --dport 53 -j ACCEPT&lt;/code&gt;&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;练习题2：&lt;/p&gt;
-
-    &lt;p&gt;假如我们允许自己ping别人，但是别人ping自己ping不通如何实现呢？&lt;/p&gt;
-
-    &lt;p&gt;分析：对于ping这个协议，进来的为8（ping），出去的为0(响应).我们为了达到目的，需要8出去,允许0进来&lt;/p&gt;
-
-    &lt;p&gt;在出去的端口上：&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;iptables -A OUTPUT -p icmp --icmp-type 8 -j ACCEPT&lt;/code&gt;&lt;/p&gt;
-
-    &lt;p&gt;在进来的端口上：&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;iptables -A INPUT -p icmp --icmp-type 0 -j ACCEPT&lt;/code&gt;&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;小扩展：对于127.0.0.1比较特殊，我们需要明确定义它&lt;/p&gt;
-
-    &lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;iptables -A INPUT -s 127.0.0.1 -d 127.0.0.1 -j ACCEPT&lt;/code&gt;&lt;/p&gt;
-
-    &lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;iptables -A OUTPUT -s 127.0.0.1 -d 127.0.0.1 -j ACCEPT&lt;/code&gt;&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h3 id=&quot;八snat-和-dnat-的实现&quot;&gt;八、SNAT 和 DNAT 的实现&lt;/h3&gt;
-
-&lt;p&gt;由于我们现在IP地址十分紧俏，已经分配完了，这就导致我们必须要进行地址转换，来节约我们仅剩的一点IP资源。那么通过iptables如何实现NAT的地址转换呢？&lt;/p&gt;
-
-&lt;h4 id=&quot;1-snat-基于原地址的转换&quot;&gt;1. SNAT 基于原地址的转换&lt;/h4&gt;
-
-&lt;p&gt;基于原地址的转换一般用在我们的许多内网用户通过一个外网的口上网的时候，这时我们将我们内网的地址转换为一个外网的IP，我们就可以实现连接其他外网IP的功能。&lt;/p&gt;
-
-&lt;p&gt;所以我们在iptables中就要定义到底如何转换：&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;定义的样式：比如我们现在要将所有192.168.10.0网段的IP在经过的时候全都转换成172.16.100.1这个假设出来的外网地址：&lt;/p&gt;
-
-    &lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;iptables -t nat -A POSTROUTING -s 192.168.10.0/24 -j SNAT --to-source 172.16.100.1&lt;/code&gt;
-这样，只要是来自本地网络的试图通过网卡访问网络的，都会被统统转换成172.16.100.1这个IP。
-那么，如果172.16.100.1不是固定的怎么办？我们都知道当我们使用联通或者电信上网的时候，一般它都会在每次你开机的时候随机生成一个外网的IP，意思就是外网地址是动态变换的。这时我们就要将外网地址换成 MASQUERADE(动态伪装):它可以实现自动寻找到外网地址，而自动将其改为正确的外网地址。所以，我们就需要这样设置：&lt;/p&gt;
-
-    &lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;iptables -t nat -A POSTROUTING -s 192.168.10.0/24 -j MASQUERADE&lt;/code&gt;&lt;/p&gt;
-
-    &lt;p&gt;这里要注意：地址伪装并不适用于所有的地方。&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h4 id=&quot;2-dnat-目标地址转换&quot;&gt;2. DNAT 目标地址转换&lt;/h4&gt;
-
-&lt;p&gt;对于目标地址转换，数据流向是从外向内的，外面的是客户端，里面的是服务器端通过目标地址转换，我们可以让外面的ip通过我们对外的外网ip来访问我们服务器不同的服务器，而我们的服务却放在内网服务器的不同的服务器上。
-如何做目标地址转换呢？：&lt;/p&gt;
-
-&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;iptables -t nat -A PREROUTING -d 192.168.10.18 -p tcp --dport 80 -j DNAT --todestination 172.16.100.2&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;目标地址转换要做在到达网卡之前进行转换,所以要做在PREROUTING这个位置上&lt;/p&gt;
-
-&lt;h3 id=&quot;九控制规则的存放以及开启&quot;&gt;九、控制规则的存放以及开启&lt;/h3&gt;
-
-&lt;p&gt;注意：你所定义的所有内容，当你重启的时候都会失效，要想我们能够生效，需要使用一个命令将它保存起来&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;service iptables save&lt;/code&gt; 命令&lt;/p&gt;
-
-    &lt;p&gt;它会保存在/etc/sysconfig/iptables这个文件中&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;iptables-save&lt;/code&gt; 命令&lt;/p&gt;
-
-    &lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;iptables-save &amp;gt; /etc/sysconfig/iptables&lt;/code&gt;&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;iptables-restore&lt;/code&gt; 命令&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;开机的时候，它会自动加载&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/etc/sysconfig/iptabels&lt;/code&gt;&lt;/p&gt;
-
-    &lt;p&gt;如果开机不能加载或者没有加载，而你想让一个自己写的配置文件（假设为iptables.2）手动生效的话：&lt;/p&gt;
-
-    &lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;iptables-restore &amp;lt; /etc/sysconfig/iptables.2&lt;/code&gt;&lt;/p&gt;
-
-    &lt;p&gt;则完成了将iptables中定义的规则手动生效&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h3 id=&quot;十总结&quot;&gt;十、总结&lt;/h3&gt;
-
-&lt;p&gt;Iptables是一个非常重要的工具，它是每一个防火墙上几乎必备的设置，也是我们在做大型网络的时候，为了很多原因而必须要设置的。学好Iptables,可以让我们对整个网络的结构有一个比较深刻的了解，同时，我们还能够将内核空间中数据的走向以及linux的安全给掌握的非常透彻。我们在学习的时候，尽量能结合着各种各样的项目，实验来完成，这样对你加深iptables的配置，以及各种技巧有非常大的帮助。&lt;/p&gt;</content><author><name>hsfeng</name></author><category term="Linux" /><summary type="html">linux 网络防火墙， iptables 基础详解</summary></entry><entry><title type="html">qemu 模拟运行 x86_64 Linux 系统</title><link href="https://hsfeng.site/2020/11/19/qemu-system-x86_64/" rel="alternate" type="text/html" title="qemu 模拟运行 x86_64 Linux 系统" /><published>2020-11-19T00:00:00+08:00</published><updated>2020-11-19T00:00:00+08:00</updated><id>https://hsfeng.site/2020/11/19/qemu-system-x86_64</id><content type="html" xml:base="https://hsfeng.site/2020/11/19/qemu-system-x86_64/">&lt;p&gt;编译内核，制作文件系统，使用 qemu 模拟运行 x86_64 linux 系统。&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;环境准备&lt;/strong&gt;&lt;/p&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;apt &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;qemu qemu-system
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;&lt;strong&gt;编译内核&lt;/strong&gt;&lt;/p&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;make &lt;span class=&quot;nb&quot;&gt;help
-&lt;/span&gt;make x86_64_defconfig
-make munuconfig
-make
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;&lt;strong&gt;启动内核&lt;/strong&gt;&lt;/p&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;qemu-system-x86_64 &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
-	&lt;span class=&quot;nt&quot;&gt;-m&lt;/span&gt; 512M &lt;span class=&quot;se&quot;&gt;\ &lt;/span&gt;&lt;span class=&quot;c&quot;&gt;# memary size&lt;/span&gt;
-	&lt;span class=&quot;nt&quot;&gt;-smp&lt;/span&gt; 4 &lt;span class=&quot;se&quot;&gt;\ &lt;/span&gt;&lt;span class=&quot;c&quot;&gt;# cpu number&lt;/span&gt;
-	&lt;span class=&quot;nt&quot;&gt;-kernel&lt;/span&gt; linux/arch/x86/boot/bzImage
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;&lt;strong&gt;制作磁盘镜像&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;制作&lt;/p&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;qemu-img create &lt;span class=&quot;nt&quot;&gt;-f&lt;/span&gt; raw disk.raw 512M
-mkfs &lt;span class=&quot;nt&quot;&gt;-t&lt;/span&gt; ext4 disk.raw
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;挂载&lt;/p&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;mount &lt;span class=&quot;nt&quot;&gt;-o&lt;/span&gt; loop disk.raw mnt
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;安装内核模块&lt;/p&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;make modules_install &lt;span class=&quot;nv&quot;&gt;INSTALL_MOD_PATH&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;mnt &lt;span class=&quot;c&quot;&gt;# 指定安装路径&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;启动&lt;/p&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;qemu-system-x86-64 &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
-	&lt;span class=&quot;nt&quot;&gt;-m&lt;/span&gt; 512M &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
-	&lt;span class=&quot;nt&quot;&gt;-smp&lt;/span&gt; 4 &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
-	&lt;span class=&quot;nt&quot;&gt;-kernel&lt;/span&gt; linux/arch/x86/boot/bzImage &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
-	&lt;span class=&quot;nt&quot;&gt;-drive&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;format&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;raw,file&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;disk.raw &lt;span class=&quot;se&quot;&gt;\ &lt;/span&gt;&lt;span class=&quot;c&quot;&gt;# 指定文件作为磁盘&lt;/span&gt;
-	&lt;span class=&quot;nt&quot;&gt;-append&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;root=/dev/sda rw&quot;&lt;/span&gt; &lt;span class=&quot;c&quot;&gt;# 内核启动参数，指定根文件系统所在设备&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;带网络启动&lt;/p&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;qemu-system-x86-64 &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
-	&lt;span class=&quot;nt&quot;&gt;-m&lt;/span&gt; 512M &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
-	&lt;span class=&quot;nt&quot;&gt;-smp&lt;/span&gt; 4 &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
-	&lt;span class=&quot;nt&quot;&gt;-kernel&lt;/span&gt; linux/arch/x86/boot/bzImage &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
-	&lt;span class=&quot;nt&quot;&gt;-drive&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;format&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;raw,file&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;disk.raw &lt;span class=&quot;se&quot;&gt;\ &lt;/span&gt;
-	&lt;span class=&quot;nt&quot;&gt;-append&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;root=/dev/sda rw&quot;&lt;/span&gt; &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
-	&lt;span class=&quot;nt&quot;&gt;-net&lt;/span&gt; nic &lt;span class=&quot;nt&quot;&gt;-net&lt;/span&gt; tap,ifname&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;tap0  &lt;span class=&quot;c&quot;&gt;# tap dev: tap0&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;自动获取IP，安装dhcpc&lt;/p&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;apt &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;dhcpcd
-&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;systemctl &lt;span class=&quot;nb&quot;&gt;enable &lt;/span&gt;dhcpcd
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name>hsfeng</name></author><category term="Qemu" /><summary type="html">编译内核，制作文件系统，使用 qemu 模拟运行 x86_64 linux 系统。</summary></entry><entry><title type="html">iproute2</title><link href="https://hsfeng.site/2020/11/15/linux-iproute2/" rel="alternate" type="text/html" title="iproute2" /><published>2020-11-15T00:00:00+08:00</published><updated>2020-11-15T00:00:00+08:00</updated><id>https://hsfeng.site/2020/11/15/linux-iproute2</id><content type="html" xml:base="https://hsfeng.site/2020/11/15/linux-iproute2/">&lt;p&gt;linux 网络相关命令&lt;/p&gt;
-
-&lt;h3 id=&quot;管理ip&quot;&gt;管理IP&lt;/h3&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 查看所有IP地址&lt;/span&gt;
-ip a/addr/address
-ip a/addr/address sh/show
-&lt;span class=&quot;c&quot;&gt;# 查看指定IP地址&lt;/span&gt;
-ip a/addr/address sh/show dev eth1
-ip a/addr/address sh/show eth1
-&lt;span class=&quot;c&quot;&gt;# 增加或删除IP地址&lt;/span&gt;
-ip a/addr/address add 192.168.78.130/24 dev eth1
-ip a/addr/address del/delete 192.168.78.130/24 dev eth1
-&lt;span class=&quot;c&quot;&gt;# 删除eth1所有IP地址&lt;/span&gt;
-ip a flush dev eth1
-&lt;span class=&quot;c&quot;&gt;# 删除eth1的所有IPv4的IP地址&lt;/span&gt;
-ip &lt;span class=&quot;nt&quot;&gt;-4&lt;/span&gt; a flush dev eth1
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;管理网络设备&quot;&gt;管理网络设备&lt;/h3&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 查看网络设备信息&lt;/span&gt;
-ip &lt;span class=&quot;nb&quot;&gt;link &lt;/span&gt;sh/show/l/list/ls
-ip &lt;span class=&quot;nb&quot;&gt;link &lt;/span&gt;sh/show/l/ls/lsit eth1
-ip &lt;span class=&quot;nb&quot;&gt;link &lt;/span&gt;sh/show/l/ls/list dev eth1
-&lt;span class=&quot;c&quot;&gt;# 停止与激活网络设备&lt;/span&gt;
-ip &lt;span class=&quot;nb&quot;&gt;link set &lt;/span&gt;dev eth1 down
-ip &lt;span class=&quot;nb&quot;&gt;link set &lt;/span&gt;dev eth1 up
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;管理路由&quot;&gt;管理路由&lt;/h3&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 查看路由表&lt;/span&gt;
-ip r/ro/route
-ip r/ro/route sh/show
-ip r/ro/route sh/show dev eth1
-&lt;span class=&quot;c&quot;&gt;# 添加或删除路由&lt;/span&gt;
-ip r/ro/route add 192.168.79.0/24 dev eth1
-ip r/ro/route d/del/delete 192.168.79.0/24
-ip r/ro/route d/del/delete 192.168.79.0/24 dev eth1
-&lt;span class=&quot;c&quot;&gt;# 默认路由的删除、添加与修改&lt;/span&gt;
-ip r/ro/route d/del/delete default
-ip r/ro/route add default via 192.168.78.1
-ip r/ro/route chg/change default via 192.168.78.2
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;管理arp表&quot;&gt;管理ARP表&lt;/h3&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ip n/neigh/neighbuor sh/show
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;管理网桥&quot;&gt;管理网桥&lt;/h3&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ip &lt;span class=&quot;nb&quot;&gt;link &lt;/span&gt;add name bridge_name &lt;span class=&quot;nb&quot;&gt;type &lt;/span&gt;bridge 
-&lt;span class=&quot;c&quot;&gt;# 也可以简化 ip link add bridge_name type bridge&lt;/span&gt;
-ip &lt;span class=&quot;nb&quot;&gt;link set &lt;/span&gt;bridge_name up
-&lt;span class=&quot;c&quot;&gt;# 想要添加Interface到网桥上，interface状态必须是Up&lt;/span&gt;
-ip &lt;span class=&quot;nb&quot;&gt;link set &lt;/span&gt;eth0 up
-&lt;span class=&quot;c&quot;&gt;# 添加eth0 interface到网桥上&lt;/span&gt;
-ip &lt;span class=&quot;nb&quot;&gt;link set &lt;/span&gt;eth0 master bridge_name
-&lt;span class=&quot;c&quot;&gt;# 从网桥解绑eth0&lt;/span&gt;
-ip &lt;span class=&quot;nb&quot;&gt;link set &lt;/span&gt;eth0 nomaster
-&lt;span class=&quot;c&quot;&gt;# eth0 可以关闭的&lt;/span&gt;
-ip &lt;span class=&quot;nb&quot;&gt;link set &lt;/span&gt;eth0 down
-&lt;span class=&quot;c&quot;&gt;# 删除网桥可以用&lt;/span&gt;
-ip &lt;span class=&quot;nb&quot;&gt;link &lt;/span&gt;delete bridge_name &lt;span class=&quot;nb&quot;&gt;type &lt;/span&gt;bridge
-&lt;span class=&quot;c&quot;&gt;# 也可以简化为&lt;/span&gt;
-ip &lt;span class=&quot;nb&quot;&gt;link &lt;/span&gt;del bridge_name
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name>hsfeng</name></author><category term="Linux" /><summary type="html">linux 网络相关命令</summary></entry><entry><title type="html">linux on qemu</title><link href="https://hsfeng.site/2020/11/15/linux-on-qemu/" rel="alternate" type="text/html" title="linux on qemu" /><published>2020-11-15T00:00:00+08:00</published><updated>2020-11-15T00:00:00+08:00</updated><id>https://hsfeng.site/2020/11/15/linux-on-qemu</id><content type="html" xml:base="https://hsfeng.site/2020/11/15/linux-on-qemu/">&lt;p&gt;使用 qemu 运行 linux 系统，使用网桥连通网络。&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;运行环境&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;安装Qemu&lt;/p&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;apt &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;qemu qemu-system
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;内核下载&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://www.kernel.org&quot;&gt;https://www.kernel.org&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;交叉编译器下载&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://developer.arm.com/tools-and-software/open-source-software/developer-tools/gnu-toolchain/gnu-a/downloads&quot;&gt;https://developer.arm.com/tools-and-software/open-source-software/developer-tools/gnu-toolchain/gnu-a/downloads&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;更新环境&lt;/p&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# update .bashrc&lt;/span&gt;
-&lt;span class=&quot;nb&quot;&gt;source&lt;/span&gt; .bashrc
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;&lt;strong&gt;网络设置&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;添加br0和tap0:&lt;/p&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# tunctl install&lt;/span&gt;
-&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;apt &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;uml-utilities
-&lt;span class=&quot;c&quot;&gt;# tunctl usage:&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;# Create: tunctl [-b] [-u owner] [-g group] [-t device-name] [-f tun-clone-device]&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;# Delete: tunctl -d device-name [-f tun-clone-device]&lt;/span&gt;
-
-&lt;span class=&quot;c&quot;&gt;# brctl intsll&lt;/span&gt;
-&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;apt &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;bridge-utils
-&lt;span class=&quot;c&quot;&gt;# To manually create a bridge interface br0:&lt;/span&gt;
-Usage: brctl &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;commands]
-commands:
-        addbr           &amp;lt;bridge&amp;gt;                add bridge
-        delbr           &amp;lt;bridge&amp;gt;                delete bridge
-        addif           &amp;lt;bridge&amp;gt; &amp;lt;device&amp;gt;       add interface to bridge
-        delif           &amp;lt;bridge&amp;gt; &amp;lt;device&amp;gt;       delete interface from bridge
-        hairpin         &amp;lt;bridge&amp;gt; &amp;lt;port&amp;gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;on|off&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;        turn hairpin on/off
-        setageing       &amp;lt;bridge&amp;gt; &amp;lt;&lt;span class=&quot;nb&quot;&gt;time&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;         &lt;span class=&quot;nb&quot;&gt;set &lt;/span&gt;ageing &lt;span class=&quot;nb&quot;&gt;time
-        &lt;/span&gt;setbridgeprio   &amp;lt;bridge&amp;gt; &amp;lt;prio&amp;gt;         &lt;span class=&quot;nb&quot;&gt;set &lt;/span&gt;bridge priority
-        setfd           &amp;lt;bridge&amp;gt; &amp;lt;&lt;span class=&quot;nb&quot;&gt;time&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;         &lt;span class=&quot;nb&quot;&gt;set &lt;/span&gt;bridge forward delay
-        sethello        &amp;lt;bridge&amp;gt; &amp;lt;&lt;span class=&quot;nb&quot;&gt;time&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;         &lt;span class=&quot;nb&quot;&gt;set &lt;/span&gt;hello &lt;span class=&quot;nb&quot;&gt;time
-        &lt;/span&gt;setmaxage       &amp;lt;bridge&amp;gt; &amp;lt;&lt;span class=&quot;nb&quot;&gt;time&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;         &lt;span class=&quot;nb&quot;&gt;set &lt;/span&gt;max message age
-        setpathcost     &amp;lt;bridge&amp;gt; &amp;lt;port&amp;gt; &amp;lt;cost&amp;gt;  &lt;span class=&quot;nb&quot;&gt;set &lt;/span&gt;path cost
-        setportprio     &amp;lt;bridge&amp;gt; &amp;lt;port&amp;gt; &amp;lt;prio&amp;gt;  &lt;span class=&quot;nb&quot;&gt;set &lt;/span&gt;port priority
-        show            &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt; &amp;lt;bridge&amp;gt; &lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;            show a list of bridges
-        showmacs        &amp;lt;bridge&amp;gt;                show a list of mac addrs
-        showstp         &amp;lt;bridge&amp;gt;                show bridge stp info
-        stp             &amp;lt;bridge&amp;gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;on|off&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;       turn stp on/off
-
-
-&lt;span class=&quot;c&quot;&gt;# To add interface tap0 and tap1 to the bridge br0&lt;/span&gt;
-brctl addif br0 tap0
-brctl addif br0 tap1
-
-&lt;span class=&quot;c&quot;&gt;# Note that you need to set the link status to up on the added interfaces.&lt;/span&gt;
-ip &lt;span class=&quot;nb&quot;&gt;link set &lt;/span&gt;dev tap0 up
-ip &lt;span class=&quot;nb&quot;&gt;link set &lt;/span&gt;dev tap1 up
-
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;网络启动、停止：&lt;/p&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# qemu-ifup and qemu-ifdown&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;# create files /etc/qemu-ifup and /etc/qemu-ifdown, for example:&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;# /etc/qemu-ifup:&lt;/span&gt;
-
-&lt;span class=&quot;c&quot;&gt;#! /bin/sh&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;switch&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;br0
-ifconfig &lt;span class=&quot;nv&quot;&gt;$1&lt;/span&gt; up
- &lt;span class=&quot;c&quot;&gt;#ip link set $1 up&lt;/span&gt;
-brctl addif &lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;switch&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$1&lt;/span&gt;
-
-&lt;span class=&quot;c&quot;&gt;# /etc/qemu-ifdown:&lt;/span&gt;
-
-&lt;span class=&quot;c&quot;&gt;#! /bin/sh&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;switch&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;br0
-brctl delif &lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;switch&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$1&lt;/span&gt;
-ifconfig &lt;span class=&quot;nv&quot;&gt;$1&lt;/span&gt; down
-&lt;span class=&quot;c&quot;&gt;#ip link set $1 down&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;#tunctl -d $1&lt;/span&gt;
-
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;桥接网络使用：&lt;/p&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;#! /bin/bash&lt;/span&gt;
-tunctl &lt;span class=&quot;nt&quot;&gt;-t&lt;/span&gt; tap0 &lt;span class=&quot;nt&quot;&gt;-u&lt;/span&gt; username
-brctl addbr br0
-
-ip &lt;span class=&quot;nb&quot;&gt;link set &lt;/span&gt;dev tap0 up
-ip &lt;span class=&quot;nb&quot;&gt;link set &lt;/span&gt;dev br0 up
-
-ip addr add 192.168.0.11/24 dev tap0
-ip addr add 192.168.0.1/24 dev br0
-
-&lt;span class=&quot;c&quot;&gt;#brctl addif br0 tap0&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;/etc/qemu-ifup&lt;/p&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;#! /bin/sh&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;# Script to bring a network (tap) device for qemu up.&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;# The idea is to add the tap device to the same bridge&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;# as we have default routing to.&lt;/span&gt;
-
-&lt;span class=&quot;c&quot;&gt;# in order to be able to find brctl&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;PATH&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$PATH&lt;/span&gt;:/sbin:/usr/sbin
-&lt;span class=&quot;nv&quot;&gt;ip&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;$(&lt;/span&gt;which ip&lt;span class=&quot;si&quot;&gt;)&lt;/span&gt;
-
-&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-n&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$ip&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;then
-   &lt;/span&gt;ip &lt;span class=&quot;nb&quot;&gt;link set&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$1&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt; up
-&lt;span class=&quot;k&quot;&gt;else
-   &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;brctl&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;$(&lt;/span&gt;which brctl&lt;span class=&quot;si&quot;&gt;)&lt;/span&gt;
-   &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$ip&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-o&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$brctl&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;then
-     &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;W: &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;: not doing any bridge processing: neither ip nor brctl utility not found&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&amp;amp;2
-     &lt;span class=&quot;nb&quot;&gt;exit &lt;/span&gt;0
-   &lt;span class=&quot;k&quot;&gt;fi
-   &lt;/span&gt;ifconfig &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$1&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt; 0.0.0.0 up
-&lt;span class=&quot;k&quot;&gt;fi
-
-&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;switch&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;$(&lt;/span&gt;ip route &lt;span class=&quot;nb&quot;&gt;ls&lt;/span&gt; | &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
-    &lt;span class=&quot;nb&quot;&gt;awk&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'/^default / {
-          for(i=0;i&amp;lt;NF;i++) { if ($i == &quot;dev&quot;) { print $(i+1); next; } }
-         }'&lt;/span&gt;
-        &lt;span class=&quot;si&quot;&gt;)&lt;/span&gt;
-
-&lt;span class=&quot;c&quot;&gt;# only add the interface to default-route bridge if we&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;# have such interface (with default route) and if that&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;# interface is actually a bridge.&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;# It is possible to have several default routes too&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;br &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$switch&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do
-    if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-d&lt;/span&gt; /sys/class/net/&lt;span class=&quot;nv&quot;&gt;$br&lt;/span&gt;/bridge/. &lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;then
-        if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-n&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$ip&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;then
-          &lt;/span&gt;ip &lt;span class=&quot;nb&quot;&gt;link set&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$1&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt; master &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$br&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;else
-          &lt;/span&gt;brctl addif &lt;span class=&quot;nv&quot;&gt;$br&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$1&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;fi
-        &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;exit&lt;/span&gt;    &lt;span class=&quot;c&quot;&gt;# exit with status of the previous command&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;fi
-done
-
-&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;W: &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;: no bridge for guest interface found&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&amp;amp;2
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;&lt;strong&gt;Linux on qemu&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;x86_64&lt;/p&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;### compile.sh&lt;/span&gt;
-
-&lt;span class=&quot;c&quot;&gt;#make x86_64_defconfig&lt;/span&gt;
-make defconfig
-make menuconfig
-make
-
-&lt;span class=&quot;c&quot;&gt;### run.sh&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;#!/bin/bash&lt;/span&gt;
-
-qemu-system-x86_64 &lt;span class=&quot;nt&quot;&gt;-smp&lt;/span&gt; 4 &lt;span class=&quot;nt&quot;&gt;-m&lt;/span&gt; 4096 &lt;span class=&quot;nt&quot;&gt;-kernel&lt;/span&gt; linux/arch/x86_64/boot/bzImage &lt;span class=&quot;nt&quot;&gt;-append&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;root=/dev/sda rw&quot;&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-drive&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;format&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;raw,file&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;ubuntu.ext4 &lt;span class=&quot;nt&quot;&gt;-net&lt;/span&gt; nic &lt;span class=&quot;nt&quot;&gt;-net&lt;/span&gt; user
-
-&lt;span class=&quot;c&quot;&gt;# qemu-system-x86_64 -smp 1 -m 512 -kernel linux/arch/x86_64/boot/bzImage -append &quot;root=/dev/sda rw&quot; -drive format=raw,file=ubuntu.ext4 -net nic -net user --enable-kvm&lt;/span&gt;
-
-&lt;span class=&quot;c&quot;&gt;# qemu-system-x86_64 -smp 4 -m 4096 -kernel linux/arch/x86_64/boot/bzImage -append &quot;root=/dev/sda rw&quot; -drive format=raw,file=ubuntu.ext4 -net nic -net tap,ifname=tap0&lt;/span&gt;
-
-&lt;span class=&quot;c&quot;&gt;# qemu-system-x86_64 -smp 4 -m 4096 -kernel linux/arch/x86_64/boot/bzImage -append &quot;root=/dev/sda rw&quot; -drive format=raw,file=ubuntu.ext4 -net nic -net tap,ifname=tap0 --enable-kvm&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;arm&lt;/p&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;### compile.sh&lt;/span&gt;
-
-&lt;span class=&quot;c&quot;&gt;#make ARCH=arm CROSS_COMPILE=arm-none-linux-gnueabihf- vexpress_defconfig&lt;/span&gt;
-make &lt;span class=&quot;nv&quot;&gt;ARCH&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;arm &lt;span class=&quot;nv&quot;&gt;CROSS_COMPILE&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;arm-none-linux-gnueabihf- defconfig
-make &lt;span class=&quot;nv&quot;&gt;ARCH&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;arm &lt;span class=&quot;nv&quot;&gt;CROSS_COMPILE&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;arm-none-linux-gnueabihf- menuconfig
-make &lt;span class=&quot;nv&quot;&gt;ARCH&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;arm &lt;span class=&quot;nv&quot;&gt;CROSS_COMPILE&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;arm-none-linux-gnueabihf-
-
-&lt;span class=&quot;c&quot;&gt;### run.sh&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;#!/bin/bash&lt;/span&gt;
-
-qemu-system-arm &lt;span class=&quot;nt&quot;&gt;-M&lt;/span&gt; vexpress-a9 &lt;span class=&quot;nt&quot;&gt;-m&lt;/span&gt; 512M &lt;span class=&quot;nt&quot;&gt;-kernel&lt;/span&gt; linux/arch/arm/boot/zImage &lt;span class=&quot;nt&quot;&gt;-dtb&lt;/span&gt; linux/arch/arm/boot/dts/vexpress-v2p-ca9.dtb &lt;span class=&quot;nt&quot;&gt;-append&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;root=/dev/mmcblk0 rw console=ttyAMA0&quot;&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-sd&lt;/span&gt; ubuntu-arm.ext4 &lt;span class=&quot;nt&quot;&gt;-net&lt;/span&gt; nic &lt;span class=&quot;nt&quot;&gt;-net&lt;/span&gt; user
-
-&lt;span class=&quot;c&quot;&gt;# qemu-system-arm -M vexpress-a9 -m 512M -kernel linux/arch/arm/boot/zImage -dtb linux/arch/arm/boot/dts/vexpress-v2p-ca9.dtb -nographic -append &quot;root=/dev/mmcblk0 rw console=ttyAMA0&quot; -sd ubuntu-arm.ext4 -net nic -net user&lt;/span&gt;
-
-&lt;span class=&quot;c&quot;&gt;# qemu-system-arm -M vexpress-a9 -m 512M -kernel linux/arch/arm/boot/zImage -dtb linux/arch/arm/boot/dts/vexpress-v2p-ca9.dtb -nographic -append &quot;root=/dev/mmcblk0 rw console=ttyAMA0&quot; -sd ubuntu-arm.ext4 --enable-kvm&lt;/span&gt;
-
-&lt;span class=&quot;c&quot;&gt;# qemu-system-arm -M vexpress-a9 -m 512M -kernel linux/arch/arm/boot/zImage -dtb linux/arch/arm/boot/dts/vexpress-v2p-ca9.dtb -nographic -append &quot;root=/dev/mmcblk0 rw console=ttyAMA0&quot; -sd ubuntu-arm.ext4 -net nic -net tap,ifname=tap0&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;arm64&lt;/p&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;### compile.sh&lt;/span&gt;
-
-make &lt;span class=&quot;nv&quot;&gt;ARCH&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;arm64 &lt;span class=&quot;nv&quot;&gt;CROSS_COMPILE&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;aarch64-none-linux-gnu- defconfig
-make &lt;span class=&quot;nv&quot;&gt;ARCH&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;arm64 &lt;span class=&quot;nv&quot;&gt;CROSS_COMPILE&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;aarch64-none-linux-gnu- menuconfig
-make &lt;span class=&quot;nv&quot;&gt;ARCH&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;arm64 &lt;span class=&quot;nv&quot;&gt;CROSS_COMPILE&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;aarch64-none-linux-gnu-
-
-&lt;span class=&quot;c&quot;&gt;### run.sh&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;#!/bin/bash&lt;/span&gt;
-
-qemu-system-aarch64 &lt;span class=&quot;nt&quot;&gt;-machine&lt;/span&gt; virt &lt;span class=&quot;nt&quot;&gt;-cpu&lt;/span&gt; cortex-a53 &lt;span class=&quot;nt&quot;&gt;-m&lt;/span&gt; 1024M &lt;span class=&quot;nt&quot;&gt;-kernel&lt;/span&gt; linux/arch/arm64/boot/Image &lt;span class=&quot;nt&quot;&gt;-append&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;root=/dev/vda rw&quot;&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-hda&lt;/span&gt; ubuntu-arm64.ext4 &lt;span class=&quot;nt&quot;&gt;-net&lt;/span&gt; nic &lt;span class=&quot;nt&quot;&gt;-net&lt;/span&gt; user
-
-&lt;span class=&quot;c&quot;&gt;# qemu-system-aarch64 -machine virt -cpu cortex-a53 -m 1024M -kernel linux/arch/arm64/boot/Image -append &quot;root=/dev/vda rw console=ttyAMA0&quot; -hda ubuntu-arm64.ext4 -net nic -net user&lt;/span&gt;
-
-&lt;span class=&quot;c&quot;&gt;# qemu-system-aarch64 -machine virt -cpu cortex-a53 -m 1024M -kernel linux/arch/arm64/boot/Image -nographic -append &quot;root=/dev/vda rw console=ttyAMA0&quot; -hda ubuntu-arm64.ext4 -net nic -net user&lt;/span&gt;
-
-&lt;span class=&quot;c&quot;&gt;# qemu-system-aarch64 -machine virt -cpu cortex-a53 -m 1024M -kernel linux/arch/arm64/boot/Image -append &quot;root=/dev/vda rw console=ttyAMA0&quot; -hda ubuntu-arm64.ext4 -net nic -net tap,ifname=tap0&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name>hsfeng</name></author><category term="Qemu" /><summary type="html">使用 qemu 运行 linux 系统，使用网桥连通网络。</summary></entry></feed>
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name>hsfeng</name></author><category term="Linux" /><summary type="html">简单介绍在linux系统上搭建dhcp服务实现域名解析服务。</summary></entry></feed>

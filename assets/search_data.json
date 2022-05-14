@@ -123,7 +123,7 @@
     } ,
   
     {
-      "title"    : "ubuntu source mirrors",
+      "title"    : "Ubuntu Source Mirrors",
       "category" : "Ubuntu",
       
       "url"      : "https://hsfeng.site/2020/11/10/ubuntu-source-mirrors/",
@@ -131,7 +131,7 @@
     } ,
   
     {
-      "title"    : "iproute2",
+      "title"    : "Iproute2",
       "category" : "Linux",
       
       "url"      : "https://hsfeng.site/2020/11/15/linux-iproute2/",
@@ -139,7 +139,7 @@
     } ,
   
     {
-      "title"    : "linux on qemu",
+      "title"    : "Linux On Qemu",
       "category" : "Qemu",
       
       "url"      : "https://hsfeng.site/2020/11/15/linux-on-qemu/",
@@ -147,7 +147,7 @@
     } ,
   
     {
-      "title"    : "qemu 模拟运行 x86_64 Linux 系统",
+      "title"    : "QEMU 模拟运行 x86_64 Linux 系统",
       "category" : "Qemu",
       
       "url"      : "https://hsfeng.site/2020/11/19/qemu-system-x86_64/",
@@ -155,7 +155,7 @@
     } ,
   
     {
-      "title"    : "iptables 基础详解",
+      "title"    : "Iptables 基础详解",
       "category" : "Linux",
       
       "url"      : "https://hsfeng.site/2020/11/22/linux-iptables/",
@@ -179,7 +179,7 @@
     } ,
   
     {
-      "title"    : "使用 ip tunnel 打通私有网络",
+      "title"    : "使用 Ip Tunnel 打通私有网络",
       "category" : "Linux",
       
       "url"      : "https://hsfeng.site/2021/05/31/ip-tunnel/",
@@ -187,7 +187,7 @@
     } ,
   
     {
-      "title"    : "OpenWrt使用总结",
+      "title"    : "OpenWrt 使用总结",
       "category" : "OpenWrt",
       
       "url"      : "https://hsfeng.site/2021/08/18/openwrt/",
@@ -195,7 +195,7 @@
     } ,
   
     {
-      "title"    : "SQL基础 - group by、where、having用法及顺序",
+      "title"    : "SQL 基础 - GROUP BY, WHERE, HAVING 用法及顺序",
       "category" : "Sql",
       
       "url"      : "https://hsfeng.site/2021/09/15/sql-groupby-where-having/",
@@ -208,6 +208,38 @@
       
       "url"      : "https://hsfeng.site/2021/11/15/zookeeper/",
       "keywords" : "zookeeper"
+    } ,
+  
+    {
+      "title"    : "Java 中 Unsafe 使用讲解",
+      "category" : "Java",
+      
+      "url"      : "https://hsfeng.site/2021/11/18/java-unsafe/",
+      "keywords" : "Unsafe"
+    } ,
+  
+    {
+      "title"    : "C++ 学习笔记",
+      "category" : "C++",
+      
+      "url"      : "https://hsfeng.site/2021/11/20/cxx-learning-note/",
+      "keywords" : "c++"
+    } ,
+  
+    {
+      "title"    : "Java 学习笔记",
+      "category" : "Java",
+      
+      "url"      : "https://hsfeng.site/2021/11/20/java-learning-note/",
+      "keywords" : "java"
+    } ,
+  
+    {
+      "title"    : "Linux Proc Pid 部分内容详解",
+      "category" : "Linux",
+      
+      "url"      : "https://hsfeng.site/2021/11/29/linux-proc-pid/",
+      "keywords" : "linux"
     } ,
   
     {
