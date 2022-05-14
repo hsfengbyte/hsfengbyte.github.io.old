@@ -1,8 +1,8 @@
 ---
 layout: post
-title: iptables 基础详解
+title: Iptables 基础详解
 categories: Linux
-description: linux 网络防火墙，iptables 基础详解
+description: Linux 网络防火墙，Iptables 基础详解
 keywords: iptables
 ---
 

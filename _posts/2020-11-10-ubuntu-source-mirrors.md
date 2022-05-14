@@ -1,6 +1,6 @@
 ---
 layout: post
-title: ubuntu source mirrors
+title: Ubuntu Source Mirrors
 categories: Ubuntu
 description: 国内 ubuntu 镜像源
 keywords: ubuntu

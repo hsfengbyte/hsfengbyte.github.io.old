@@ -1,8 +1,8 @@
 ---
 layout: post
-title: SQL基础 - group by、where、having用法及顺序
+title: SQL 基础 - GROUP BY, WHERE, HAVING 用法及顺序
 categories: Sql
-description: SQL基础 - group by、where、having用法及顺序
+description: SQL 基础 - group by、where、having 用法及顺序
 keywords: group by、where、having
 ---
 

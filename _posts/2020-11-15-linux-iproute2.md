@@ -1,8 +1,8 @@
 ---
 layout: post
-title: iproute2
+title: Iproute2
 categories: Linux
-description: linux 网络相关命令
+description: Linux 网络相关命令
 keywords: iproute2
 ---
 

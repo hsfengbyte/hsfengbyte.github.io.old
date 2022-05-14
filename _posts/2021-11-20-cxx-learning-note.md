@@ -1,12 +1,12 @@
 ---
 layout: post
-title: C++学习笔记
+title: C++ 学习笔记
 categories: C++
-description: c++学习笔记
+description: c++ 学习笔记
 keywords: c++
 ---
 
-## C++学习笔记
+## C++ 学习笔记
 
 
 

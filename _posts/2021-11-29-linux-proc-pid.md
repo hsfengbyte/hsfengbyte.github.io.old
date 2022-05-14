@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Linux /proc/$pid部分内容详解
+title: Linux Proc Pid 部分内容详解
 categories: Linux
 description: Linux /proc/$pid部分内容详解
 keywords: linux

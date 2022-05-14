@@ -1,12 +1,12 @@
 ---
 layout: post
-title: Java中Unsafe使用讲解
+title: Java 中 Unsafe 使用讲解
 categories: Java
-description: java中Unsafe使用讲解
+description: java 中 Unsafe 使用讲解
 keywords: Unsafe
 ---
 
-unsafe可以帮我们直接去操作硬件资源,当然了是借助java的jit来进行的,官方不推荐使用,因为不安全,例如你使用unsafe创建一个超级大的数组,但是这个数组jvm是不管理的,只能你自己操作,容易oom,也不利于资源的回收.
+unsafe 可以帮我们直接去操作硬件资源,当然了是借助java的jit来进行的,官方不推荐使用,因为不安全,例如你使用unsafe创建一个超级大的数组,但是这个数组jvm是不管理的,只能你自己操作,容易oom,也不利于资源的回收.
 
 ## 获取Unsafe
 

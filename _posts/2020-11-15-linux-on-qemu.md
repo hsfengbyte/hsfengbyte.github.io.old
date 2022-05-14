@@ -1,6 +1,6 @@
 ---
 layout: post
-title: linux on qemu
+title: Linux On Qemu
 categories: Qemu
 description: qemu 运行 linux
 keywords: qemu
