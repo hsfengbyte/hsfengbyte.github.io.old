@@ -153,3 +153,5 @@ simple_jekyll_search:
     fulltext: false
     # 最多显示多少条搜索结果
     limit: 10
+
+theme: jekyll-theme-leap-day
