@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.2">Jekyll</generator><link href="https://hsfeng.site/feed.xml" rel="self" type="application/atom+xml" /><link href="https://hsfeng.site/" rel="alternate" type="text/html" /><updated>2022-05-28T21:23:33+08:00</updated><id>https://hsfeng.site/feed.xml</id><title type="html">零度</title><subtitle>零度的个人博客，一个程序猿</subtitle><author><name>hsfeng</name></author><entry><title type="html">并发框架Disruptor</title><link href="https://hsfeng.site/2022/05/28/disruptor/" rel="alternate" type="text/html" title="并发框架Disruptor" /><published>2022-05-28T00:00:00+08:00</published><updated>2022-05-28T00:00:00+08:00</updated><id>https://hsfeng.site/2022/05/28/disruptor</id><content type="html" xml:base="https://hsfeng.site/2022/05/28/disruptor/">&lt;p&gt;Disruptor它是一个开源的并发框架，并获得2011 Duke’s 程序框架创新奖，能够在无锁的情况下实现网络的Queue并发操作。&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.2">Jekyll</generator><link href="https://hsfeng.site/feed.xml" rel="self" type="application/atom+xml" /><link href="https://hsfeng.site/" rel="alternate" type="text/html" /><updated>2022-05-28T21:36:40+08:00</updated><id>https://hsfeng.site/feed.xml</id><title type="html">零度</title><subtitle>零度的个人博客，一个程序猿</subtitle><author><name>hsfeng</name></author><entry><title type="html">并发框架Disruptor</title><link href="https://hsfeng.site/2022/05/28/disruptor/" rel="alternate" type="text/html" title="并发框架Disruptor" /><published>2022-05-28T00:00:00+08:00</published><updated>2022-05-28T00:00:00+08:00</updated><id>https://hsfeng.site/2022/05/28/disruptor</id><content type="html" xml:base="https://hsfeng.site/2022/05/28/disruptor/">&lt;p&gt;Disruptor它是一个开源的并发框架，并获得2011 Duke’s 程序框架创新奖，能够在无锁的情况下实现网络的Queue并发操作。&lt;/p&gt;
 
 &lt;h1 id=&quot;介绍&quot;&gt;介绍&lt;/h1&gt;
 
@@ -72,7 +72,71 @@
 
 &lt;p&gt;多个生产者 + N个消费者&lt;/p&gt;
 
-&lt;p&gt;很显然，无论生产者有几个，生产者指针P只能存在一个，否则数据就乱套了。那么多个生产者之间共享一个P指针，在disruptor中实际上是利用了CAS机制来保证多线程的数据安全，也没有使用到锁。&lt;/p&gt;</content><author><name>hsfeng</name></author><category term="Java" /><summary type="html">Disruptor它是一个开源的并发框架，并获得2011 Duke’s 程序框架创新奖，能够在无锁的情况下实现网络的Queue并发操作。</summary></entry><entry><title type="html">Java学习笔记（一）Unsafe</title><link href="https://hsfeng.site/2022/05/28/java-unsafe/" rel="alternate" type="text/html" title="Java学习笔记（一）Unsafe" /><published>2022-05-28T00:00:00+08:00</published><updated>2022-05-28T00:00:00+08:00</updated><id>https://hsfeng.site/2022/05/28/java-unsafe</id><content type="html" xml:base="https://hsfeng.site/2022/05/28/java-unsafe/">&lt;p&gt;unsafe 可以帮我们直接去操作硬件资源,当然了是借助java的jit来进行的,官方不推荐使用,因为不安全,例如你使用unsafe创建一个超级大的数组,但是这个数组jvm是不管理的,只能你自己操作,容易oom,也不利于资源的回收.&lt;/p&gt;
+&lt;p&gt;很显然，无论生产者有几个，生产者指针P只能存在一个，否则数据就乱套了。那么多个生产者之间共享一个P指针，在disruptor中实际上是利用了CAS机制来保证多线程的数据安全，也没有使用到锁。&lt;/p&gt;</content><author><name>hsfeng</name></author><category term="Java" /><summary type="html">Disruptor它是一个开源的并发框架，并获得2011 Duke’s 程序框架创新奖，能够在无锁的情况下实现网络的Queue并发操作。</summary></entry><entry><title type="html">Java学习笔记（二）CopyOnWriteArrayList</title><link href="https://hsfeng.site/2022/05/28/java-copyonwritearraylist/" rel="alternate" type="text/html" title="Java学习笔记（二）CopyOnWriteArrayList" /><published>2022-05-28T00:00:00+08:00</published><updated>2022-05-28T00:00:00+08:00</updated><id>https://hsfeng.site/2022/05/28/java-copyonwritearraylist</id><content type="html" xml:base="https://hsfeng.site/2022/05/28/java-copyonwritearraylist/">&lt;p&gt;在很多应用场景中，读操作可能会远远大于写操作。由于读操作根本不会修改原有的数据，因此如果每次读取都进行加锁操作，其实是一种资源浪费。我们应该允许多个线程同时访问 List 的内部数据，毕竟读操作是线程安全的。&lt;/p&gt;
+
+&lt;h1 id=&quot;copyonwritearraylist-简介&quot;&gt;CopyOnWriteArrayList 简介&lt;/h1&gt;
+
+&lt;p&gt;这和 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ReentrantReadWriteLock&lt;/code&gt; 读写锁的思想非常类似，也就是 读读共享、写写互斥、读写互斥、写读互斥。JDK中提供了 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;CopyOnWriteArrayList&lt;/code&gt; 类，相比于在读写锁的思想又更进一步。为了将读取的性能发挥到极致，&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;CopyOnWriteArrayList&lt;/code&gt; 读取是完全不用加锁的，并且更厉害的是：写入也不会阻塞读取操作，只有写入和写入之间需要进行同步等待，读操作的性能得到大幅度提升。&lt;/p&gt;
+
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;CopyOnWriteArrayList&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;E&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;implements&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;List&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;E&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;,&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;RandomAccess&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Cloneable&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;java&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;io&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;Serializable&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h1 id=&quot;copyonwritearraylist-是如何做到的&quot;&gt;CopyOnWriteArrayList 是如何做到的&lt;/h1&gt;
+
+&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;CopyOnWriteArrayList&lt;/code&gt; 类的所有可变操作（add，set等等）都是通过创建底层数组的新副本来实现的。当 List 需要被修改的时候，并不直接修改原有数组对象，而是对原有数据进行一次拷贝，将修改的内容写入副本中。写完之后，再将修改完的副本替换成原来的数据，这样就可以保证写操作不会影响读操作了。&lt;/p&gt;
+
+&lt;p&gt;从 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;CopyOnWriteArrayList&lt;/code&gt; 的名字可以看出，&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;CopyOnWriteArrayList&lt;/code&gt; 是满足 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;CopyOnWrite&lt;/code&gt; 的 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ArrayList&lt;/code&gt;，所谓 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;CopyOnWrite&lt;/code&gt; 的意思：、就是对一块内存进行修改时，不直接在原有内存块中进行写操作，而是将内存拷贝一份，在新的内存中进行写操作，写完之后，再将原来指向的内存指针指到新的内存，原来的内存就可以被回收。&lt;/p&gt;
+
+&lt;h1 id=&quot;copyonwritearraylist-读取和写入源码简单分析&quot;&gt;CopyOnWriteArrayList 读取和写入源码简单分析&lt;/h1&gt;
+
+&lt;h2 id=&quot;copyonwritearraylist-读取操作的实现&quot;&gt;CopyOnWriteArrayList 读取操作的实现&lt;/h2&gt;
+
+&lt;p&gt;读取操作没有任何同步控制和锁操作，理由就是内部数组 array 不会发生修改，只会被另外一个 array 替换，因此可以保证数据安全。&lt;/p&gt;
+
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    &lt;span class=&quot;cm&quot;&gt;/** The array, accessed only via getArray/setArray. */&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;transient&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;volatile&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Object&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[]&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;array&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+
+    &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;E&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;index&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;getArray&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(),&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;index&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+
+    &lt;span class=&quot;nd&quot;&gt;@SuppressWarnings&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;unchecked&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;E&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Object&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[]&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;index&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;E&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;index&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;];&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+
+    &lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Object&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[]&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;getArray&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;array&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;copyonwritearraylist-写入操作的实现&quot;&gt;CopyOnWriteArrayList 写入操作的实现&lt;/h2&gt;
+
+&lt;p&gt;CopyOnWriteArrayList 写入操作 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;add()&lt;/code&gt; 方法在添加集合的时候加了锁，保证同步，避免多线程写的时候会 copy 出多个副本。&lt;/p&gt;
+
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    &lt;span class=&quot;cm&quot;&gt;/**
+     * Appends the specified element to the end of this list.
+     *
+     * @param e element to be appended to this list
+     * @return {@code true} (as specified by {@link Collection#add})
+     */&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;boolean&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;add&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;E&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ReentrantLock&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;lock&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;lock&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;lock&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;lock&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;  &lt;span class=&quot;c1&quot;&gt;// 加锁&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;try&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;nc&quot;&gt;Object&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[]&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;elements&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;getArray&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+            &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;len&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;elements&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;length&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+            &lt;span class=&quot;nc&quot;&gt;Object&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[]&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;newElements&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Arrays&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;copyOf&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;elements&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;len&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;  &lt;span class=&quot;c1&quot;&gt;// 拷贝新数组&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;newElements&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;len&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;setArray&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;newElements&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;finally&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;lock&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;unlock&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;  &lt;span class=&quot;c1&quot;&gt;// 释放锁&lt;/span&gt;
+        &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name>hsfeng</name></author><category term="Java" /><summary type="html">在很多应用场景中，读操作可能会远远大于写操作。由于读操作根本不会修改原有的数据，因此如果每次读取都进行加锁操作，其实是一种资源浪费。我们应该允许多个线程同时访问 List 的内部数据，毕竟读操作是线程安全的。</summary></entry><entry><title type="html">Java学习笔记（一）Unsafe</title><link href="https://hsfeng.site/2022/05/28/java-unsafe/" rel="alternate" type="text/html" title="Java学习笔记（一）Unsafe" /><published>2022-05-28T00:00:00+08:00</published><updated>2022-05-28T00:00:00+08:00</updated><id>https://hsfeng.site/2022/05/28/java-unsafe</id><content type="html" xml:base="https://hsfeng.site/2022/05/28/java-unsafe/">&lt;p&gt;unsafe 可以帮我们直接去操作硬件资源,当然了是借助java的jit来进行的,官方不推荐使用,因为不安全,例如你使用unsafe创建一个超级大的数组,但是这个数组jvm是不管理的,只能你自己操作,容易oom,也不利于资源的回收.&lt;/p&gt;
 
 &lt;h2 id=&quot;获取unsafe&quot;&gt;获取Unsafe&lt;/h2&gt;
 
@@ -773,265 +837,4 @@ sysctl &lt;span class=&quot;nt&quot;&gt;-w&lt;/span&gt; net.ipv4.ip_forward&lt;s
 &lt;span class=&quot;nb&quot;&gt;sed&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-i&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'/net.ipv4.ip_forward/ s/0/1/'&lt;/span&gt;  /etc/sysctl.conf
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;至此，完成了两端的配置，ServerA可以直接访问ServerB 所接的私网了。&lt;/p&gt;</content><author><name>hsfeng</name></author><category term="Linux" /><summary type="html">通过一个例子说明服务器A如何通过tunnel直接访问到服务器B连接的私有网络。</summary></entry><entry><title type="html">QEMU 网络模式</title><link href="https://hsfeng.site/2020/12/02/qemu-network-mode/" rel="alternate" type="text/html" title="QEMU 网络模式" /><published>2020-12-02T00:00:00+08:00</published><updated>2020-12-02T00:00:00+08:00</updated><id>https://hsfeng.site/2020/12/02/qemu-network-mode</id><content type="html" xml:base="https://hsfeng.site/2020/12/02/qemu-network-mode/">&lt;p&gt;QEMU 支持多种网络模式，简单介绍如何使用这几种网络模式。&lt;/p&gt;
-
-&lt;h3 id=&quot;一qemu支持的网络模式&quot;&gt;一、QEMU支持的网络模式&lt;/h3&gt;
-
-&lt;p&gt;qemu-kvm主要向客户机提供了4种不同模式的网络。&lt;/p&gt;
-
-&lt;p&gt;1)基于网桥(bridge)的虚拟网卡；&lt;/p&gt;
-
-&lt;p&gt;2)基于NAT的虚拟网络（网络地址转换NAT）；&lt;/p&gt;
-
-&lt;p&gt;3)QEMU内置的用户模式网络(user mode networking)；&lt;/p&gt;
-
-&lt;p&gt;4)直接分配网络设备的网络(包括VT-d和SR-IOV)&lt;/p&gt;
-
-&lt;h3 id=&quot;二基于网桥bridge的虚拟网卡&quot;&gt;二、基于网桥(bridge)的虚拟网卡&lt;/h3&gt;
-
-&lt;p&gt;建立一个bridge,将其绑定到一个可正常工作的网络接口上，同时让bridge成为连接本机与外部网络的接口。&lt;/p&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;brctl addr br0
-brctl addif br0 eth0
-brctl stp br0 on
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;建立bridge后的状态是让网络接口eth0进入混杂模式(promiscuous mode，接收网络中所有数据包)，网桥br0进入转发状态(forwarding state)，并且与eth0具有相同的MAC地址.&lt;/p&gt;
-
-&lt;p&gt;建立一个TAP设备，将其绑定到网桥上&lt;/p&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;tunctl &lt;span class=&quot;nt&quot;&gt;-u&lt;/span&gt; &lt;span class=&quot;si&quot;&gt;$(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;whoami&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-t&lt;/span&gt; tap0
-brctl addif br0 tap0
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;使用TAP设备&lt;/p&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;qemu &lt;span class=&quot;nt&quot;&gt;-net&lt;/span&gt; nic &lt;span class=&quot;nt&quot;&gt;-net&lt;/span&gt; tap,ifname&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;tap0
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;QEMU网络启动关闭脚本&lt;/p&gt;
-
-&lt;p&gt;客户机启动网络前会执行的脚本由”script”选项配置的(默认为/etc/qemu-ifup)。一般在该脚本上创建一个TAP设备并将其中与bridge绑定起来。&lt;/p&gt;
-
-&lt;p&gt;准备qemu-ifup和qemu-ifdown脚本&lt;/p&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# cat /etc/qemu-ifup&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;#!/bin/bash&lt;/span&gt;
-
-&lt;span class=&quot;nv&quot;&gt;switch&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;br0
-
-&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-n&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$1&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;then&lt;/span&gt;
-  &lt;span class=&quot;c&quot;&gt;#tunctl -u $(whoami) -t $1 #一些较旧版本中不会自动创建TAP设备&lt;/span&gt;
-  ifconfig &lt;span class=&quot;nv&quot;&gt;$1&lt;/span&gt; up
-  &lt;span class=&quot;nb&quot;&gt;sleep &lt;/span&gt;0.5s
-  brctl addif &lt;span class=&quot;nv&quot;&gt;$switch&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$1&lt;/span&gt;
-  &lt;span class=&quot;nb&quot;&gt;exit &lt;/span&gt;0
-&lt;span class=&quot;k&quot;&gt;else
-  &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'Error: no specifed interface.'&lt;/span&gt;
-  &lt;span class=&quot;nb&quot;&gt;exit &lt;/span&gt;1
-&lt;span class=&quot;k&quot;&gt;fi&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;由于qemu-kvm工具在客户机关闭时会解除TAP设备的bridge绑定,也会自动删除已不再使用的TAP设备，所有qemu-ifdown这个脚本不是必需的,最好设置为downscript=no(qemu-kvm的script参数是虚拟机启动时执行的脚本,downscript参数是虚拟机关闭时执行的参数)&lt;/p&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# cat /etc/qemu-ifdown &lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;#!/bin/bash&lt;/span&gt;
-
-&lt;span class=&quot;nv&quot;&gt;switch&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;br0
-
-&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-n&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;then
-  &lt;/span&gt;tunctl &lt;span class=&quot;nt&quot;&gt;-d&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$1&lt;/span&gt;
-  brctl delif &lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;switch&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$1&lt;/span&gt;
-  ip &lt;span class=&quot;nb&quot;&gt;link set&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$1&lt;/span&gt; down
-  &lt;span class=&quot;nb&quot;&gt;exit &lt;/span&gt;0
-&lt;span class=&quot;k&quot;&gt;else
-  &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Error: no interface specified&quot;&lt;/span&gt;
-  &lt;span class=&quot;nb&quot;&gt;exit &lt;/span&gt;1
-&lt;span class=&quot;k&quot;&gt;fi&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;三基于nat的虚拟网络网络地址转换nat&quot;&gt;三、基于NAT的虚拟网络（网络地址转换NAT）&lt;/h3&gt;
-
-&lt;p&gt;网络设备，虚拟机连接主机&lt;/p&gt;
-
-&lt;p&gt;主机网卡：&lt;strong&gt;enp0s3&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;TAP设备：&lt;strong&gt;tap0&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;初始化TAP设备&lt;/p&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;tunctl &lt;span class=&quot;nt&quot;&gt;-u&lt;/span&gt; &lt;span class=&quot;si&quot;&gt;$(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;whoami&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-t&lt;/span&gt; tap0
-ip addr add 192.168.0.1/24 dev tap0
-ip &lt;span class=&quot;nb&quot;&gt;link set &lt;/span&gt;dev tap0 up
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;虚拟机的启动命令行增加网络参数&lt;/p&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;-net&lt;/span&gt; nic &lt;span class=&quot;nt&quot;&gt;-net&lt;/span&gt; tap,ifname&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;tap0
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;设置虚拟机IP，此处enp0s3为虚拟机网卡&lt;/p&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ip addr add 192.168.0.2/24 dev enp0s3
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;虚拟机通过主机连接internet，现在实现了虚拟机和host的联网，如果需要虚拟机连接internet，则要在host设置NAT：&lt;/p&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;echo &lt;/span&gt;1 &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; /proc/sys/net/ipv4/ip_forward
-iptables &lt;span class=&quot;nt&quot;&gt;-t&lt;/span&gt; nat &lt;span class=&quot;nt&quot;&gt;-A&lt;/span&gt; POSTROUTING &lt;span class=&quot;nt&quot;&gt;-o&lt;/span&gt; enp0s3 &lt;span class=&quot;nt&quot;&gt;-s&lt;/span&gt; 192.168.0.0/24 &lt;span class=&quot;nt&quot;&gt;-j&lt;/span&gt; MASQUERADE
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;虚拟机添加DNS服务器&lt;/p&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# /etc/resolv.conf&lt;/span&gt;
-...
-namserver 8.8.8.8
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;四内置的用户模式网络user-mode-networking&quot;&gt;四、内置的用户模式网络(user mode networking)&lt;/h3&gt;
-
-&lt;p&gt;虚拟机的启动命令行增加网络参数&lt;/p&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;-net&lt;/span&gt; nic &lt;span class=&quot;nt&quot;&gt;-net&lt;/span&gt; user
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;五仅主机host-only模式&quot;&gt;五、仅主机(Host-only)模式&lt;/h3&gt;
-
-&lt;p&gt;建立一个TAP设备，将其绑定到网桥上&lt;/p&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;tunctl &lt;span class=&quot;nt&quot;&gt;-u&lt;/span&gt; &lt;span class=&quot;si&quot;&gt;$(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;whoami&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-t&lt;/span&gt; tap0
-brctl addif br0 tap0
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;使用TAP设备&lt;/p&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;qemu &lt;span class=&quot;nt&quot;&gt;-net&lt;/span&gt; nic &lt;span class=&quot;nt&quot;&gt;-net&lt;/span&gt; tap,ifname&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;tap0
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;六桥接网络&quot;&gt;六、桥接网络&lt;/h3&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;重点注意：模拟主机网卡桥接模式，且混杂模式为全部允许&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;配置qemu虚拟机与主机在同一网络（主机所在网段）下，且可对外访问（一般为互联网），可以使用脚本1或脚本2。&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;脚本1&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# net-bridge.sh&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;# network card 1: enp0s3&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;# network card 2: enp0s8&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;# network bridge: br0&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;# tap device: tap0&lt;/span&gt;
-
-sysctl &lt;span class=&quot;nt&quot;&gt;-w&lt;/span&gt; net.ipv4.ip_forwoard&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1
-
-ifconfig enp0s8 down
-brctl addbr br0
-brctl addif br0 enp0s8
-brctl stp br0 off
-brctl setfd br0 1
-brctl sethello br0 1
-ifconfig br0 0.0.0.0 promisc up
-ifconfig enp0s8 0.0.0.0 promisc up
-
-tunctl &lt;span class=&quot;nt&quot;&gt;-t&lt;/span&gt; tap0 &lt;span class=&quot;nt&quot;&gt;-u&lt;/span&gt; hsfengbyte
-ip &lt;span class=&quot;nb&quot;&gt;link set &lt;/span&gt;dev tap0 down
-brctl addif br0 tap0
-ifconfig tap0 0.0.0.0 promisc up
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;脚本2&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# net-iproutes-bridge.sh&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;# network card 1: enp0s3&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;# network card 2: enp0s8&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;# network bridge: br0&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;# tap device: tap0&lt;/span&gt;
-
-&lt;span class=&quot;c&quot;&gt;#!/bin/bash&lt;/span&gt;
-
-sysctl &lt;span class=&quot;nt&quot;&gt;-w&lt;/span&gt; net.ipv4.ip_forward&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1
-
-ip &lt;span class=&quot;nb&quot;&gt;link &lt;/span&gt;add name br0 &lt;span class=&quot;nb&quot;&gt;type &lt;/span&gt;bridge
-ip &lt;span class=&quot;nb&quot;&gt;link set &lt;/span&gt;dev enp0s8 master br0
-ip &lt;span class=&quot;nb&quot;&gt;link set &lt;/span&gt;dev br0 up promisc on
-ip &lt;span class=&quot;nb&quot;&gt;link set &lt;/span&gt;dev enp0s8 up promisc on
-
-ip tuntap add dev tap0 mode tap user hsfeng
-ip &lt;span class=&quot;nb&quot;&gt;link set &lt;/span&gt;dev tap0 master br0
-ip &lt;span class=&quot;nb&quot;&gt;link set &lt;/span&gt;dev tap0 up promisc on
-
-dhclient
-&lt;span class=&quot;c&quot;&gt;# dhcpcd&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;运行脚本1或脚本2后，主机网络：&lt;/p&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;1: lo: &amp;lt;LOOPBACK,UP,LOWER_UP&amp;gt; mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
-    &lt;span class=&quot;nb&quot;&gt;link&lt;/span&gt;/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
-    inet 127.0.0.1/8 scope host lo
-       valid_lft forever preferred_lft forever
-    inet6 ::1/128 scope host
-       valid_lft forever preferred_lft forever
-2: enp0s3: &amp;lt;BROADCAST,MULTICAST,UP,LOWER_UP&amp;gt; mtu 1500 qdisc fq_codel state UP group default qlen 1000
-    &lt;span class=&quot;nb&quot;&gt;link&lt;/span&gt;/ether 08:00:27:06:c3:ec brd ff:ff:ff:ff:ff:ff
-    inet 192.168.8.209/24 brd 192.168.8.255 scope global dynamic enp0s3
-       valid_lft 42100sec preferred_lft 42100sec
-    inet 192.168.8.208/24 brd 192.168.8.255 scope global secondary noprefixroute enp0s3
-       valid_lft forever preferred_lft forever
-    inet6 fe80::aa8:7bf2:99b:fcf2/64 scope &lt;span class=&quot;nb&quot;&gt;link &lt;/span&gt;noprefixroute
-       valid_lft forever preferred_lft forever
-3: enp0s8: &amp;lt;BROADCAST,MULTICAST,PROMISC,UP,LOWER_UP&amp;gt; mtu 1500 qdisc fq_codel master br0 state UP group default qlen 1000
-    &lt;span class=&quot;nb&quot;&gt;link&lt;/span&gt;/ether 08:00:27:08:4b:8c brd ff:ff:ff:ff:ff:ff
-    inet 192.168.8.143/24 brd 192.168.8.255 scope global dynamic enp0s8
-       valid_lft 41193sec preferred_lft 41193sec
-    inet 192.168.8.142/24 brd 192.168.8.255 scope global secondary noprefixroute enp0s8
-       valid_lft forever preferred_lft forever
-    inet6 fe80::cfe0:a989:e6f0:a482/64 scope &lt;span class=&quot;nb&quot;&gt;link &lt;/span&gt;noprefixroute
-       valid_lft forever preferred_lft forever
-5: br0: &amp;lt;BROADCAST,MULTICAST,PROMISC,UP,LOWER_UP&amp;gt; mtu 1500 qdisc noqueue state UP group default qlen 1000
-    &lt;span class=&quot;nb&quot;&gt;link&lt;/span&gt;/ether 08:00:27:08:4b:8c brd ff:ff:ff:ff:ff:ff
-    inet 192.168.8.143/24 brd 192.168.8.255 scope global dynamic br0
-       valid_lft 42100sec preferred_lft 42100sec
-    inet 192.168.8.142/24 brd 192.168.8.255 scope global secondary noprefixroute br0
-       valid_lft forever preferred_lft forever
-    inet6 fe80::5c79:b0f1:69eb:54d8/64 scope &lt;span class=&quot;nb&quot;&gt;link
-       &lt;/span&gt;valid_lft forever preferred_lft forever
-6: tap0: &amp;lt;NO-CARRIER,BROADCAST,MULTICAST,PROMISC,UP&amp;gt; mtu 1500 qdisc fq_codel state DOWN group default qlen 1000
-    &lt;span class=&quot;nb&quot;&gt;link&lt;/span&gt;/ether aa:dd:8b:c9:3c:55 brd ff:ff:ff:ff:ff:ff
-    inet 169.254.7.232/16 brd 169.254.255.255 scope &lt;span class=&quot;nb&quot;&gt;link &lt;/span&gt;tap0:avahi
-       valid_lft forever preferred_lft forever
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;虚拟机网络：&lt;/p&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;1: lo: &amp;lt;LOOPBACK,UP,LOWER_UP&amp;gt; mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
-    &lt;span class=&quot;nb&quot;&gt;link&lt;/span&gt;/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
-    inet 127.0.0.1/8 scope host lo
-       valid_lft forever preferred_lft forever
-    inet6 ::1/128 scope host
-       valid_lft forever preferred_lft forever
-2: enp0s3: &amp;lt;BROADCAST,MULTICAST,UP,LOWER_UP&amp;gt; mtu 1500 qdisc fq_codel state UP group default qlen 1000
-    &lt;span class=&quot;nb&quot;&gt;link&lt;/span&gt;/ether 08:00:27:06:c3:ec brd ff:ff:ff:ff:ff:ff
-    inet 192.168.8.208/24 brd 192.168.8.255 scope global noprefixroute enp0s3
-       valid_lft forever preferred_lft forever
-    inet6 fe80::aa8:7bf2:99b:fcf2/64 scope &lt;span class=&quot;nb&quot;&gt;link
-       &lt;/span&gt;valid_lft forever preferred_lft forever
-
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;七其他问题&quot;&gt;七、其他问题&lt;/h3&gt;
-
-&lt;h4 id=&quot;自动获取dhcp&quot;&gt;自动获取dhcp&lt;/h4&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;apt intall dhcpcd
-&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;systemctl &lt;span class=&quot;nb&quot;&gt;enable &lt;/span&gt;dhcpcd
-&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;systemctl start dhcpcd
-&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;dhcpcd &lt;span class=&quot;c&quot;&gt;#获取ip&lt;/span&gt;
-&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;dhcpcd &lt;span class=&quot;nt&quot;&gt;-k&lt;/span&gt; &lt;span class=&quot;c&quot;&gt;#清空ip&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name>hsfeng</name></author><category term="Qemu" /><summary type="html">QEMU 支持多种网络模式，简单介绍如何使用这几种网络模式。</summary></entry></feed>
+&lt;p&gt;至此，完成了两端的配置，ServerA可以直接访问ServerB 所接的私网了。&lt;/p&gt;</content><author><name>hsfeng</name></author><category term="Linux" /><summary type="html">通过一个例子说明服务器A如何通过tunnel直接访问到服务器B连接的私有网络。</summary></entry></feed>
