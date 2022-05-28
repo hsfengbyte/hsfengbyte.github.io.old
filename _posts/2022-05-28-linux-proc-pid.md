@@ -1,12 +1,50 @@
 ---
 layout: post
-title: Linux Proc Pid 部分内容详解
+title: 文件系统Proc - Pid内容详解
 categories: Linux
-description: Linux /proc/$pid部分内容详解
+description: Linux文件系统Proc之pid内容详解
 keywords: linux
 ---
 
-### auxv
+/proc文件系统，不是普通的文件系统，而是系统内核的映像，该目录中的文件时存放在系统内存中的，它以文件系统的形式为访问系统内核数据的操作提供接口。
+
+查看内核版本命令：uname -
+
+或者：cat /proc/version
+
+或者：lsb_release -a，可以列出所有版本信息。
+
+# 进程信息
+
+在/proc文件系统中，每一个进程都有一个相应的文件 。下面是/proc目录下的一些重要文件：
+
+/proc/pid/cmdline 进程启动命令
+
+/proc/pid/cwd 链接到进程当前工作目录
+
+/proc/pid/environ 进程环境变量列表
+
+/proc/pid/exe 链接到进程的执行命令文件
+
+/proc/pid/fd 包含进程相关的所有的文件描述符
+
+/proc/pid/maps 与进程相关的内存映射信息
+
+/proc/pid/mem 指代进程持有的内存,不可读
+
+/proc/pid/root 链接到进程的根目录
+
+/proc/pid/stat 进程的状态
+
+/proc/pid/statm 进程使用的内存的状态
+
+/proc/pid/status 进程状态信息,比stat/statm更具可读性
+
+/proc/self 链接到当前正在运行的进程
+
+# 进程文件信息
+
+## auxv
 
 /proc/[pid]/auxv包含传递给进程的ELF解释器信息，格式是每一项都是一个unsigned long长度的ID加上一个unsigned long长度的值。最后一项以连续的两个0x00开头。举例如下：
 
@@ -36,7 +74,7 @@ keywords: linux
 
 解析这个文件可以参考这段代码。
 
-### cmdline
+## cmdline
 
 /proc/[pid]/cmdline是一个只读文件，包含进程的完整命令行信息。如果这个进程是zombie进程，则这个文件没有任何内容。举例如下：
 
@@ -48,7 +86,7 @@ root       2948      1  0 Nov05 ?        00:00:04 /usr/sbin/libvirtd --listen
 /usr/sbin/libvirtd--listen
 ```
 
-### comm
+## comm
 
 /proc/[pid]/comm包含进程的命令名。举例如下：
 
@@ -57,15 +95,16 @@ root       2948      1  0 Nov05 ?        00:00:04 /usr/sbin/libvirtd --listen
 libvirtd
 ```
 
-### cwd
+## cwd
 
 /proc/[pid]/cwd是进程当前工作目录的符号链接。举例如下：
 
 ```shell
 # ls -lt /proc/2948/cwd
 lrwxrwxrwx 1 root root 0 Nov  9 12:14 /proc/2948/cwd -> /
+```
 
-### environ
+## environ
 
 /proc/[pid]/environ显示进程的环境变量。举例如下：
 
@@ -80,7 +119,7 @@ LIBVIRTD_ARGS=--listen
 LIBVIRTD_NOFILES_LIMIT=2048
 ```
 
-### exe
+## exe
 
 /proc/[pid]/exe为实际运行程序的符号链接。举例如下：
 
@@ -89,7 +128,7 @@ LIBVIRTD_NOFILES_LIMIT=2048
 lrwxrwxrwx 1 root root 0 Nov  5 13:04 /proc/2948/exe -> /usr/sbin/libvirtd
 ```
 
-### fd
+## fd
 
 /proc/[pid]/fd是一个目录，包含进程打开文件的情况。举例如下：
 
@@ -122,7 +161,7 @@ l-wx------. 1 root root 64 Apr 13 16:35 2 -> /root/.vnc/localhost.localdomain:1.
 
 目录中的每一项都是一个符号链接，指向打开的文件，数字则代表文件描述符。
 
-### latency
+## latency
 
 /proc/[pid]/latency显示哪些代码造成的延时比较大（使用这个feature，需要执行“echo 1 > /proc/sys/kernel/latencytop”）。举例如下：
 
@@ -135,7 +174,7 @@ Latency Top version : v0.1
 
 每一行前三个数字分别是后面代码执行的次数，总共执行延迟时间（单位是微秒）和最长执行延迟时间（单位是微秒），后面则是代码完整的调用栈。
 
-### limits
+## limits
 
 /proc/[pid]/limits显示当前进程的资源限制。举例如下：
 
@@ -162,7 +201,7 @@ Max realtime timeout      unlimited            unlimited            us
 
 Soft Limit表示kernel设置给资源的值，Hard Limit表示Soft Limit的上限，而Units则为计量单元。
 
-### maps
+## maps
 
 /proc/[pid]/maps显示进程的内存区域映射信息。举例如下：
 
@@ -185,7 +224,7 @@ ffffffffff600000-ffffffffff601000 r-xp 00000000 00:00 0                  [vsysca
 
 其中注意的一点是[stack:<tid>]是线程的堆栈信息，对应于/proc/[pid]/task/[tid]/路径。
 
-### root
+## root
 
 /proc/[pid]/root是进程根目录的符号链接。举例如下：
 
@@ -194,7 +233,7 @@ ffffffffff600000-ffffffffff601000 r-xp 00000000 00:00 0                  [vsysca
 lrwxrwxrwx 1 root root 0 Nov  9 12:14 /proc/2948/root -> /
 ```
 
-### stack
+## stack
 
 /proc/[pid]/stack显示当前进程的内核调用栈信息，只有内核编译时打开了CONFIG_STACKTRACE编译选项，才会生成这个文件。举例如下：
 
@@ -208,7 +247,7 @@ lrwxrwxrwx 1 root root 0 Nov  9 12:14 /proc/2948/root -> /
 [<ffffffffffffffff>] 0xffffffffffffffff
 ```
 
-### statm
+## statm
 
 /proc/[pid]/statm显示进程所占用内存大小的统计信息，包含七个值，度量单位是page（page大小可通过getconf PAGESIZE得到）。举例如下：
 
@@ -233,21 +272,20 @@ f）进程的堆栈；
 
 g）dirty pages（从2.6版本起，这个值为0）。
 
-### syscall
+## syscall
 
 /proc/[pid]/syscall显示当前进程正在执行的系统调用。举例如下：
 
 ```shell
+# cat /proc/2948/syscall
 7 0x7f4a452cbe70 0xb 0x1388 0xffffffffffdff000 0x7f4a4274a750 0x0 0x7ffd1a8033f0 0x7f4a41ff2c1d
 ```
-
-# cat /proc/2948/syscall
 
 第一个值是系统调用号（7代表poll），后面跟着6个系统调用的参数值（位于寄存器中），最后两个值依次是堆栈指针和指令计数器的值。如果当前进程虽然阻塞，但阻塞函数并不是系统调用，则系统调用号的值为-1，后面只有堆栈指针和指令计数器的值。如果进程没有阻塞，则这个文件只有一个“running”的字符串。
 
 内核编译时打开了CONFIG_HAVE_ARCH_TRACEHOOK编译选项，才会生成这个文件。
 
-### wchan
+## wchan
 
 /proc/[pid]/wchan显示当进程sleep时，kernel当前运行的函数。举例如下：
 
