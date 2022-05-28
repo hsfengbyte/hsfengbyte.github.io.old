@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.2">Jekyll</generator><link href="https://hsfeng.site/feed.xml" rel="self" type="application/atom+xml" /><link href="https://hsfeng.site/" rel="alternate" type="text/html" /><updated>2022-05-28T16:11:03+08:00</updated><id>https://hsfeng.site/feed.xml</id><title type="html">零度</title><subtitle>零度的个人博客，一个程序猿</subtitle><author><name>hsfeng</name></author><entry><title type="html">并发框架Disruptor</title><link href="https://hsfeng.site/2022/05/28/disruptor/" rel="alternate" type="text/html" title="并发框架Disruptor" /><published>2022-05-28T00:00:00+08:00</published><updated>2022-05-28T00:00:00+08:00</updated><id>https://hsfeng.site/2022/05/28/disruptor</id><content type="html" xml:base="https://hsfeng.site/2022/05/28/disruptor/">&lt;p&gt;Disruptor它是一个开源的并发框架，并获得2011 Duke’s 程序框架创新奖，能够在无锁的情况下实现网络的Queue并发操作。&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.2">Jekyll</generator><link href="https://hsfeng.site/feed.xml" rel="self" type="application/atom+xml" /><link href="https://hsfeng.site/" rel="alternate" type="text/html" /><updated>2022-05-28T21:13:58+08:00</updated><id>https://hsfeng.site/feed.xml</id><title type="html">零度</title><subtitle>零度的个人博客，一个程序猿</subtitle><author><name>hsfeng</name></author><entry><title type="html">并发框架Disruptor</title><link href="https://hsfeng.site/2022/05/28/disruptor/" rel="alternate" type="text/html" title="并发框架Disruptor" /><published>2022-05-28T00:00:00+08:00</published><updated>2022-05-28T00:00:00+08:00</updated><id>https://hsfeng.site/2022/05/28/disruptor</id><content type="html" xml:base="https://hsfeng.site/2022/05/28/disruptor/">&lt;p&gt;Disruptor它是一个开源的并发框架，并获得2011 Duke’s 程序框架创新奖，能够在无锁的情况下实现网络的Queue并发操作。&lt;/p&gt;
 
 &lt;h1 id=&quot;介绍&quot;&gt;介绍&lt;/h1&gt;
 
@@ -72,7 +72,45 @@
 
 &lt;p&gt;多个生产者 + N个消费者&lt;/p&gt;
 
-&lt;p&gt;很显然，无论生产者有几个，生产者指针P只能存在一个，否则数据就乱套了。那么多个生产者之间共享一个P指针，在disruptor中实际上是利用了CAS机制来保证多线程的数据安全，也没有使用到锁。&lt;/p&gt;</content><author><name>hsfeng</name></author><category term="Java" /><summary type="html">Disruptor它是一个开源的并发框架，并获得2011 Duke’s 程序框架创新奖，能够在无锁的情况下实现网络的Queue并发操作。</summary></entry><entry><title type="html">Linux Proc Pid 部分内容详解</title><link href="https://hsfeng.site/2021/11/29/linux-proc-pid/" rel="alternate" type="text/html" title="Linux Proc Pid 部分内容详解" /><published>2021-11-29T00:00:00+08:00</published><updated>2021-11-29T00:00:00+08:00</updated><id>https://hsfeng.site/2021/11/29/linux-proc-pid</id><content type="html" xml:base="https://hsfeng.site/2021/11/29/linux-proc-pid/">&lt;h3 id=&quot;auxv&quot;&gt;auxv&lt;/h3&gt;
+&lt;p&gt;很显然，无论生产者有几个，生产者指针P只能存在一个，否则数据就乱套了。那么多个生产者之间共享一个P指针，在disruptor中实际上是利用了CAS机制来保证多线程的数据安全，也没有使用到锁。&lt;/p&gt;</content><author><name>hsfeng</name></author><category term="Java" /><summary type="html">Disruptor它是一个开源的并发框架，并获得2011 Duke’s 程序框架创新奖，能够在无锁的情况下实现网络的Queue并发操作。</summary></entry><entry><title type="html">文件系统Proc - Pid内容详解</title><link href="https://hsfeng.site/2022/05/28/linux-proc-pid/" rel="alternate" type="text/html" title="文件系统Proc - Pid内容详解" /><published>2022-05-28T00:00:00+08:00</published><updated>2022-05-28T00:00:00+08:00</updated><id>https://hsfeng.site/2022/05/28/linux-proc-pid</id><content type="html" xml:base="https://hsfeng.site/2022/05/28/linux-proc-pid/">&lt;p&gt;/proc文件系统，不是普通的文件系统，而是系统内核的映像，该目录中的文件时存放在系统内存中的，它以文件系统的形式为访问系统内核数据的操作提供接口。&lt;/p&gt;
+
+&lt;p&gt;查看内核版本命令：uname -&lt;/p&gt;
+
+&lt;p&gt;或者：cat /proc/version&lt;/p&gt;
+
+&lt;p&gt;或者：lsb_release -a，可以列出所有版本信息。&lt;/p&gt;
+
+&lt;h1 id=&quot;进程信息&quot;&gt;进程信息&lt;/h1&gt;
+
+&lt;p&gt;在/proc文件系统中，每一个进程都有一个相应的文件 。下面是/proc目录下的一些重要文件：&lt;/p&gt;
+
+&lt;p&gt;/proc/pid/cmdline 进程启动命令&lt;/p&gt;
+
+&lt;p&gt;/proc/pid/cwd 链接到进程当前工作目录&lt;/p&gt;
+
+&lt;p&gt;/proc/pid/environ 进程环境变量列表&lt;/p&gt;
+
+&lt;p&gt;/proc/pid/exe 链接到进程的执行命令文件&lt;/p&gt;
+
+&lt;p&gt;/proc/pid/fd 包含进程相关的所有的文件描述符&lt;/p&gt;
+
+&lt;p&gt;/proc/pid/maps 与进程相关的内存映射信息&lt;/p&gt;
+
+&lt;p&gt;/proc/pid/mem 指代进程持有的内存,不可读&lt;/p&gt;
+
+&lt;p&gt;/proc/pid/root 链接到进程的根目录&lt;/p&gt;
+
+&lt;p&gt;/proc/pid/stat 进程的状态&lt;/p&gt;
+
+&lt;p&gt;/proc/pid/statm 进程使用的内存的状态&lt;/p&gt;
+
+&lt;p&gt;/proc/pid/status 进程状态信息,比stat/statm更具可读性&lt;/p&gt;
+
+&lt;p&gt;/proc/self 链接到当前正在运行的进程&lt;/p&gt;
+
+&lt;h1 id=&quot;进程文件信息&quot;&gt;进程文件信息&lt;/h1&gt;
+
+&lt;h2 id=&quot;auxv&quot;&gt;auxv&lt;/h2&gt;
 
 &lt;p&gt;/proc/[pid]/auxv包含传递给进程的ELF解释器信息，格式是每一项都是一个unsigned long长度的ID加上一个unsigned long长度的值。最后一项以连续的两个0x00开头。举例如下：&lt;/p&gt;
 
@@ -101,7 +139,7 @@
 
 &lt;p&gt;解析这个文件可以参考这段代码。&lt;/p&gt;
 
-&lt;h3 id=&quot;cmdline&quot;&gt;cmdline&lt;/h3&gt;
+&lt;h2 id=&quot;cmdline&quot;&gt;cmdline&lt;/h2&gt;
 
 &lt;p&gt;/proc/[pid]/cmdline是一个只读文件，包含进程的完整命令行信息。如果这个进程是zombie进程，则这个文件没有任何内容。举例如下：&lt;/p&gt;
 
@@ -112,7 +150,7 @@ root       2948      1  0 Nov05 ?        00:00:04 /usr/sbin/libvirtd &lt;span cl
 /usr/sbin/libvirtd--listen
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;h3 id=&quot;comm&quot;&gt;comm&lt;/h3&gt;
+&lt;h2 id=&quot;comm&quot;&gt;comm&lt;/h2&gt;
 
 &lt;p&gt;/proc/[pid]/comm包含进程的命令名。举例如下：&lt;/p&gt;
 
@@ -120,19 +158,19 @@ root       2948      1  0 Nov05 ?        00:00:04 /usr/sbin/libvirtd &lt;span cl
 libvirtd
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;h3 id=&quot;cwd&quot;&gt;cwd&lt;/h3&gt;
+&lt;h2 id=&quot;cwd&quot;&gt;cwd&lt;/h2&gt;
 
 &lt;p&gt;/proc/[pid]/cwd是进程当前工作目录的符号链接。举例如下：&lt;/p&gt;
 
 &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# ls -lt /proc/2948/cwd&lt;/span&gt;
 lrwxrwxrwx 1 root root 0 Nov  9 12:14 /proc/2948/cwd -&amp;gt; /
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;span class=&quot;c&quot;&gt;### environ&lt;/span&gt;
+&lt;h2 id=&quot;environ&quot;&gt;environ&lt;/h2&gt;
 
-/proc/[pid]/environ显示进程的环境变量。举例如下：
+&lt;p&gt;/proc/[pid]/environ显示进程的环境变量。举例如下：&lt;/p&gt;
 
-&lt;span class=&quot;sb&quot;&gt;```&lt;/span&gt;shell
-&lt;span class=&quot;c&quot;&gt;# strings /proc/2948/environ&lt;/span&gt;
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# strings /proc/2948/environ&lt;/span&gt;
 &lt;span class=&quot;nv&quot;&gt;LANG&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;POSIX
 &lt;span class=&quot;nv&quot;&gt;LC_CTYPE&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;en_US.UTF-8
 &lt;span class=&quot;nv&quot;&gt;PATH&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
@@ -142,7 +180,7 @@ lrwxrwxrwx 1 root root 0 Nov  9 12:14 /proc/2948/cwd -&amp;gt; /
 &lt;span class=&quot;nv&quot;&gt;LIBVIRTD_NOFILES_LIMIT&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;2048
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;h3 id=&quot;exe&quot;&gt;exe&lt;/h3&gt;
+&lt;h2 id=&quot;exe&quot;&gt;exe&lt;/h2&gt;
 
 &lt;p&gt;/proc/[pid]/exe为实际运行程序的符号链接。举例如下：&lt;/p&gt;
 
@@ -150,7 +188,7 @@ lrwxrwxrwx 1 root root 0 Nov  9 12:14 /proc/2948/cwd -&amp;gt; /
 lrwxrwxrwx 1 root root 0 Nov  5 13:04 /proc/2948/exe -&amp;gt; /usr/sbin/libvirtd
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;h3 id=&quot;fd&quot;&gt;fd&lt;/h3&gt;
+&lt;h2 id=&quot;fd&quot;&gt;fd&lt;/h2&gt;
 
 &lt;p&gt;/proc/[pid]/fd是一个目录，包含进程打开文件的情况。举例如下：&lt;/p&gt;
 
@@ -182,7 +220,7 @@ l-wx------. 1 root root 64 Apr 13 16:35 2 -&amp;gt; /root/.vnc/localhost.localdo
 
 &lt;p&gt;目录中的每一项都是一个符号链接，指向打开的文件，数字则代表文件描述符。&lt;/p&gt;
 
-&lt;h3 id=&quot;latency&quot;&gt;latency&lt;/h3&gt;
+&lt;h2 id=&quot;latency&quot;&gt;latency&lt;/h2&gt;
 
 &lt;p&gt;/proc/[pid]/latency显示哪些代码造成的延时比较大（使用这个feature，需要执行“echo 1 &amp;gt; /proc/sys/kernel/latencytop”）。举例如下：&lt;/p&gt;
 
@@ -194,7 +232,7 @@ Latency Top version : v0.1
 
 &lt;p&gt;每一行前三个数字分别是后面代码执行的次数，总共执行延迟时间（单位是微秒）和最长执行延迟时间（单位是微秒），后面则是代码完整的调用栈。&lt;/p&gt;
 
-&lt;h3 id=&quot;limits&quot;&gt;limits&lt;/h3&gt;
+&lt;h2 id=&quot;limits&quot;&gt;limits&lt;/h2&gt;
 
 &lt;p&gt;/proc/[pid]/limits显示当前进程的资源限制。举例如下：&lt;/p&gt;
 
@@ -220,7 +258,7 @@ Max realtime &lt;span class=&quot;nb&quot;&gt;timeout      &lt;/span&gt;unlimite
 
 &lt;p&gt;Soft Limit表示kernel设置给资源的值，Hard Limit表示Soft Limit的上限，而Units则为计量单元。&lt;/p&gt;
 
-&lt;h3 id=&quot;maps&quot;&gt;maps&lt;/h3&gt;
+&lt;h2 id=&quot;maps&quot;&gt;maps&lt;/h2&gt;
 
 &lt;p&gt;/proc/[pid]/maps显示进程的内存区域映射信息。举例如下：&lt;/p&gt;
 
@@ -242,7 +280,7 @@ ffffffffff600000-ffffffffff601000 r-xp 00000000 00:00 0                  &lt;spa
 
 &lt;p&gt;其中注意的一点是[stack:&lt;tid&gt;]是线程的堆栈信息，对应于/proc/[pid]/task/[tid]/路径。&lt;/tid&gt;&lt;/p&gt;
 
-&lt;h3 id=&quot;root&quot;&gt;root&lt;/h3&gt;
+&lt;h2 id=&quot;root&quot;&gt;root&lt;/h2&gt;
 
 &lt;p&gt;/proc/[pid]/root是进程根目录的符号链接。举例如下：&lt;/p&gt;
 
@@ -250,7 +288,7 @@ ffffffffff600000-ffffffffff601000 r-xp 00000000 00:00 0                  &lt;spa
 lrwxrwxrwx 1 root root 0 Nov  9 12:14 /proc/2948/root -&amp;gt; /
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;h3 id=&quot;stack&quot;&gt;stack&lt;/h3&gt;
+&lt;h2 id=&quot;stack&quot;&gt;stack&lt;/h2&gt;
 
 &lt;p&gt;/proc/[pid]/stack显示当前进程的内核调用栈信息，只有内核编译时打开了CONFIG_STACKTRACE编译选项，才会生成这个文件。举例如下：&lt;/p&gt;
 
@@ -263,7 +301,7 @@ lrwxrwxrwx 1 root root 0 Nov  9 12:14 /proc/2948/root -&amp;gt; /
 &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&amp;lt;ffffffffffffffff&amp;gt;] 0xffffffffffffffff
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;h3 id=&quot;statm&quot;&gt;statm&lt;/h3&gt;
+&lt;h2 id=&quot;statm&quot;&gt;statm&lt;/h2&gt;
 
 &lt;p&gt;/proc/[pid]/statm显示进程所占用内存大小的统计信息，包含七个值，度量单位是page（page大小可通过getconf PAGESIZE得到）。举例如下：&lt;/p&gt;
 
@@ -287,26 +325,25 @@ lrwxrwxrwx 1 root root 0 Nov  9 12:14 /proc/2948/root -&amp;gt; /
 
 &lt;p&gt;g）dirty pages（从2.6版本起，这个值为0）。&lt;/p&gt;
 
-&lt;h3 id=&quot;syscall&quot;&gt;syscall&lt;/h3&gt;
+&lt;h2 id=&quot;syscall&quot;&gt;syscall&lt;/h2&gt;
 
 &lt;p&gt;/proc/[pid]/syscall显示当前进程正在执行的系统调用。举例如下：&lt;/p&gt;
 
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;7 0x7f4a452cbe70 0xb 0x1388 0xffffffffffdff000 0x7f4a4274a750 0x0 0x7ffd1a8033f0 0x7f4a41ff2c1d
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# cat /proc/2948/syscall&lt;/span&gt;
+7 0x7f4a452cbe70 0xb 0x1388 0xffffffffffdff000 0x7f4a4274a750 0x0 0x7ffd1a8033f0 0x7f4a41ff2c1d
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h1 id=&quot;cat-proc2948syscall&quot;&gt;cat /proc/2948/syscall&lt;/h1&gt;
 
 &lt;p&gt;第一个值是系统调用号（7代表poll），后面跟着6个系统调用的参数值（位于寄存器中），最后两个值依次是堆栈指针和指令计数器的值。如果当前进程虽然阻塞，但阻塞函数并不是系统调用，则系统调用号的值为-1，后面只有堆栈指针和指令计数器的值。如果进程没有阻塞，则这个文件只有一个“running”的字符串。&lt;/p&gt;
 
 &lt;p&gt;内核编译时打开了CONFIG_HAVE_ARCH_TRACEHOOK编译选项，才会生成这个文件。&lt;/p&gt;
 
-&lt;h3 id=&quot;wchan&quot;&gt;wchan&lt;/h3&gt;
+&lt;h2 id=&quot;wchan&quot;&gt;wchan&lt;/h2&gt;
 
 &lt;p&gt;/proc/[pid]/wchan显示当进程sleep时，kernel当前运行的函数。举例如下：&lt;/p&gt;
 
 &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# cat /proc/2948/wchan&lt;/span&gt;
 kauditd_
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name>hsfeng</name></author><category term="Linux" /><summary type="html">auxv</summary></entry><entry><title type="html">C++ 学习笔记</title><link href="https://hsfeng.site/2021/11/20/cxx-learning-note/" rel="alternate" type="text/html" title="C++ 学习笔记" /><published>2021-11-20T00:00:00+08:00</published><updated>2021-11-20T00:00:00+08:00</updated><id>https://hsfeng.site/2021/11/20/cxx-learning-note</id><content type="html" xml:base="https://hsfeng.site/2021/11/20/cxx-learning-note/">&lt;h2 id=&quot;c-学习笔记&quot;&gt;C++ 学习笔记&lt;/h2&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name>hsfeng</name></author><category term="Linux" /><summary type="html">/proc文件系统，不是普通的文件系统，而是系统内核的映像，该目录中的文件时存放在系统内存中的，它以文件系统的形式为访问系统内核数据的操作提供接口。</summary></entry><entry><title type="html">C++ 学习笔记</title><link href="https://hsfeng.site/2021/11/20/cxx-learning-note/" rel="alternate" type="text/html" title="C++ 学习笔记" /><published>2021-11-20T00:00:00+08:00</published><updated>2021-11-20T00:00:00+08:00</updated><id>https://hsfeng.site/2021/11/20/cxx-learning-note</id><content type="html" xml:base="https://hsfeng.site/2021/11/20/cxx-learning-note/">&lt;h2 id=&quot;c-学习笔记&quot;&gt;C++ 学习笔记&lt;/h2&gt;
 
 &lt;h2 id=&quot;todo&quot;&gt;TODO&lt;/h2&gt;</content><author><name>hsfeng</name></author><category term="C++" /><summary type="html">C++ 学习笔记</summary></entry><entry><title type="html">Java 学习笔记</title><link href="https://hsfeng.site/2021/11/20/java-learning-note/" rel="alternate" type="text/html" title="Java 学习笔记" /><published>2021-11-20T00:00:00+08:00</published><updated>2021-11-20T00:00:00+08:00</updated><id>https://hsfeng.site/2021/11/20/java-learning-note</id><content type="html" xml:base="https://hsfeng.site/2021/11/20/java-learning-note/">&lt;h2 id=&quot;java-学习笔记&quot;&gt;Java 学习笔记&lt;/h2&gt;
 
