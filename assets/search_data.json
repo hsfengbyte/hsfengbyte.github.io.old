@@ -99,7 +99,7 @@
     } ,
   
     {
-      "title"    : "C++ - 经典开源项目",
+      "title"    : "C++（一）经典开源项目",
       "category" : "C++",
       
       "url"      : "https://hsfeng.site/2020/11/09/c++-open-source-project/",
@@ -107,10 +107,10 @@
     } ,
   
     {
-      "title"    : "C++ - 多线程",
+      "title"    : "C++（二）多线程",
       "category" : "C++",
       
-      "url"      : "https://hsfeng.site/2020/11/10/thread-c++/",
+      "url"      : "https://hsfeng.site/2020/11/10/c++-thread/",
       "keywords" : "c++"
     } ,
   
