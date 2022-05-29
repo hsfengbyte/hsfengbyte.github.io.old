@@ -155,7 +155,7 @@
     } ,
   
     {
-      "title"    : "Iptables 基础详解",
+      "title"    : "Linux（四）Iptables 基础详解",
       "category" : "Linux",
       
       "url"      : "https://hsfeng.site/2020/11/22/linux-iptables/",
@@ -208,14 +208,6 @@
       
       "url"      : "https://hsfeng.site/2021/11/15/zookeeper/",
       "keywords" : "zookeeper"
-    } ,
-  
-    {
-      "title"    : "C++ 学习笔记",
-      "category" : "C++",
-      
-      "url"      : "https://hsfeng.site/2021/11/20/cxx-learning-note/",
-      "keywords" : "c++"
     } ,
   
     {

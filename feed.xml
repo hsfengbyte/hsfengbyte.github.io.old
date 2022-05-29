@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.2">Jekyll</generator><link href="https://hsfeng.site/feed.xml" rel="self" type="application/atom+xml" /><link href="https://hsfeng.site/" rel="alternate" type="text/html" /><updated>2022-05-29T19:11:48+08:00</updated><id>https://hsfeng.site/feed.xml</id><title type="html">零度</title><subtitle>零度的个人博客，一个程序猿</subtitle><author><name>hsfeng</name></author><entry><title type="html">并发框架Disruptor</title><link href="https://hsfeng.site/2022/05/28/disruptor/" rel="alternate" type="text/html" title="并发框架Disruptor" /><published>2022-05-28T00:00:00+08:00</published><updated>2022-05-28T00:00:00+08:00</updated><id>https://hsfeng.site/2022/05/28/disruptor</id><content type="html" xml:base="https://hsfeng.site/2022/05/28/disruptor/">&lt;p&gt;Disruptor它是一个开源的并发框架，并获得2011 Duke’s 程序框架创新奖，能够在无锁的情况下实现网络的Queue并发操作。&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.2">Jekyll</generator><link href="https://hsfeng.site/feed.xml" rel="self" type="application/atom+xml" /><link href="https://hsfeng.site/" rel="alternate" type="text/html" /><updated>2022-05-29T19:14:11+08:00</updated><id>https://hsfeng.site/feed.xml</id><title type="html">零度</title><subtitle>零度的个人博客，一个程序猿</subtitle><author><name>hsfeng</name></author><entry><title type="html">并发框架Disruptor</title><link href="https://hsfeng.site/2022/05/28/disruptor/" rel="alternate" type="text/html" title="并发框架Disruptor" /><published>2022-05-28T00:00:00+08:00</published><updated>2022-05-28T00:00:00+08:00</updated><id>https://hsfeng.site/2022/05/28/disruptor</id><content type="html" xml:base="https://hsfeng.site/2022/05/28/disruptor/">&lt;p&gt;Disruptor它是一个开源的并发框架，并获得2011 Duke’s 程序框架创新奖，能够在无锁的情况下实现网络的Queue并发操作。&lt;/p&gt;
 
 &lt;h1 id=&quot;介绍&quot;&gt;介绍&lt;/h1&gt;
 
@@ -1276,9 +1276,7 @@ kauditd_
         &lt;span class=&quot;nc&quot;&gt;System&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;out&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;println&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sum&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
     &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
 &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name>hsfeng</name></author><category term="Java" /><summary type="html">unsafe 可以帮我们直接去操作硬件资源,当然了是借助java的jit来进行的,官方不推荐使用,因为不安全,例如你使用unsafe创建一个超级大的数组,但是这个数组jvm是不管理的,只能你自己操作,容易oom,也不利于资源的回收.</summary></entry><entry><title type="html">C++ 学习笔记</title><link href="https://hsfeng.site/2021/11/20/cxx-learning-note/" rel="alternate" type="text/html" title="C++ 学习笔记" /><published>2021-11-20T00:00:00+08:00</published><updated>2021-11-20T00:00:00+08:00</updated><id>https://hsfeng.site/2021/11/20/cxx-learning-note</id><content type="html" xml:base="https://hsfeng.site/2021/11/20/cxx-learning-note/">&lt;h2 id=&quot;c-学习笔记&quot;&gt;C++ 学习笔记&lt;/h2&gt;
-
-&lt;h2 id=&quot;todo&quot;&gt;TODO&lt;/h2&gt;</content><author><name>hsfeng</name></author><category term="C++" /><summary type="html">C++ 学习笔记</summary></entry><entry><title type="html">Zookeeper</title><link href="https://hsfeng.site/2021/11/15/zookeeper/" rel="alternate" type="text/html" title="Zookeeper" /><published>2021-11-15T00:00:00+08:00</published><updated>2021-11-15T00:00:00+08:00</updated><id>https://hsfeng.site/2021/11/15/zookeeper</id><content type="html" xml:base="https://hsfeng.site/2021/11/15/zookeeper/">&lt;p&gt;一个典型的分布式数据一致性的解决方案，分布式应用程序可以基于它实现诸如数据发布/订阅、负载均衡、命名服务、分布式协调/通知、集群管理、Master 选举、分布式锁和分布式队列等功能。&lt;/p&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name>hsfeng</name></author><category term="Java" /><summary type="html">unsafe 可以帮我们直接去操作硬件资源,当然了是借助java的jit来进行的,官方不推荐使用,因为不安全,例如你使用unsafe创建一个超级大的数组,但是这个数组jvm是不管理的,只能你自己操作,容易oom,也不利于资源的回收.</summary></entry><entry><title type="html">Zookeeper</title><link href="https://hsfeng.site/2021/11/15/zookeeper/" rel="alternate" type="text/html" title="Zookeeper" /><published>2021-11-15T00:00:00+08:00</published><updated>2021-11-15T00:00:00+08:00</updated><id>https://hsfeng.site/2021/11/15/zookeeper</id><content type="html" xml:base="https://hsfeng.site/2021/11/15/zookeeper/">&lt;p&gt;一个典型的分布式数据一致性的解决方案，分布式应用程序可以基于它实现诸如数据发布/订阅、负载均衡、命名服务、分布式协调/通知、集群管理、Master 选举、分布式锁和分布式队列等功能。&lt;/p&gt;
 
 &lt;h1 id=&quot;zookeeper-权限控制-acl&quot;&gt;Zookeeper 权限控制 ACL&lt;/h1&gt;
 
@@ -1393,4 +1391,29 @@ kauditd_
 
 &lt;p&gt;3.having min(score&amp;gt;80)找到每门成绩都不低于80分的学生;&lt;/p&gt;
 
-&lt;p&gt;4.select name取出名字.&lt;/p&gt;</content><author><name>hsfeng</name></author><category term="Sql" /><summary type="html">昨天学习SQL，碰到了个小问题：既然where和having都可以表示“有条件地筛选出想要的内容”，那么，它们的区别是什么呢？</summary></entry></feed>
+&lt;p&gt;4.select name取出名字.&lt;/p&gt;</content><author><name>hsfeng</name></author><category term="Sql" /><summary type="html">昨天学习SQL，碰到了个小问题：既然where和having都可以表示“有条件地筛选出想要的内容”，那么，它们的区别是什么呢？</summary></entry><entry><title type="html">OpenWrt 使用总结</title><link href="https://hsfeng.site/2021/08/18/openwrt/" rel="alternate" type="text/html" title="OpenWrt 使用总结" /><published>2021-08-18T00:00:00+08:00</published><updated>2021-08-18T00:00:00+08:00</updated><id>https://hsfeng.site/2021/08/18/openwrt</id><content type="html" xml:base="https://hsfeng.site/2021/08/18/openwrt/">&lt;p&gt;OpenWrt 使用总结&lt;/p&gt;
+
+&lt;h2 id=&quot;openwrt安装软件到外置存储u盘移动硬盘&quot;&gt;OpenWrt安装软件到外置存储（U盘/移动硬盘）&lt;/h2&gt;
+
+&lt;p&gt;修改opkg配置文件&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;vim /etc/opkg.conf
+# 添加外置存储路径: dest usb /mnt/usb/optware
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;配置环境变量&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;vim /etc/profile
+
+# 添加配置
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/mnt/usb/optware/usr/lib:/mnt/usb/optware/lib
+export PATH=$PATH:/mnt/usb/optware/usr/bin:/mnt/usb/optware/usr/sbin 
+
+# 让修改后的profile立即生效:
+source /etc/profile
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;开始使用&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;opkg install XXXX -d usb
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name>hsfeng</name></author><category term="OpenWrt" /><summary type="html">OpenWrt 使用总结</summary></entry></feed>
