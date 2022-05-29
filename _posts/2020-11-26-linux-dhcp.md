@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Linux DHCP
+title: Linux（五）DHCP
 categories: Linux
 description: 使用 isc-dhcp-server 实现 dhcp 动态域名解析服务 
 keywords: dhcp
