@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Linux（二）QEMU 模拟运行 x86_64 Linux 系统 
-categories: Qemu
+categories: Linux Qemu
 description: QEMU模拟运行x86_64 Linux系统
 keywords: Qemu
 ---

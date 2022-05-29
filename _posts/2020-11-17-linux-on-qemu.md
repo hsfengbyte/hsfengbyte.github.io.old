@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Linux（三）Linux On Qemu
-categories: Qemu
+categories: Linux Qemu
 description: qemu 运行 linux
 keywords: qemu
 ---
