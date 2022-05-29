@@ -115,19 +115,19 @@
     } ,
   
     {
-      "title"    : "Ubuntu 根文件系统制作",
-      "category" : "Ubuntu",
-      
-      "url"      : "https://hsfeng.site/2020/11/10/ubuntu-root-file-system/",
-      "keywords" : "rootfs"
-    } ,
-  
-    {
-      "title"    : "Ubuntu（一）Ubuntu国内镜像源",
+      "title"    : "Ubuntu（一）国内镜像源",
       "category" : "Ubuntu",
       
       "url"      : "https://hsfeng.site/2020/11/10/ubuntu-source-mirrors/",
       "keywords" : "ubuntu"
+    } ,
+  
+    {
+      "title"    : "Ubuntu（二）根文件系统制作",
+      "category" : "Ubuntu",
+      
+      "url"      : "https://hsfeng.site/2020/11/11/ubuntu-root-file-system/",
+      "keywords" : "rootfs"
     } ,
   
     {
