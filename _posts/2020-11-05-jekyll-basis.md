@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Jekyll 使用笔记
+title: Jekyll（一）使用基础
 categories: Jekyll
 description: 介绍关于Jekyll的语法及安装
 keywords: Jekyll
