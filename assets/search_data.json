@@ -86,7 +86,7 @@
       "title"    : "本博客模板常见问题 Q &amp; A",
       "category" : "GitHub",
       
-      "url"      : "https://hsfeng.site/2020/05/03/blog-template-qna/",
+      "url"      : "https://hsfeng.site/github/blog-template-qna.html",
       "keywords" : "Jekyll, GitHub Pages"
     } ,
   
@@ -94,7 +94,7 @@
       "title"    : "Jekyll（一）使用基础",
       "category" : "Jekyll",
       
-      "url"      : "https://hsfeng.site/2020/11/05/jekyll-basis/",
+      "url"      : "https://hsfeng.site/jekyll/jekyll-basis.html",
       "keywords" : "Jekyll"
     } ,
   
@@ -102,7 +102,7 @@
       "title"    : "C++（一）经典开源项目",
       "category" : "C++",
       
-      "url"      : "https://hsfeng.site/2020/11/09/c++-open-source-project/",
+      "url"      : "https://hsfeng.site/c++/c++-open-source-project.html",
       "keywords" : "c++"
     } ,
   
@@ -110,7 +110,7 @@
       "title"    : "C++（二）多线程",
       "category" : "C++",
       
-      "url"      : "https://hsfeng.site/2020/11/10/c++-thread/",
+      "url"      : "https://hsfeng.site/c++/c++-thread.html",
       "keywords" : "c++"
     } ,
   
@@ -118,7 +118,7 @@
       "title"    : "Ubuntu（一）国内镜像源",
       "category" : "Ubuntu",
       
-      "url"      : "https://hsfeng.site/2020/11/10/ubuntu-source-mirrors/",
+      "url"      : "https://hsfeng.site/ubuntu/ubuntu-source-mirrors.html",
       "keywords" : "ubuntu"
     } ,
   
@@ -126,7 +126,7 @@
       "title"    : "Ubuntu（二）根文件系统制作",
       "category" : "Ubuntu",
       
-      "url"      : "https://hsfeng.site/2020/11/11/ubuntu-root-file-system/",
+      "url"      : "https://hsfeng.site/ubuntu/ubuntu-root-file-system.html",
       "keywords" : "rootfs"
     } ,
   
@@ -134,7 +134,7 @@
       "title"    : "Linux（一）Iproute2",
       "category" : "Linux",
       
-      "url"      : "https://hsfeng.site/2020/11/15/linux-iproute2/",
+      "url"      : "https://hsfeng.site/linux/linux-iproute2.html",
       "keywords" : "iproute2"
     } ,
   
@@ -142,7 +142,7 @@
       "title"    : "Linux（二）QEMU 模拟运行 x86_64 Linux 系统",
       "category" : "Linux",
       
-      "url"      : "https://hsfeng.site/2020/11/16/linux-qemu-system-x86_64/",
+      "url"      : "https://hsfeng.site/linux/qemu/linux-qemu-system-x86_64.html",
       "keywords" : "Qemu"
     } ,
   
@@ -150,7 +150,7 @@
       "title"    : "Linux（三）Linux On Qemu",
       "category" : "Linux",
       
-      "url"      : "https://hsfeng.site/2020/11/17/linux-on-qemu/",
+      "url"      : "https://hsfeng.site/linux/qemu/linux-on-qemu.html",
       "keywords" : "qemu"
     } ,
   
@@ -158,7 +158,7 @@
       "title"    : "Linux（四）Iptables 基础详解",
       "category" : "Linux",
       
-      "url"      : "https://hsfeng.site/2020/11/22/linux-iptables/",
+      "url"      : "https://hsfeng.site/linux/linux-iptables.html",
       "keywords" : "iptables"
     } ,
   
@@ -166,7 +166,7 @@
       "title"    : "Linux（五）DHCP",
       "category" : "Linux",
       
-      "url"      : "https://hsfeng.site/2020/11/26/linux-dhcp/",
+      "url"      : "https://hsfeng.site/linux/linux-dhcp.html",
       "keywords" : "dhcp"
     } ,
   
@@ -174,7 +174,7 @@
       "title"    : "QEMU 网络模式",
       "category" : "Qemu",
       
-      "url"      : "https://hsfeng.site/2020/12/02/qemu-network-mode/",
+      "url"      : "https://hsfeng.site/qemu/qemu-network-mode.html",
       "keywords" : "qemu"
     } ,
   
@@ -182,7 +182,7 @@
       "title"    : "Linux（六）使用 Ip Tunnel 打通私有网络",
       "category" : "Linux",
       
-      "url"      : "https://hsfeng.site/2021/05/31/linux-ip-tunnel/",
+      "url"      : "https://hsfeng.site/linux/linux-ip-tunnel.html",
       "keywords" : "iptables"
     } ,
   
@@ -190,7 +190,7 @@
       "title"    : "OpenWrt 使用总结",
       "category" : "OpenWrt",
       
-      "url"      : "https://hsfeng.site/2021/08/18/openwrt/",
+      "url"      : "https://hsfeng.site/openwrt/openwrt.html",
       "keywords" : "openwrt"
     } ,
   
@@ -198,7 +198,7 @@
       "title"    : "SQL 基础 - GROUP BY, WHERE, HAVING 用法及顺序",
       "category" : "Sql",
       
-      "url"      : "https://hsfeng.site/2021/09/15/sql-groupby-where-having/",
+      "url"      : "https://hsfeng.site/sql/sql-groupby-where-having.html",
       "keywords" : "group by、where、having"
     } ,
   
@@ -206,7 +206,7 @@
       "title"    : "Zookeeper",
       "category" : "zookeeper",
       
-      "url"      : "https://hsfeng.site/2021/11/15/zookeeper/",
+      "url"      : "https://hsfeng.site/zookeeper/zookeeper.html",
       "keywords" : "zookeeper"
     } ,
   
@@ -214,7 +214,7 @@
       "title"    : "Java学习笔记（一）Unsafe",
       "category" : "Java",
       
-      "url"      : "https://hsfeng.site/2022/05/01/java-unsafe/",
+      "url"      : "https://hsfeng.site/java/java-unsafe.html",
       "keywords" : "Unsafe"
     } ,
   
@@ -222,7 +222,7 @@
       "title"    : "Java学习笔记（二）CopyOnWriteArrayList",
       "category" : "Java",
       
-      "url"      : "https://hsfeng.site/2022/05/02/java-copyonwritearraylist/",
+      "url"      : "https://hsfeng.site/java/java-copyonwritearraylist.html",
       "keywords" : "CopyOnWriteArrayList"
     } ,
   
@@ -230,7 +230,7 @@
       "title"    : "Java学习笔记（三）CopyOnWriteArraySet",
       "category" : "Java",
       
-      "url"      : "https://hsfeng.site/2022/05/03/java-copyonwritearrayset/",
+      "url"      : "https://hsfeng.site/java/java-copyonwritearrayset.html",
       "keywords" : "CopyOnWriteArraySet"
     } ,
   
@@ -238,7 +238,7 @@
       "title"    : "Java学习笔记（四）ReentrantLock(重入锁)",
       "category" : "Java",
       
-      "url"      : "https://hsfeng.site/2022/05/04/java-reentrantlock/",
+      "url"      : "https://hsfeng.site/java/java-reentrantlock.html",
       "keywords" : "ReentrantLock"
     } ,
   
@@ -246,7 +246,7 @@
       "title"    : "Java学习笔记（五）LockSupport",
       "category" : "Java",
       
-      "url"      : "https://hsfeng.site/2022/05/05/java-locksupport/",
+      "url"      : "https://hsfeng.site/java/java-locksupport.html",
       "keywords" : "LockSupport"
     } ,
   
@@ -254,7 +254,7 @@
       "title"    : "并发框架Disruptor",
       "category" : "Java",
       
-      "url"      : "https://hsfeng.site/2022/05/28/disruptor/",
+      "url"      : "https://hsfeng.site/java/disruptor.html",
       "keywords" : "Disruptor"
     } ,
   
@@ -262,7 +262,7 @@
       "title"    : "文件系统Proc - Pid内容详解",
       "category" : "Linux",
       
-      "url"      : "https://hsfeng.site/2022/05/28/linux-proc-pid/",
+      "url"      : "https://hsfeng.site/linux/linux-proc-pid.html",
       "keywords" : "linux"
     } ,
   
