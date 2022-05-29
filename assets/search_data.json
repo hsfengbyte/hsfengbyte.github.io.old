@@ -147,10 +147,10 @@
     } ,
   
     {
-      "title"    : "QEMU 模拟运行 x86_64 Linux 系统",
+      "title"    : "Linux（二）QEMU 模拟运行 x86_64 Linux 系统",
       "category" : "Qemu",
       
-      "url"      : "https://hsfeng.site/2020/11/19/qemu-system-x86_64/",
+      "url"      : "https://hsfeng.site/2020/11/16/linux-qemu-system-x86_64/",
       "keywords" : "Qemu"
     } ,
   
