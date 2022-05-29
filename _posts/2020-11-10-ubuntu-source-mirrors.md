@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Ubuntu（一）Ubuntu国内镜像源
+title: Ubuntu（一）国内镜像源
 categories: Ubuntu
 description: Ubuntu国内镜像源
 keywords: ubuntu
