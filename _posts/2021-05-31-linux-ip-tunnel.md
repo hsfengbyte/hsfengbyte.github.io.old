@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 使用 Ip Tunnel 打通私有网络
+title: Linux（六）使用 Ip Tunnel 打通私有网络
 categories: Linux
 description: linux 内核学习笔记
 keywords: iptables
