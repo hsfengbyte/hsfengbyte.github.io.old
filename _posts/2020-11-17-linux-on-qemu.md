@@ -1,12 +1,12 @@
 ---
 layout: post
-title: Linux On Qemu
+title: Linux（三）Linux On Qemu
 categories: Qemu
 description: qemu 运行 linux
 keywords: qemu
 ---
 
-使用 qemu 运行 linux 系统，使用网桥连通网络。
+使用qemu运行linux系统，使用网桥连通网络。
 
 **运行环境**
 
