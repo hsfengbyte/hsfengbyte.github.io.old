@@ -179,10 +179,10 @@
     } ,
   
     {
-      "title"    : "使用 Ip Tunnel 打通私有网络",
+      "title"    : "Linux（六）使用 Ip Tunnel 打通私有网络",
       "category" : "Linux",
       
-      "url"      : "https://hsfeng.site/2021/05/31/ip-tunnel/",
+      "url"      : "https://hsfeng.site/2021/05/31/linux-ip-tunnel/",
       "keywords" : "iptables"
     } ,
   
