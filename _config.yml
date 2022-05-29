@@ -68,9 +68,9 @@ navs:
     href: /categories/
     label: 分类
 
-#   -
-#     href: /archives/
-#     label: 归档
+  -
+    href: /archives/
+    label: 归档
 
 #   -
 #     href: /open-source/
@@ -104,7 +104,8 @@ paginate: 15
 lsi: false
 quiet: false
 excerpt_separator: "\n"
-permalink: /:year/:month/:day/:title/
+#permalink: /:year/:month/:day/:title/
+permalink: /:categories/:title.html
 plugins:
     - jekyll-github-metadata
     - rouge
