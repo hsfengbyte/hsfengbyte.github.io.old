@@ -267,6 +267,14 @@
     } ,
   
     {
+      "title"    : "Wsl（一）Wsl2安装",
+      "category" : "Wsl",
+      
+      "url"      : "https://hsfeng.site/wsl/wsl-wsl2.html",
+      "keywords" : "Wsl"
+    } ,
+  
+    {
       "title"    : "Android Studio",
       "category" : "Android",
       
