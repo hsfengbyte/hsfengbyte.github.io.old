@@ -267,6 +267,14 @@
     } ,
   
     {
+      "title"    : "SpringBoot学习笔记",
+      "category" : "Java",
+      
+      "url"      : "https://hsfeng.site/java/springboot/java-springboot.html",
+      "keywords" : "SpringBoot"
+    } ,
+  
+    {
       "title"    : "Wsl（一）Wsl2安装",
       "category" : "Wsl",
       

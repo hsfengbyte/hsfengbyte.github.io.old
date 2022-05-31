@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.2">Jekyll</generator><link href="https://hsfeng.site/feed.xml" rel="self" type="application/atom+xml" /><link href="https://hsfeng.site/" rel="alternate" type="text/html" /><updated>2022-05-31T17:15:08+08:00</updated><id>https://hsfeng.site/feed.xml</id><title type="html">零度</title><subtitle>零度的个人博客，一个程序猿</subtitle><author><name>hsfeng</name></author><entry><title type="html">SpringBoot（一）SpringBoot中的事件机制</title><link href="https://hsfeng.site/java/springboot/java-springboot-applicationlistener.html" rel="alternate" type="text/html" title="SpringBoot（一）SpringBoot中的事件机制" /><published>2022-05-31T00:00:00+08:00</published><updated>2022-05-31T00:00:00+08:00</updated><id>https://hsfeng.site/java/springboot/java-springboot-applicationlistener</id><content type="html" xml:base="https://hsfeng.site/java/springboot/java-springboot-applicationlistener.html">&lt;p&gt;在 SpringBoot 的启动过程中，会通过 SPI 机制去加载 spring.factories 下面的一些类，这里面就包括了事件相关的类。&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.2">Jekyll</generator><link href="https://hsfeng.site/feed.xml" rel="self" type="application/atom+xml" /><link href="https://hsfeng.site/" rel="alternate" type="text/html" /><updated>2022-06-01T00:20:56+08:00</updated><id>https://hsfeng.site/feed.xml</id><title type="html">零度</title><subtitle>零度的个人博客，一个程序猿</subtitle><author><name>hsfeng</name></author><entry><title type="html">SpringBoot（一）SpringBoot中的事件机制</title><link href="https://hsfeng.site/java/springboot/java-springboot-applicationlistener.html" rel="alternate" type="text/html" title="SpringBoot（一）SpringBoot中的事件机制" /><published>2022-05-31T00:00:00+08:00</published><updated>2022-05-31T00:00:00+08:00</updated><id>https://hsfeng.site/java/springboot/java-springboot-applicationlistener</id><content type="html" xml:base="https://hsfeng.site/java/springboot/java-springboot-applicationlistener.html">&lt;p&gt;在 SpringBoot 的启动过程中，会通过 SPI 机制去加载 spring.factories 下面的一些类，这里面就包括了事件相关的类。&lt;/p&gt;
 
 &lt;ul&gt;
   &lt;li&gt;SpringApplicationRunListener&lt;/li&gt;
@@ -355,7 +355,11 @@ earlyApplicationEvents 中的事件是广播器未建立的时候保存通知信
 
 &lt;p&gt;到此，SpringBoot 中的事件相关的东西就结束了。本文从SpringApplicationRunListener这个类说起，接着介绍 SpringBoot 启动过程的事件以及事件的生命周期。最后介绍了 SpringBoot中的内置的这些 监听器在启动过程中对应的各个阶段。&lt;/p&gt;
 
-&lt;p&gt;&lt;a href=&quot;https://blog.csdn.net/weixin_28837817/article/details/112443549&quot;&gt;原文&lt;/a&gt;&lt;/p&gt;</content><author><name>hsfeng</name></author><category term="Java" /><category term="SpringBoot" /><summary type="html">在 SpringBoot 的启动过程中，会通过 SPI 机制去加载 spring.factories 下面的一些类，这里面就包括了事件相关的类。</summary></entry><entry><title type="html">Wsl（一）Wsl2安装</title><link href="https://hsfeng.site/wsl/wsl-wsl2.html" rel="alternate" type="text/html" title="Wsl（一）Wsl2安装" /><published>2022-05-30T00:00:00+08:00</published><updated>2022-05-30T00:00:00+08:00</updated><id>https://hsfeng.site/wsl/wsl-wsl2</id><content type="html" xml:base="https://hsfeng.site/wsl/wsl-wsl2.html">&lt;p&gt;WSL2 基于Hyper-V功能的子集提供了“真正的 Linux 内核”。&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://blog.csdn.net/weixin_28837817/article/details/112443549&quot;&gt;原文&lt;/a&gt;&lt;/p&gt;</content><author><name>hsfeng</name></author><category term="Java" /><category term="SpringBoot" /><summary type="html">在 SpringBoot 的启动过程中，会通过 SPI 机制去加载 spring.factories 下面的一些类，这里面就包括了事件相关的类。</summary></entry><entry><title type="html">SpringBoot学习笔记</title><link href="https://hsfeng.site/java/springboot/java-springboot.html" rel="alternate" type="text/html" title="SpringBoot学习笔记" /><published>2022-05-30T00:00:00+08:00</published><updated>2022-05-30T00:00:00+08:00</updated><id>https://hsfeng.site/java/springboot/java-springboot</id><content type="html" xml:base="https://hsfeng.site/java/springboot/java-springboot.html">&lt;p&gt;Spring Boot是由Pivotal团队提供的全新框架，其设计目的是用来简化新Spring应用的初始搭建以及开发过程。该框架使用了特定的方式来进行配置，从而使开发人员不再需要定义样板化的配置。通过这种方式，Spring Boot致力于在蓬勃发展的快速应用开发领域(rapid application development)成为领导者。&lt;/p&gt;
+
+&lt;h1 id=&quot;文章列表&quot;&gt;文章列表&lt;/h1&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://baijiahao.baidu.com/s?id=1710584960591919459&amp;amp;wfr=spider&amp;amp;for=pc&quot;&gt;SpringBoot快速搭建、自动流程进阶、装配机制、功能扩展点详解&lt;/a&gt;&lt;/p&gt;</content><author><name>hsfeng</name></author><category term="Java" /><category term="SpringBoot" /><summary type="html">Spring Boot是由Pivotal团队提供的全新框架，其设计目的是用来简化新Spring应用的初始搭建以及开发过程。该框架使用了特定的方式来进行配置，从而使开发人员不再需要定义样板化的配置。通过这种方式，Spring Boot致力于在蓬勃发展的快速应用开发领域(rapid application development)成为领导者。</summary></entry><entry><title type="html">Wsl（一）Wsl2安装</title><link href="https://hsfeng.site/wsl/wsl-wsl2.html" rel="alternate" type="text/html" title="Wsl（一）Wsl2安装" /><published>2022-05-30T00:00:00+08:00</published><updated>2022-05-30T00:00:00+08:00</updated><id>https://hsfeng.site/wsl/wsl-wsl2</id><content type="html" xml:base="https://hsfeng.site/wsl/wsl-wsl2.html">&lt;p&gt;WSL2 基于Hyper-V功能的子集提供了“真正的 Linux 内核”。&lt;/p&gt;
 
 &lt;h1 id=&quot;安装步骤&quot;&gt;安装步骤&lt;/h1&gt;
 
@@ -1687,58 +1691,4 @@ kauditd_
         &lt;span class=&quot;nc&quot;&gt;System&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;out&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;println&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sum&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
     &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
 &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name>hsfeng</name></author><category term="Java" /><summary type="html">unsafe 可以帮我们直接去操作硬件资源,当然了是借助java的jit来进行的,官方不推荐使用,因为不安全,例如你使用unsafe创建一个超级大的数组,但是这个数组jvm是不管理的,只能你自己操作,容易oom,也不利于资源的回收.</summary></entry><entry><title type="html">Zookeeper</title><link href="https://hsfeng.site/zookeeper/zookeeper.html" rel="alternate" type="text/html" title="Zookeeper" /><published>2021-11-15T00:00:00+08:00</published><updated>2021-11-15T00:00:00+08:00</updated><id>https://hsfeng.site/zookeeper/zookeeper</id><content type="html" xml:base="https://hsfeng.site/zookeeper/zookeeper.html">&lt;p&gt;一个典型的分布式数据一致性的解决方案，分布式应用程序可以基于它实现诸如数据发布/订阅、负载均衡、命名服务、分布式协调/通知、集群管理、Master 选举、分布式锁和分布式队列等功能。&lt;/p&gt;
-
-&lt;h1 id=&quot;zookeeper-权限控制-acl&quot;&gt;Zookeeper 权限控制 ACL&lt;/h1&gt;
-
-&lt;h2 id=&quot;acl-命令行&quot;&gt;ACL 命令行&lt;/h2&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;getAcl 命令：获取某个节点的 acl 权限信息。&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;setAcl 命令：设置某个节点的 acl 权限信息。&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;addauth 命令：输入认证授权信息，注册时输入明文密码，加密形式保存。&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;acl-构成&quot;&gt;ACL 构成&lt;/h2&gt;
-
-&lt;p&gt;zookeeper 的 acl 通过 [scheme: id: permissions] 来构成权限列表。&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;scheme：代表采用的某种权限机制，包括 world、auth、digest、ip、super 几种。&lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;id：代表允许访问的用户。&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;permissions：权限组合字符串，由 cdrwa 组成，其中每个字母代表支持不同权限， 创建权限 create(c)、删除权限 delete(d)、读权限 read(r)、写权限 write(w)、管理权限admin(a)。&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;zooKeeper的权限控制是基于每个znode节点的，需要对每个节点设置权限每个znode支持设置多种权限控制方案和多个权限子节点不会继承父节点的权限，客户端无权访问某节点，但可能可以访问它的子节点。&lt;/p&gt;
-
-&lt;h2 id=&quot;权限模式&quot;&gt;权限模式&lt;/h2&gt;
-
-&lt;h3 id=&quot;授权方式&quot;&gt;授权方式&lt;/h3&gt;
-
-&lt;p&gt;world：只有一个用户： anyone， 代表登录zokeeper所有人(默认)&lt;/p&gt;
-
-&lt;p&gt;ip：对客户端使用IP地址认证&lt;/p&gt;
-
-&lt;p&gt;auth：使用已添加认证的用户认证&lt;/p&gt;
-
-&lt;p&gt;digest：1·使用“用户名:密码”方式认证&lt;/p&gt;
-
-&lt;h3 id=&quot;授予的权限&quot;&gt;授予的权限&lt;/h3&gt;
-
-&lt;p&gt;world: 它下面只有一个id, 叫anyone, world:anyone代表任何人，zookeeper中对所有人有权限的结点就是属于world:anyone的&lt;/p&gt;
-
-&lt;p&gt;auth: 它不需要id, 只要是通过authentication的user都有权限(zookeeper支持通过kerberos来进行authencation, 也支持username/password形式的authentication)&lt;/p&gt;
-
-&lt;p&gt;digest: 它对应的id为username:BASE64(SHA1(password))，它需要先通过username:password形式的authentication&lt;/p&gt;
-
-&lt;p&gt;ip: 它对应的id为客户机的IP地址，设置的时候可以设置一个ip段，比如ip:192.168.1.0/16, 表示匹配前16个bit的IP段&lt;/p&gt;
-
-&lt;p&gt;super: 在这种scheme情况下，对应的id拥有超级权限，可以做任何事情(cdrwa)&lt;/p&gt;</content><author><name>hsfeng</name></author><category term="zookeeper" /><summary type="html">一个典型的分布式数据一致性的解决方案，分布式应用程序可以基于它实现诸如数据发布/订阅、负载均衡、命名服务、分布式协调/通知、集群管理、Master 选举、分布式锁和分布式队列等功能。</summary></entry></feed>
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name>hsfeng</name></author><category term="Java" /><summary type="html">unsafe 可以帮我们直接去操作硬件资源,当然了是借助java的jit来进行的,官方不推荐使用,因为不安全,例如你使用unsafe创建一个超级大的数组,但是这个数组jvm是不管理的,只能你自己操作,容易oom,也不利于资源的回收.</summary></entry></feed>
