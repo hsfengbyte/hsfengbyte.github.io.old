@@ -1,4 +1,361 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.2">Jekyll</generator><link href="https://hsfeng.site/feed.xml" rel="self" type="application/atom+xml" /><link href="https://hsfeng.site/" rel="alternate" type="text/html" /><updated>2022-05-31T00:14:44+08:00</updated><id>https://hsfeng.site/feed.xml</id><title type="html">零度</title><subtitle>零度的个人博客，一个程序猿</subtitle><author><name>hsfeng</name></author><entry><title type="html">Wsl（一）Wsl2安装</title><link href="https://hsfeng.site/wsl/wsl-wsl2.html" rel="alternate" type="text/html" title="Wsl（一）Wsl2安装" /><published>2022-05-30T00:00:00+08:00</published><updated>2022-05-30T00:00:00+08:00</updated><id>https://hsfeng.site/wsl/wsl-wsl2</id><content type="html" xml:base="https://hsfeng.site/wsl/wsl-wsl2.html">&lt;p&gt;WSL2 基于Hyper-V功能的子集提供了“真正的 Linux 内核”。&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.2">Jekyll</generator><link href="https://hsfeng.site/feed.xml" rel="self" type="application/atom+xml" /><link href="https://hsfeng.site/" rel="alternate" type="text/html" /><updated>2022-05-31T17:15:08+08:00</updated><id>https://hsfeng.site/feed.xml</id><title type="html">零度</title><subtitle>零度的个人博客，一个程序猿</subtitle><author><name>hsfeng</name></author><entry><title type="html">SpringBoot（一）SpringBoot中的事件机制</title><link href="https://hsfeng.site/java/springboot/java-springboot-applicationlistener.html" rel="alternate" type="text/html" title="SpringBoot（一）SpringBoot中的事件机制" /><published>2022-05-31T00:00:00+08:00</published><updated>2022-05-31T00:00:00+08:00</updated><id>https://hsfeng.site/java/springboot/java-springboot-applicationlistener</id><content type="html" xml:base="https://hsfeng.site/java/springboot/java-springboot-applicationlistener.html">&lt;p&gt;在 SpringBoot 的启动过程中，会通过 SPI 机制去加载 spring.factories 下面的一些类，这里面就包括了事件相关的类。&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;SpringApplicationRunListener&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-properties highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# Run Listeners
+&lt;/span&gt;&lt;span class=&quot;py&quot;&gt;org.springframework.boot.SpringApplicationRunListener&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;org.springframework.boot.context.event.EventPublishingRunListener&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;ApplicationListener&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-properties highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# Application Listeners
+&lt;/span&gt;&lt;span class=&quot;py&quot;&gt;org.springframework.context.ApplicationListener&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;org.springframework.boot.ClearCachesApplicationListener,&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;org.springframework.boot.builder.ParentContextCloserApplicationListener,&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;org.springframework.boot.context.FileEncodingApplicationListener,&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;org.springframework.boot.context.config.AnsiOutputApplicationListener,&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;org.springframework.boot.context.config.ConfigFileApplicationListener,&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;org.springframework.boot.context.config.DelegatingApplicationListener,&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;org.springframework.boot.context.logging.ClasspathLoggingApplicationListener,&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;org.springframework.boot.context.logging.LoggingApplicationListener,&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;org.springframework.boot.liquibase.LiquibaseServiceLocatorApplicationListener&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;SpringApplicationRunListener 类是 SpringBoot 中新增的类。SpringApplication 类 中使用它们来间接调用 ApplicationListener。另外还有一个新增的类是SpringApplicationRunListeners，SpringApplicationRunListeners 中包含了多个 SpringApplicationRunListener。&lt;/p&gt;
+
+&lt;h1 id=&quot;springapplicationrunlistener&quot;&gt;SpringApplicationRunListener&lt;/h1&gt;
+
+&lt;p&gt;SpringApplicationRunListener 接口规定了 SpringBoot 的生命周期，在各个生命周期广播相应的事件，调用实际的 ApplicationListener 类。通过对 SpringApplicationRunListener 的分析，也可以对 SpringBoot 的整个启动过程的理解会有很大帮助。&lt;/p&gt;
+
+&lt;p&gt;先来看下SpringApplicationRunListener 接口的代码：&lt;/p&gt;
+
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;interface&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;SpringApplicationRunListener&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+	&lt;span class=&quot;c1&quot;&gt;//当run方法首次启动时立即调用。可用于非常早期的初始化。&lt;/span&gt;
+	&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;starting&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+	&lt;span class=&quot;c1&quot;&gt;//在准备好环境后，但在创建ApplicationContext之前调用。&lt;/span&gt;
+	&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;environmentPrepared&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;ConfigurableEnvironment&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;environment&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+	&lt;span class=&quot;c1&quot;&gt;//在创建和准备好ApplicationContext之后，但在加载源之前调用。&lt;/span&gt;
+	&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;contextPrepared&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;ConfigurableApplicationContext&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;context&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+	&lt;span class=&quot;c1&quot;&gt;//在加载应用程序上下文后但刷新之前调用&lt;/span&gt;
+	&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;contextLoaded&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;ConfigurableApplicationContext&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;context&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+	&lt;span class=&quot;c1&quot;&gt;//上下文已刷新，应用程序已启动，但尚未调用commandlinerunner和applicationrunner。&lt;/span&gt;
+	&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;started&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;ConfigurableApplicationContext&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;context&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+	&lt;span class=&quot;c1&quot;&gt;//在运行方法完成之前立即调用，此时应用程序上下文已刷新，&lt;/span&gt;
+	&lt;span class=&quot;c1&quot;&gt;//并且所有commandlinerunner和applicationrunner都已调用。&lt;/span&gt;
+	&lt;span class=&quot;c1&quot;&gt;//2.0 才有&lt;/span&gt;
+	&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;running&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;ConfigurableApplicationContext&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;context&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+	&lt;span class=&quot;c1&quot;&gt;//在运行应用程序时发生故障时调用。2.0 才有&lt;/span&gt;
+	&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;failed&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;ConfigurableApplicationContext&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;context&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Throwable&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;exception&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h1 id=&quot;springapplicationrunlisteners&quot;&gt;SpringApplicationRunListeners&lt;/h1&gt;
+
+&lt;p&gt;上面提到，SpringApplicationRunListeners 是SpringApplicationRunListener的集合，里面包括了很多SpringApplicationRunListener实例；SpringApplication 类实际上使用的是 SpringApplicationRunListeners 类，与 SpringApplicationRunListener 生命周期相同，调用各个周期的 SpringApplicationRunListener 。然后广播相应的事件到 ApplicationListener。&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;代码详见：SpringApplicationRunListeners
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;eventpublishingrunlistener&quot;&gt;EventPublishingRunListener&lt;/h2&gt;
+
+&lt;p&gt;EventPublishingRunListener 类是 SpringApplicationRunListener接口的实现类 ，它具有广播事件的功能。其内部使用 ApplicationEventMulticaster在实际刷新上下文之前发布事件。下面来看下 EventPublishingRunListener 类生命周期对应的事件。&lt;/p&gt;
+
+&lt;h2 id=&quot;applicationstartingevent&quot;&gt;ApplicationStartingEvent&lt;/h2&gt;
+
+&lt;p&gt;ApplicationStartingEvent 是 SpringBoot 启动开始的时候执行的事件，在该事件中可以获取到 SpringApplication 对象，可做一些执行前的设置，对应的调用方法是 starting()。&lt;/p&gt;
+
+&lt;h2 id=&quot;applicationenvironmentpreparedevent&quot;&gt;ApplicationEnvironmentPreparedEvent&lt;/h2&gt;
+
+&lt;p&gt;ApplicationEnvironmentPreparedEvent 是SpringBoot 对应 Enviroment 已经准备完毕时执行的事件，此时上下文 context 还没有创建。在该监听中获取到 ConfigurableEnvironment 后可以对配置信息做操作，例如：修改默认的配置信息，增加额外的配置信息等。对应的生命周期方法是 environmentPrepared(environment)；SpringCloud 中，引导上下文就是在这时初始化的。&lt;/p&gt;
+
+&lt;h2 id=&quot;applicationcontextinitializedevent&quot;&gt;ApplicationContextInitializedEvent&lt;/h2&gt;
+
+&lt;p&gt;当 SpringApplication 启动并且准备好 ApplicationContext，并且在加载任何 bean 定义之前调用了 ApplicationContextInitializers 时发布的事件。对应的生命周期方法是contextPrepared()。&lt;/p&gt;
+
+&lt;h2 id=&quot;applicationpreparedevent&quot;&gt;ApplicationPreparedEvent&lt;/h2&gt;
+
+&lt;p&gt;ApplicationPreparedEvent 是SpringBoot上下文 context 创建完成是发布的事件；但此时 spring 中的 bean 还没有完全加载完成。这里可以将上下文传递出去做一些额外的操作。但是在该监听器中是无法获取自定义 bean 并进行操作的。对应的生命周期方法是 contextLoaded()。&lt;/p&gt;
+
+&lt;h2 id=&quot;applicationstartedevent&quot;&gt;ApplicationStartedEvent&lt;/h2&gt;
+
+&lt;p&gt;这个事件是在 2.0 版本才引入的；具体发布是在应用程序上下文刷新之后，调用任何 ApplicationRunner 和 CommandLineRunner 运行程序之前。&lt;/p&gt;
+
+&lt;h2 id=&quot;applicationreadyevent&quot;&gt;ApplicationReadyEvent&lt;/h2&gt;
+
+&lt;p&gt;这个和 ApplicationStartedEvent 很类似，也是在应用程序上下文刷新之后之后调用，区别在于此时ApplicationRunner 和 CommandLineRunner已经完成调用了，也意味着 SpringBoot 加载已经完成。&lt;/p&gt;
+
+&lt;h2 id=&quot;applicationfailedevent&quot;&gt;ApplicationFailedEvent&lt;/h2&gt;
+
+&lt;p&gt;SpringBoot 启动异常时执行的事件，在异常发生时，最好是添加虚拟机对应的钩子进行资源的回收与释放，能友善的处理异常信息。&lt;/p&gt;
+
+&lt;h2 id=&quot;demo-及各个事件的执行顺序&quot;&gt;demo 及各个事件的执行顺序&lt;/h2&gt;
+
+&lt;p&gt;下面的各个事件对应的demo及打印出来的执行顺序。&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;GlmapperApplicationStartingEventListener&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;GlmapperApplicationStartingEventListener&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;implements&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ApplicationListener&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;ApplicationStartingEvent&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;nd&quot;&gt;@Override&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;onApplicationEvent&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;ApplicationStartingEvent&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;applicationStartingEvent&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;nc&quot;&gt;System&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;out&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;println&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;execute ApplicationStartingEvent ...&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;GlmapperApplicationEnvironmentPreparedEvent&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;GlmapperApplicationEnvironmentPreparedEvent&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;implements&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ApplicationListener&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;ApplicationEnvironmentPreparedEvent&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;nd&quot;&gt;@Override&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;onApplicationEvent&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;ApplicationEnvironmentPreparedEvent&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;applicationEnvironmentPreparedEvent&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;nc&quot;&gt;System&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;out&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;println&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;execute ApplicationEnvironmentPreparedEvent ...&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;GlmapperApplicationContextInitializedEvent&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;GlmapperApplicationContextInitializedEvent&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;implements&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ApplicationListener&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;ApplicationContextInitializedEvent&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;nd&quot;&gt;@Override&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;onApplicationEvent&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;ApplicationContextInitializedEvent&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;applicationContextInitializedEvent&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;nc&quot;&gt;System&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;out&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;println&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;execute applicationContextInitializedEvent ...&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;GlmapperApplicationPreparedEvent&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;GlmapperApplicationPreparedEvent&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;implements&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ApplicationListener&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;ApplicationPreparedEvent&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;nd&quot;&gt;@Override&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;onApplicationEvent&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;ApplicationPreparedEvent&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;applicationPreparedEvent&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;nc&quot;&gt;System&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;out&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;println&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;execute ApplicationPreparedEvent ...&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;GlmapperApplicationStartedEvent&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;GlmapperApplicationStartedEvent&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;implements&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ApplicationListener&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;ApplicationStartedEvent&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;nd&quot;&gt;@Override&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;onApplicationEvent&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;ApplicationStartedEvent&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;applicationStartedEvent&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;nc&quot;&gt;System&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;out&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;println&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;execute ApplicationStartedEvent ...&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;GlmapperApplicationReadyEvent&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;GlmapperApplicationReadyEvent&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;implements&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ApplicationListener&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;ApplicationReadyEvent&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;nd&quot;&gt;@Override&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;onApplicationEvent&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;ApplicationReadyEvent&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;applicationReadyEvent&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;nc&quot;&gt;System&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;out&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;println&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;execute ApplicationReadyEvent ...&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;执行结果&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;springboot-中的事件体系&quot;&gt;SpringBoot 中的事件体系&lt;/h1&gt;
+
+&lt;p&gt;这里围绕 SpringApplicationRunListener 这个类来说。在实现类 EventPublishingRunListener中，事件发布有两种模式：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;通过 SimpleApplicationEventMulticaster 进行事件广播&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;所有监听器交给相应的 Context&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;所以EventPublishingRunListener 不仅负责发布事件，而且在合适的时机将 SpringApplication所获取的监听器和应用上下文作关联。&lt;/p&gt;
+
+&lt;h2 id=&quot;simpleapplicationeventmulticaster&quot;&gt;SimpleApplicationEventMulticaster&lt;/h2&gt;
+
+&lt;p&gt;SimpleApplicationEventMulticaster是 Spring 默认的事件广播器。来看下它是怎么工作的：&lt;/p&gt;
+
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nd&quot;&gt;@Override&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;multicastEvent&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ApplicationEvent&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;event&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nd&quot;&gt;@Nullable&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ResolvableType&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;eventType&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;nc&quot;&gt;ResolvableType&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;type&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;eventType&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!=&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;null&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;?&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;eventType&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;resolveDefaultEventType&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;event&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;));&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ApplicationListener&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;?&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;listener&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;getApplicationListeners&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;event&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;type&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;nc&quot;&gt;Executor&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;executor&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;getTaskExecutor&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;executor&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!=&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;null&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;executor&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;execute&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;invokeListener&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;listener&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;event&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;));&lt;/span&gt;
+        &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;invokeListener&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;listener&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;event&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;从上面的代码段可以看出，它是通过遍历注册的每个监听器，并启动来调用每个监听器的 onApplicationEvent 方法。&lt;/p&gt;
+
+&lt;p&gt;下面再来看下 SimpleApplicationEventMulticaster 的类集成结构：&lt;/p&gt;
+
+&lt;p&gt;这里的AbstractApplicationContext下面来聊，这个类实际上就负责了事件体系的初始化工作。&lt;/p&gt;
+
+&lt;h2 id=&quot;事件体系的初始化&quot;&gt;事件体系的初始化&lt;/h2&gt;
+
+&lt;p&gt;事件体系的初始化对应在 SpringBoot启动过程的 refreshContext这个方法；refreshContext具体调用 AbstractApplicationContext.refresh()方法，最后调用 initApplicationEventMulticaster() 来完成事件体系的初始化,代码如下：&lt;/p&gt;
+
+&lt;p&gt;用户可以为容器定义一个自定义的事件广播器，只要实现 ApplicationEventMulticaster 就可以了，Spring 会通过 反射的机制将其注册成容器的事件广播器，如果没有找到配置的外部事件广播器，Spring 就是默认使用 SimpleApplicationEventMulticaster 作为事件广播器。&lt;/p&gt;
+
+&lt;h2 id=&quot;事件注册&quot;&gt;事件注册&lt;/h2&gt;
+
+&lt;p&gt;事件注册是在事件体系初始化完成之后做的事情，也是在 AbstractApplicationContext.refresh()方法中进行调用的。&lt;/p&gt;
+
+&lt;p&gt;这里干了三件事：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;首先注册静态指定的 listeners；这里包括我们自定义的那些监听器。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;调用 DefaultListableBeanFactory 中 getBeanNamesForType 得到自定义的 ApplicationListener bean 进行事件注册。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;广播早期的事件。&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;事件广播&quot;&gt;事件广播&lt;/h2&gt;
+
+&lt;p&gt;事件发布伴随着 SpringBoot 启动的整个生命周期。不同阶段对应发布不同的事件，上面我们已经对各个事件进行了分析，下面就具体看下发布事件的实现：&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;org.springframework.context.support.AbstractApplicationContext#publishEvent
+
+earlyApplicationEvents 中的事件是广播器未建立的时候保存通知信息，一旦容器建立完成，以后都是直接通知。
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;广播事件最终还是通过调用 ApplicationEventMulticaster 的 multicastEvent 来实现。而 multicastEvent 也就就是事件执行的方法。&lt;/p&gt;
+
+&lt;h2 id=&quot;事件执行&quot;&gt;事件执行&lt;/h2&gt;
+
+&lt;p&gt;上面 SimpleApplicationEventMulticaster 小节已经初步介绍了 multicastEvent 这个方法。补充一点， 如果有可用的 taskExecutor 会使用并发的模式执行事件，但是实际上 SimpleApplicationEventMulticaster 并没有提供线程池实现，默认请况下是使用同步的方式执行事件（org.springframework.core.task.SyncTaskExecutor），所以如果需要异步配置的话，需要自己去实现线程池。&lt;/p&gt;
+
+&lt;h1 id=&quot;springboot-启动过程中的事件阶段&quot;&gt;SpringBoot 启动过程中的事件阶段&lt;/h1&gt;
+
+&lt;p&gt;这里回到 SpringApplication的run方法，看下 SpringBoot 在启动过程中，各个事件阶段做了哪些事情。&lt;/p&gt;
+
+&lt;h2 id=&quot;starting---applicationstartingevent&quot;&gt;starting -&amp;gt; ApplicationStartingEvent&lt;/h2&gt;
+
+&lt;p&gt;这里 debug 到 starting 方法，追踪到 multicastEvent，这里 type为 ApplicationStartingEvent；对应的事件如下：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;LoggerApplicationListener：配置日志系统。使用logging.config环境变量指定的配置或者缺省配置&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;BackgroundPreinitializer：尽早触发一些耗时的初始化任务，使用一个后台线程&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;DelegatingApplicationListener：监听到事件后转发给环境变量context.listener.classes指定的那些事件监听器&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;LiquibaseServiceLocatorApplicationListener：使用一个可以和 SpringBoot 可执行jar包配合工作的版本替换 liquibase ServiceLocator&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;listenersenvironmentprepared-applicationenvironmentpreparedevent&quot;&gt;listeners.environmentPrepared-&amp;gt;ApplicationEnvironmentPreparedEvent&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;AnsiOutputApplicationListener：根据spring.output.ansi.enabled参数配置AnsiOutput&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;ConfigFileApplicationListener：EnvironmentPostProcessor，从常见的那些约定的位置读取配置文件，比如从以下目录读取application.properties,application.yml等配置文件：&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;classpath:&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;file:.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;classpath:config&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;file:./config/&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;也可以配置成从其他指定的位置读取配置文件。&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;ClasspathLoggingApplicationListener：对环境就绪事件ApplicationEnvironmentPreparedEvent/应用失败事件ApplicationFailedEvent做出响应，往日志DEBUG级别输出TCCL(thread context class loader)的 classpath。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;FileEncodingApplicationListener：如果系统文件编码和环境变量中指定的不同则终止应用启动。具体的方法是比较系统属性file.encoding和环境变量spring.mandatory-file-encoding是否相等(大小写不敏感)。&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;listenerscontextprepared-applicationcontextinitializedevent&quot;&gt;listeners.contextPrepared-&amp;gt;ApplicationContextInitializedEvent&lt;/h2&gt;
+
+&lt;p&gt;相关监听器参考上面的描述。&lt;/p&gt;
+
+&lt;h2 id=&quot;listenerscontextloaded-applicationpreparedevent&quot;&gt;listeners.contextLoaded-&amp;gt;ApplicationPreparedEvent&lt;/h2&gt;
+
+&lt;p&gt;相关监听器参考上面的描述。&lt;/p&gt;
+
+&lt;h2 id=&quot;refresh-contextrefreshedevent&quot;&gt;refresh-&amp;gt;ContextRefreshedEvent&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;ConditionEvaluationReportLoggingListener：实际上实现的是 ApplicationContextInitializer接口，其目的是将 ConditionEvaluationReport 写入到日志，使用DEBUG级别输出。程序崩溃报告会触发一个消息输出，建议用户使用调试模式显示报告。它是在应用初始化时绑定一个ConditionEvaluationReportListener事件监听器，然后相应的事件发生时输出ConditionEvaluationReport报告。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;ClearCachesApplicationListener：应用上下文加载完成后对缓存做清除工作，响应事件ContextRefreshedEvent。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;SharedMetadataReaderFactoryContextInitializer： 向context注册了一个BeanFactoryPostProcessor：CachingMetadataReaderFactoryPostProcessor实例。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;ResourceUrlProvider：handling mappings处理&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;started-applicationstartedevent&quot;&gt;started-&amp;gt;ApplicationStartedEvent&lt;/h2&gt;
+
+&lt;p&gt;相关监听器参考上面的描述。&lt;/p&gt;
+
+&lt;h2 id=&quot;backgroundpreinitializerdelegatingapplicationlistener&quot;&gt;BackgroundPreinitializer&amp;amp;DelegatingApplicationListener&lt;/h2&gt;
+
+&lt;p&gt;这两个贯穿了整个过程，这里拎出来单独解释下：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;BackgroundPreinitializer：对于一些耗时的任务使用一个后台线程尽早触发它们开始执行初始化，这是SpringBoot的缺省行为。这些初始化动作也可以叫做预初始化。可以通过设置系统属性spring.backgroundpreinitializer.ignore为true可以禁用该机制。该机制被禁用时，相应的初始化任务会发生在前台线程。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;DelegatingApplicationListener：监听应用事件，并将这些应用事件广播给环境属性context.listener.classes指定的那些监听器。&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;小结&quot;&gt;小结&lt;/h1&gt;
+
+&lt;p&gt;到此，SpringBoot 中的事件相关的东西就结束了。本文从SpringApplicationRunListener这个类说起，接着介绍 SpringBoot 启动过程的事件以及事件的生命周期。最后介绍了 SpringBoot中的内置的这些 监听器在启动过程中对应的各个阶段。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://blog.csdn.net/weixin_28837817/article/details/112443549&quot;&gt;原文&lt;/a&gt;&lt;/p&gt;</content><author><name>hsfeng</name></author><category term="Java" /><category term="SpringBoot" /><summary type="html">在 SpringBoot 的启动过程中，会通过 SPI 机制去加载 spring.factories 下面的一些类，这里面就包括了事件相关的类。</summary></entry><entry><title type="html">Wsl（一）Wsl2安装</title><link href="https://hsfeng.site/wsl/wsl-wsl2.html" rel="alternate" type="text/html" title="Wsl（一）Wsl2安装" /><published>2022-05-30T00:00:00+08:00</published><updated>2022-05-30T00:00:00+08:00</updated><id>https://hsfeng.site/wsl/wsl-wsl2</id><content type="html" xml:base="https://hsfeng.site/wsl/wsl-wsl2.html">&lt;p&gt;WSL2 基于Hyper-V功能的子集提供了“真正的 Linux 内核”。&lt;/p&gt;
 
 &lt;h1 id=&quot;安装步骤&quot;&gt;安装步骤&lt;/h1&gt;
 
@@ -1384,65 +1741,4 @@ kauditd_
 
 &lt;p&gt;ip: 它对应的id为客户机的IP地址，设置的时候可以设置一个ip段，比如ip:192.168.1.0/16, 表示匹配前16个bit的IP段&lt;/p&gt;
 
-&lt;p&gt;super: 在这种scheme情况下，对应的id拥有超级权限，可以做任何事情(cdrwa)&lt;/p&gt;</content><author><name>hsfeng</name></author><category term="zookeeper" /><summary type="html">一个典型的分布式数据一致性的解决方案，分布式应用程序可以基于它实现诸如数据发布/订阅、负载均衡、命名服务、分布式协调/通知、集群管理、Master 选举、分布式锁和分布式队列等功能。</summary></entry><entry><title type="html">SQL 基础 - GROUP BY, WHERE, HAVING 用法及顺序</title><link href="https://hsfeng.site/sql/sql-groupby-where-having.html" rel="alternate" type="text/html" title="SQL 基础 - GROUP BY, WHERE, HAVING 用法及顺序" /><published>2021-09-15T00:00:00+08:00</published><updated>2021-09-15T00:00:00+08:00</updated><id>https://hsfeng.site/sql/sql-groupby-where-having</id><content type="html" xml:base="https://hsfeng.site/sql/sql-groupby-where-having.html">&lt;p&gt;昨天学习SQL，碰到了个小问题：既然where和having都可以表示“有条件地筛选出想要的内容”，那么，它们的区别是什么呢？&lt;/p&gt;
-
-&lt;p&gt;肯定是有区别的，否则的话SQL语言体系当中没必要出现两个作用和适用场合一样的关键子句，那样太啰嗦了，绝不是一种有逻辑、自成体系的计算机语言会出现的情况~~&lt;/p&gt;
-
-&lt;h2 id=&quot;总结&quot;&gt;总结&lt;/h2&gt;
-
-&lt;p&gt;1、select子句及其顺序&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&quot;language-roomsql&quot;&gt;select from where group by having order by limit
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;1）在SQL语句中，where子句并不是必须出现的&lt;/p&gt;
-
-&lt;p&gt;2）where子句是对检索记录中每一行记录的过滤。&lt;/p&gt;
-
-&lt;p&gt;3）having子句出现在group by子句后面。&lt;/p&gt;
-
-&lt;p&gt;where子句对检索结果中每一条记录第一次过滤后，group by对每条记录进行分组，having对各个组中的记录进行再次过滤。因此是先通过where子句过滤、再通过group by子句分组、最后通过having子句对组中记录再次进行过滤。&lt;/p&gt;
-
-&lt;p&gt;4）如果在一句SQL语句中，where子句和group by……having子句同时都有的话，必须where子句在前，group by……having子句在后。&lt;/p&gt;
-
-&lt;p&gt;即group by子句必须出现在where子句之后，having子句必须在group by子句之后。&lt;/p&gt;
-
-&lt;p&gt;（where先执行，再groupby分组；groupby先分组，having再执行）&lt;/p&gt;
-
-&lt;p&gt;5）group by子句是对检索记录的分组，后面跟随的字段名是分组的依据。根据语法，在select子句中，除聚合函数语句外，SELECT子句中的每个列名称都必须在GROUP BY子句中作为分组的依据。&lt;/p&gt;
-
-&lt;p&gt;比如说按照姓名分组的正确示范：&lt;/p&gt;
-
-&lt;p&gt;查出没门课程都大于80分的学生姓名，select name from table group by name having min(grade) &amp;gt; 80&lt;/p&gt;
-
-&lt;p&gt;（注意，where没有出现哦~~）&lt;/p&gt;
-
-&lt;p&gt;比如带着聚合函数的正确示范：&lt;/p&gt;
-
-&lt;p&gt;select vend_id, count(*) from products group by vend_id;&lt;/p&gt;
-
-&lt;p&gt;比如错误的示范：&lt;/p&gt;
-
-&lt;p&gt;select vend_id, count(*) , sales from products group by vend_id;&lt;/p&gt;
-
-&lt;p&gt;这个语句，其中sales字段，在group by中没有，所以查询的结果，sales的值是错误的！&lt;/p&gt;
-
-&lt;p&gt;把它改正确的方法是将sales字段添加到group by子句中，语法倒是正确了，但是不是有业务上的实际含义，这个就另说了。&lt;/p&gt;
-
-&lt;h2 id=&quot;问题&quot;&gt;问题&lt;/h2&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;select和having哪个先执行？select name from student group by name having min(score)&amp;gt;80可以执行，但是在select后面没有这个列是为什么？&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;having 先于select执行，select后面没有score列，但是student表里有score列啊。先执行的having,此时score是student表里的字段，所以能取到。&lt;/p&gt;
-
-&lt;p&gt;这段sql的整体执行顺序是：&lt;/p&gt;
-
-&lt;p&gt;1.from student表;&lt;/p&gt;
-
-&lt;p&gt;2.group by name按学生分组;&lt;/p&gt;
-
-&lt;p&gt;3.having min(score&amp;gt;80)找到每门成绩都不低于80分的学生;&lt;/p&gt;
-
-&lt;p&gt;4.select name取出名字.&lt;/p&gt;</content><author><name>hsfeng</name></author><category term="Sql" /><summary type="html">昨天学习SQL，碰到了个小问题：既然where和having都可以表示“有条件地筛选出想要的内容”，那么，它们的区别是什么呢？</summary></entry></feed>
+&lt;p&gt;super: 在这种scheme情况下，对应的id拥有超级权限，可以做任何事情(cdrwa)&lt;/p&gt;</content><author><name>hsfeng</name></author><category term="zookeeper" /><summary type="html">一个典型的分布式数据一致性的解决方案，分布式应用程序可以基于它实现诸如数据发布/订阅、负载均衡、命名服务、分布式协调/通知、集群管理、Master 选举、分布式锁和分布式队列等功能。</summary></entry></feed>

@@ -275,6 +275,14 @@
     } ,
   
     {
+      "title"    : "SpringBoot（一）SpringBoot中的事件机制",
+      "category" : "Java",
+      
+      "url"      : "https://hsfeng.site/java/springboot/java-springboot-applicationlistener.html",
+      "keywords" : "SpringBoot"
+    } ,
+  
+    {
       "title"    : "Android Studio",
       "category" : "Android",
       
