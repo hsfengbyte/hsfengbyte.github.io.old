@@ -1,8 +1,8 @@
 # ---------------- #
 #   Main Configs   #
 # ---------------- #
-baseurl: hsfengbyte.github.io.old
-url: https://hsfeng.site
+baseurl: # hsfengbyte.github.io.old
+url: # https://hsfeng.site
 date_format: "ordinal"
 title: 零度
 subtitle: "程序猿"
