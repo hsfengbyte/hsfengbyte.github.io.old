@@ -1,1 +1,1 @@
-Sitemap: https://hsfeng.site/hsfengbyte.github.io.old/sitemap.xml
+Sitemap: /sitemap.xml
