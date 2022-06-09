@@ -5,7 +5,7 @@
   
     {
       "title"    : "页面没有找到",
-      "url"      : "/404.html",
+      "url"      : "https://hsfeng.site/404.html",
       "keywords" : "404"
     } ,
   
@@ -13,7 +13,7 @@
   
     {
       "title"    : "About",
-      "url"      : "/about/",
+      "url"      : "https://hsfeng.site/about/",
       "keywords" : "Zhuang Ma, 马壮"
     } ,
   
@@ -21,7 +21,7 @@
   
     {
       "title"    : "归档",
-      "url"      : "/archives/",
+      "url"      : "https://hsfeng.site/archives/",
       "keywords" : "归档"
     } ,
   
@@ -29,7 +29,7 @@
   
     {
       "title"    : "Categories",
-      "url"      : "/categories/",
+      "url"      : "https://hsfeng.site/categories/",
       "keywords" : "分类"
     } ,
   
@@ -39,7 +39,7 @@
   
     {
       "title"    : "Links",
-      "url"      : "/links/",
+      "url"      : "https://hsfeng.site/links/",
       "keywords" : "友情链接"
     } ,
   
@@ -47,7 +47,7 @@
   
     {
       "title"    : "mindmap",
-      "url"      : "/mindmap-viewer/",
+      "url"      : "https://hsfeng.site/mindmap-viewer/",
       "keywords" : "mindmap"
     } ,
   
@@ -55,7 +55,7 @@
   
     {
       "title"    : "Open Source Projects",
-      "url"      : "/open-source/",
+      "url"      : "https://hsfeng.site/open-source/",
       "keywords" : "开源,open-source,GitHub,开源项目"
     } ,
   
@@ -65,7 +65,7 @@
   
     {
       "title"    : "Wiki",
-      "url"      : "/wiki/",
+      "url"      : "https://hsfeng.site/wiki/",
       "keywords" : "维基, Wiki"
     } ,
   
@@ -86,7 +86,7 @@
       "title"    : "本博客模板常见问题 Q &amp; A",
       "category" : "GitHub",
       
-      "url"      : "/github/blog-template-qna.html",
+      "url"      : "https://hsfeng.site/2020/05/03/blog-template-qna/",
       "keywords" : "Jekyll, GitHub Pages"
     } ,
   
@@ -94,7 +94,7 @@
       "title"    : "Jekyll（一）使用基础",
       "category" : "Jekyll",
       
-      "url"      : "/jekyll/jekyll-basis.html",
+      "url"      : "https://hsfeng.site/2020/11/05/jekyll-basis/",
       "keywords" : "Jekyll"
     } ,
   
@@ -102,7 +102,7 @@
       "title"    : "C++（一）经典开源项目",
       "category" : "C++",
       
-      "url"      : "/c++/c++-open-source-project.html",
+      "url"      : "https://hsfeng.site/2020/11/09/c++-open-source-project/",
       "keywords" : "c++"
     } ,
   
@@ -110,7 +110,7 @@
       "title"    : "C++（二）多线程",
       "category" : "C++",
       
-      "url"      : "/c++/c++-thread.html",
+      "url"      : "https://hsfeng.site/2020/11/10/c++-thread/",
       "keywords" : "c++"
     } ,
   
@@ -118,7 +118,7 @@
       "title"    : "Ubuntu（一）国内镜像源",
       "category" : "Ubuntu",
       
-      "url"      : "/ubuntu/ubuntu-source-mirrors.html",
+      "url"      : "https://hsfeng.site/2020/11/10/ubuntu-source-mirrors/",
       "keywords" : "ubuntu"
     } ,
   
@@ -126,7 +126,7 @@
       "title"    : "Ubuntu（二）根文件系统制作",
       "category" : "Ubuntu",
       
-      "url"      : "/ubuntu/ubuntu-root-file-system.html",
+      "url"      : "https://hsfeng.site/2020/11/11/ubuntu-root-file-system/",
       "keywords" : "rootfs"
     } ,
   
@@ -134,7 +134,7 @@
       "title"    : "Linux（一）Iproute2",
       "category" : "Linux",
       
-      "url"      : "/linux/linux-iproute2.html",
+      "url"      : "https://hsfeng.site/2020/11/15/linux-iproute2/",
       "keywords" : "iproute2"
     } ,
   
@@ -142,7 +142,7 @@
       "title"    : "Linux（二）QEMU 模拟运行 x86_64 Linux 系统",
       "category" : "Linux",
       
-      "url"      : "/linux/qemu/linux-qemu-system-x86_64.html",
+      "url"      : "https://hsfeng.site/2020/11/16/linux-qemu-system-x86_64/",
       "keywords" : "Qemu"
     } ,
   
@@ -150,7 +150,7 @@
       "title"    : "Linux（三）Linux On Qemu",
       "category" : "Linux",
       
-      "url"      : "/linux/qemu/linux-on-qemu.html",
+      "url"      : "https://hsfeng.site/2020/11/17/linux-on-qemu/",
       "keywords" : "qemu"
     } ,
   
@@ -158,7 +158,7 @@
       "title"    : "Linux（四）Iptables 基础详解",
       "category" : "Linux",
       
-      "url"      : "/linux/linux-iptables.html",
+      "url"      : "https://hsfeng.site/2020/11/22/linux-iptables/",
       "keywords" : "iptables"
     } ,
   
@@ -166,7 +166,7 @@
       "title"    : "Linux（五）DHCP",
       "category" : "Linux",
       
-      "url"      : "/linux/linux-dhcp.html",
+      "url"      : "https://hsfeng.site/2020/11/26/linux-dhcp/",
       "keywords" : "dhcp"
     } ,
   
@@ -174,7 +174,7 @@
       "title"    : "QEMU 网络模式",
       "category" : "Qemu",
       
-      "url"      : "/qemu/qemu-network-mode.html",
+      "url"      : "https://hsfeng.site/2020/12/02/qemu-network-mode/",
       "keywords" : "qemu"
     } ,
   
@@ -182,7 +182,7 @@
       "title"    : "Linux（六）使用 Ip Tunnel 打通私有网络",
       "category" : "Linux",
       
-      "url"      : "/linux/linux-ip-tunnel.html",
+      "url"      : "https://hsfeng.site/2021/05/31/linux-ip-tunnel/",
       "keywords" : "iptables"
     } ,
   
@@ -190,7 +190,7 @@
       "title"    : "OpenWrt 使用总结",
       "category" : "OpenWrt",
       
-      "url"      : "/openwrt/openwrt.html",
+      "url"      : "https://hsfeng.site/2021/08/18/openwrt/",
       "keywords" : "openwrt"
     } ,
   
@@ -198,7 +198,7 @@
       "title"    : "SQL 基础 - GROUP BY, WHERE, HAVING 用法及顺序",
       "category" : "Sql",
       
-      "url"      : "/sql/sql-groupby-where-having.html",
+      "url"      : "https://hsfeng.site/2021/09/15/sql-groupby-where-having/",
       "keywords" : "group by、where、having"
     } ,
   
@@ -206,7 +206,7 @@
       "title"    : "Zookeeper",
       "category" : "zookeeper",
       
-      "url"      : "/zookeeper/zookeeper.html",
+      "url"      : "https://hsfeng.site/2021/11/15/zookeeper/",
       "keywords" : "zookeeper"
     } ,
   
@@ -214,7 +214,7 @@
       "title"    : "Java学习笔记（一）Unsafe",
       "category" : "Java",
       
-      "url"      : "/java/java-unsafe.html",
+      "url"      : "https://hsfeng.site/2022/05/01/java-unsafe/",
       "keywords" : "Unsafe"
     } ,
   
@@ -222,7 +222,7 @@
       "title"    : "Java学习笔记（二）CopyOnWriteArrayList",
       "category" : "Java",
       
-      "url"      : "/java/java-copyonwritearraylist.html",
+      "url"      : "https://hsfeng.site/2022/05/02/java-copyonwritearraylist/",
       "keywords" : "CopyOnWriteArrayList"
     } ,
   
@@ -230,7 +230,7 @@
       "title"    : "Java学习笔记（三）CopyOnWriteArraySet",
       "category" : "Java",
       
-      "url"      : "/java/java-copyonwritearrayset.html",
+      "url"      : "https://hsfeng.site/2022/05/03/java-copyonwritearrayset/",
       "keywords" : "CopyOnWriteArraySet"
     } ,
   
@@ -238,7 +238,7 @@
       "title"    : "Java学习笔记（四）ReentrantLock(重入锁)",
       "category" : "Java",
       
-      "url"      : "/java/java-reentrantlock.html",
+      "url"      : "https://hsfeng.site/2022/05/04/java-reentrantlock/",
       "keywords" : "ReentrantLock"
     } ,
   
@@ -246,7 +246,7 @@
       "title"    : "Java学习笔记（五）LockSupport",
       "category" : "Java",
       
-      "url"      : "/java/java-locksupport.html",
+      "url"      : "https://hsfeng.site/2022/05/05/java-locksupport/",
       "keywords" : "LockSupport"
     } ,
   
@@ -254,7 +254,7 @@
       "title"    : "并发框架Disruptor",
       "category" : "Java",
       
-      "url"      : "/java/disruptor.html",
+      "url"      : "https://hsfeng.site/2022/05/28/disruptor/",
       "keywords" : "Disruptor"
     } ,
   
@@ -262,7 +262,7 @@
       "title"    : "文件系统Proc - Pid内容详解",
       "category" : "Linux",
       
-      "url"      : "/linux/linux-proc-pid.html",
+      "url"      : "https://hsfeng.site/2022/05/28/linux-proc-pid/",
       "keywords" : "linux"
     } ,
   
@@ -270,7 +270,7 @@
       "title"    : "SpringBoot学习笔记",
       "category" : "Java",
       
-      "url"      : "/java/springboot/java-springboot.html",
+      "url"      : "https://hsfeng.site/2022/05/30/java-springboot/",
       "keywords" : "SpringBoot"
     } ,
   
@@ -278,7 +278,7 @@
       "title"    : "Wsl（一）Wsl2安装",
       "category" : "Wsl",
       
-      "url"      : "/wsl/wsl-wsl2.html",
+      "url"      : "https://hsfeng.site/2022/05/30/wsl-wsl2/",
       "keywords" : "Wsl"
     } ,
   
@@ -286,7 +286,7 @@
       "title"    : "SpringBoot（一）SpringBoot中的事件机制",
       "category" : "Java",
       
-      "url"      : "/java/springboot/java-springboot-applicationlistener.html",
+      "url"      : "https://hsfeng.site/2022/05/31/java-springboot-applicationlistener/",
       "keywords" : "SpringBoot"
     } ,
   
@@ -294,7 +294,7 @@
       "title"    : "Java学习笔记（六）Reflections",
       "category" : "Java",
       
-      "url"      : "/java/java-reflections.html",
+      "url"      : "https://hsfeng.site/2022/06/01/java-reflections/",
       "keywords" : "Reflections"
     } ,
   
@@ -302,7 +302,7 @@
       "title"    : "Android Studio",
       "category" : "Android",
       
-      "url"      : "/wiki/android-studio/",
+      "url"      : "https://hsfeng.site/wiki/android-studio/",
       "keywords" : "Android, Android Studio"
     } ,
   
@@ -310,7 +310,7 @@
       "title"    : "中文文案排版指北（简体中文版）",
       "category" : "Copywriting",
       
-      "url"      : "/wiki/chinese-copywriting-guidelines/",
+      "url"      : "https://hsfeng.site/wiki/chinese-copywriting-guidelines/",
       "keywords" : "中文文案排版指北"
     } ,
   
@@ -318,7 +318,7 @@
       "title"    : "Eclipse",
       "category" : "Eclipse",
       
-      "url"      : "/wiki/eclipse/",
+      "url"      : "https://hsfeng.site/wiki/eclipse/",
       "keywords" : "Eclipse"
     } ,
   
@@ -326,7 +326,7 @@
       "title"    : "Emacs",
       "category" : "Emacs",
       
-      "url"      : "/wiki/emacs/",
+      "url"      : "https://hsfeng.site/wiki/emacs/",
       "keywords" : "Emacs, 快捷键"
     } ,
   
@@ -334,7 +334,7 @@
       "title"    : "Excel",
       "category" : "Office",
       
-      "url"      : "/wiki/excel/",
+      "url"      : "https://hsfeng.site/wiki/excel/",
       "keywords" : "Excel, Office"
     } ,
   
@@ -342,7 +342,7 @@
       "title"    : "Git",
       "category" : "Git",
       
-      "url"      : "/wiki/git/",
+      "url"      : "https://hsfeng.site/wiki/git/",
       "keywords" : "Git, 版本控制"
     } ,
   
@@ -350,7 +350,7 @@
       "title"    : "GitHub",
       "category" : "GitHub",
       
-      "url"      : "/wiki/github/",
+      "url"      : "https://hsfeng.site/wiki/github/",
       "keywords" : "GitHub"
     } ,
   
@@ -358,7 +358,7 @@
       "title"    : "善用佳软",
       "category" : "Recommends",
       
-      "url"      : "/wiki/good-soft/",
+      "url"      : "https://hsfeng.site/wiki/good-soft/",
       "keywords" : "软件, 推荐"
     } ,
   
@@ -366,7 +366,7 @@
       "title"    : "IDA Pro",
       "category" : "Debug",
       
-      "url"      : "/wiki/ida-pro/",
+      "url"      : "https://hsfeng.site/wiki/ida-pro/",
       "keywords" : "debug, IDA Pro"
     } ,
   
@@ -374,7 +374,7 @@
       "title"    : "IntelliJ IDEA",
       "category" : "Tools",
       
-      "url"      : "/wiki/intellij-idea/",
+      "url"      : "https://hsfeng.site/wiki/intellij-idea/",
       "keywords" : "IDEA, Java"
     } ,
   
@@ -382,7 +382,7 @@
       "title"    : "Java",
       "category" : "Java",
       
-      "url"      : "/wiki/java/",
+      "url"      : "https://hsfeng.site/wiki/java/",
       "keywords" : "Gradle"
     } ,
   
@@ -390,7 +390,7 @@
       "title"    : "Kindle",
       "category" : "Tools",
       
-      "url"      : "/wiki/kindle/",
+      "url"      : "https://hsfeng.site/wiki/kindle/",
       "keywords" : "Kindle"
     } ,
   
@@ -398,7 +398,7 @@
       "title"    : "Linux Kernel",
       "category" : "Linux",
       
-      "url"      : "/wiki/linux-kernel/",
+      "url"      : "https://hsfeng.site/wiki/linux-kernel/",
       "keywords" : "Linux"
     } ,
   
@@ -406,7 +406,7 @@
       "title"    : "Linux/Unix Shell",
       "category" : "Linux",
       
-      "url"      : "/wiki/linux-shell/",
+      "url"      : "https://hsfeng.site/wiki/linux-shell/",
       "keywords" : "Linux"
     } ,
   
@@ -414,7 +414,7 @@
       "title"    : "Markdown",
       "category" : "Markdown",
       
-      "url"      : "/wiki/markdown/",
+      "url"      : "https://hsfeng.site/wiki/markdown/",
       "keywords" : "Markdown"
     } ,
   
@@ -422,7 +422,7 @@
       "title"    : "MySQL",
       "category" : "MySQL",
       
-      "url"      : "/wiki/mysql/",
+      "url"      : "https://hsfeng.site/wiki/mysql/",
       "keywords" : "MySQL"
     } ,
   
@@ -430,7 +430,7 @@
       "title"    : "NodeJs",
       "category" : "NodeJs",
       
-      "url"      : "/wiki/nodejs/",
+      "url"      : "https://hsfeng.site/wiki/nodejs/",
       "keywords" : "NodeJs"
     } ,
   
@@ -438,7 +438,7 @@
       "title"    : "OneNote",
       "category" : "Tools",
       
-      "url"      : "/wiki/onenote/",
+      "url"      : "https://hsfeng.site/wiki/onenote/",
       "keywords" : "OneNote, GTD"
     } ,
   
@@ -446,7 +446,7 @@
       "title"    : "PowerShell",
       "category" : "Windows",
       
-      "url"      : "/wiki/powershell/",
+      "url"      : "https://hsfeng.site/wiki/powershell/",
       "keywords" : "Windows, PowerShell"
     } ,
   
@@ -454,7 +454,7 @@
       "title"    : "Python",
       "category" : "Python",
       
-      "url"      : "/wiki/python/",
+      "url"      : "https://hsfeng.site/wiki/python/",
       "keywords" : "Python"
     } ,
   
@@ -462,7 +462,7 @@
       "title"    : "Qt Creator",
       "category" : "Qt",
       
-      "url"      : "/wiki/qt-creator/",
+      "url"      : "https://hsfeng.site/wiki/qt-creator/",
       "keywords" : "Qt, Qt Creator"
     } ,
   
@@ -470,7 +470,7 @@
       "title"    : "Skill Tree",
       "category" : "mindmap",
       
-      "url"      : "/wiki/skill-tree/",
+      "url"      : "https://hsfeng.site/wiki/skill-tree/",
       "keywords" : "技能树, 思维导图, mindmap, 脑图"
     } ,
   
@@ -478,7 +478,7 @@
       "title"    : "Source Insight",
       "category" : "Tools",
       
-      "url"      : "/wiki/source-insight/",
+      "url"      : "https://hsfeng.site/wiki/source-insight/",
       "keywords" : "Source Insight"
     } ,
   
@@ -486,7 +486,7 @@
       "title"    : "Wiki Template",
       "category" : "cate1",
       
-      "url"      : "/wiki/template/",
+      "url"      : "https://hsfeng.site/wiki/template/",
       "keywords" : "keyword1, keyword2"
     } ,
   
@@ -494,7 +494,7 @@
       "title"    : "Vim",
       "category" : "Vim",
       
-      "url"      : "/wiki/vim/",
+      "url"      : "https://hsfeng.site/wiki/vim/",
       "keywords" : "Vim"
     } ,
   
@@ -502,7 +502,7 @@
       "title"    : "Visual Studio Code",
       "category" : "Tools",
       
-      "url"      : "/wiki/visual-studio-code/",
+      "url"      : "https://hsfeng.site/wiki/visual-studio-code/",
       "keywords" : "Visual Studio Code"
     } ,
   
@@ -510,7 +510,7 @@
       "title"    : "Visual Studio",
       "category" : "Tools",
       
-      "url"      : "/wiki/visual-studio/",
+      "url"      : "https://hsfeng.site/wiki/visual-studio/",
       "keywords" : "Visual Studio"
     } ,
   
@@ -518,7 +518,7 @@
       "title"    : "Windows Terminal",
       "category" : "Tools",
       
-      "url"      : "/wiki/windows-terminal/",
+      "url"      : "https://hsfeng.site/wiki/windows-terminal/",
       "keywords" : "Windows Terminal"
     } 
   
