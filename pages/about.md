@@ -12,6 +12,7 @@ permalink: /about/
 
 ## 联系
 
+{% assign assets_base_url = site.url | append: site.baseurl %}
 <ul>
 {% for website in site.data.social %}
 <li>{{website.sitename }}：<a href="{{ website.url }}" target="_blank">@{{ website.name }}</a></li>

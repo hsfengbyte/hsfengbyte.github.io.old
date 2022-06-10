@@ -8,6 +8,7 @@ menu: 分类
 permalink: /categories/
 ---
 
+{% assign assets_base_url = site.url | append: site.baseurl %}
 <section class="container posts-content">
 {% assign sorted_categories = site.categories | sort %}
 {% for category in sorted_categories %}

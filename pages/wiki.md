@@ -10,6 +10,7 @@ permalink: /wiki/
 
 > 记多少命令和快捷键会让脑袋爆炸呢？
 
+{% assign assets_base_url = site.url | append: site.baseurl %}
 <ul class="listing">
 {% for wiki in site.wiki %}
 {% if wiki.title != "Wiki Template" and wiki.topmost == true %}

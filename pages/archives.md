@@ -8,6 +8,7 @@ menu: 归档
 permalink: /archives/
 ---
 
+{% assign assets_base_url = site.url | append: site.baseurl %}
 <section class="container posts-content">
 {% assign count = 1 %}
 {% for post in site.posts reversed %}
